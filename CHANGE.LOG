@@ -1,0 +1,46 @@
+﻿Backupaw (c) Neophile 2003-2011
+v1.5.2 (Build 12)
+
+This is an windows 7 and Vista compliant for Application Data Storage , in user folder appData.
+wxWidget 2.9 and Visual studio VC2010 for binary compilation.
+
+V1.5 (Build 10) 
+
+This is an update release to support AW earlier version like 5.1 and native unicode.
+This Release is stable since 2 years.
+
+V1.4 (Build 8)
+
+this is the first released version of BackupAw and it's a beta, so please make world backup
+before use it for destroying objects: I test all my functions , but in beta I can't guarantee 
+no damages.
+
+This software is under the GNU/GPL licence.
+
+Enjoy it.
+
+I released this bot under GPL with the hope that it can help newbies to learning C++ with
+SDK and GUI and interest some coders to continue the development by addon, correct,translate...
+
+if you are interesting to contribute to this project Mail me to neophile@abyssia.fr
+
+Release Information:
+
+V1.1 : New moving project function, map take priority of project zone. More icon on tool bar
+
+
+For bug report, you can contact me on  webmaster@abyssia.fr or post on my web forum :
+http://www.abyssia.fr/forum
+
+V1.2 beta : New Rotation Modifier, Manual setting of grid origin (usefull for big world like AWGate for example)
+	Under SDK build 62, this version make an error on exiting : it's a sdk62 problem , but no dammage on system.
+
+v1.2 stable (Build 4) : SDK AW 1.2 upgrade
+
+v1.3 beta (build 5): Mouse select for region, V4 objects support (compatible with old BAP file project)
+	CHM Help.
+
+v1.3.2 Beta (build 6): Grid not blocked when loading, CareTaker build mode or simple citizen mode, bug correction.
+
+v1.4.0 (build 8): Free the bot to GNU/GPL for community of ActiveWorlds.
+                  Writing INSTALL method for linux users windows coming soon
