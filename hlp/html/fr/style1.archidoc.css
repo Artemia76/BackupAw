@@ -1,0 +1,138 @@
+
+<!--
+
+
+@page { 
+size:auto; 
+margin-top:5cm; 
+margin-bottom:5cm; 
+margin-left:1.5cm; 
+margin-right:1.5cm; 
+}
+
+/* Commentaire */
+
+HR                    { color:Navy}
+ul                    { list-style-image: url(style1.bullet.gif);}
+li                    { margin-top: 10 }
+
+body                  { 
+			background-color:White; 
+			margin-top: 20px; 
+			margin-bottom: 10px; 
+			margin-left:20px; 
+			margin-right:20px; 
+			padding-left: 0; 
+			padding-right: 0;
+			font-family: verdana, helvetica, arial, sans-serif;
+			font-size: 75%;
+			color:Navy;
+
+    scrollbar-face-color: #DEE3E7;
+    scrollbar-highlight-color: #FFFFFF;
+    scrollbar-shadow-color: #DEE3E7;
+    scrollbar-3dlight-color: #D1D7DC;
+    scrollbar-arrow-color:  #006699;
+    scrollbar-track-color: #EFEFEF;
+    scrollbar-darkshadow-color: #98AAB1;
+
+                      }
+
+
+
+                      
+tbody                 { font-size: 75% }
+
+a                     { text-decoration: none; color: #0000FF;  }
+a:hover               { text-decoration: underline}
+
+
+h1           
+{  
+        background-color: #D2E9FF; color: #333333;
+        padding:2px 0 2px 4px; 
+        font-size: 125%; font-weight: normal;
+        border:1px outset #f0f0f0;
+        filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#D2E9FF', EndColorStr='#FFFFFF');
+        width:100%;}
+
+table
+		{ font-size: 120%;
+		margin-top: 1em; 
+		margin-bottom: 1em; }
+		
+th
+		{ text-align: left;
+		background: #DDDDDD;
+		vertical-align: bottom;
+		padding: .2em;
+		padding-left: .45em;
+		padding-right: .5em;}
+		
+tr
+		{ vertical-align: top; }
+
+td
+		{ background: #EEEEEE;
+		vertical-align: top;
+		padding: .2em;
+		padding-left: .45em;
+		padding-right: .5em;}
+
+.td_foot		{ background-color: White }
+.tb_foot		{width: 100%; margin-top:-6}
+
+
+
+/* --------------------- */
+/*  utilisé pour le fichier _top.htm seulement */
+/*                       */
+
+.top_body
+{
+	margin:  8px 8px 0px 12px;
+	background-color: white;
+}
+.top_span_title
+{
+	font-size: x-large;
+}
+.top_span_rem
+{
+	font-size: small;
+}
+
+.top_div_cult
+{
+	text-align: right;
+	FLOAT: right;
+}
+
+/*                       */
+/*  / _top.htm seulement */
+/* --------------------- */
+
+
+
+/* --------------------- */
+/*  utilisé pour le fichier _toc.htm seulement */
+/*                       */
+
+.hhc_body
+{
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 20px;
+	background-color: white;
+}
+
+.hhc_td	{ background-color: white;		}
+
+/*                       */
+/*  / _toc.htm seulement */
+/* --------------------- */
+
+
+
+-->

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ArchiDoc - www.netilog.com -->
+<Build Date="25/09/2006 19:31:31">
+   <toc_applet_idx_background>FFFFFF</toc_applet_idx_background>
+   <Rem />
+   <First>ID1010.htm</First>
+   <Extended>True</Extended>
+   <StyleEnabled>True</StyleEnabled>
+   <Style>style2</Style>
+   <chm>hlp-fr</chm>
+   <title>hlp</title>
+   <subtitle />
+   <txt_idx>Index</txt_idx>
+   <txt_toc>Contents</txt_toc>
+   <Culture Code="fr" NativeName="français">fr</Culture>
+</Build>

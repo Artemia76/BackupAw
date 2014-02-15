@@ -1,0 +1,181 @@
+BACKUPAW is under GPL, see readme file for more details about licensing and third part licence.
+
+I - Overview
+II - Build under Linux
+  1 - Prerequested
+    a - wxWidgets 2.8
+    b - CodeBlocks Nightly build
+    c - ActiveWorlds SDK for 3.6
+    d - ActiveWorlds SDK for 4.1
+  2 - Build for 3.6
+  3 - Build for 4.1
+	
+III - Build under Windows
+  1 - Prerequested
+    a - Mingw and make addition
+    b - wxWidgets 2.8
+    c - Code::Blocks Nighly build
+    d - ActiveWorlds SDK for 3.6
+    e - ActiveWorlds SDK for 4.1
+	f - ActiveWorlds SDK for 4.2
+  2 - Choose your build
+  3 - make NSIS package
+  
+IV - Take place in backupaw project
+
+---------------------------------------------------------------------
+
+I - Overview
+
+  BackupAW is backuping software for helping caretaker or citizen to manage their builds.
+  It use wxWidget and ActiveWorlds SDK,so it can be build on linux and windows , in the limit of
+  the ActiveWorlds SDK in fact.
+  
+  BackupAW use the unicode build of wxwidget to support internationalization and
+  skip windows/linux char problems between ISO and UTF8
+
+II - Build under Linux
+  1 - Prerequested
+    These devel package are needed to build all requested:
+	subversion
+	gtk+2.0
+	zip
+	make
+	automake
+	autoconf
+	m4
+	gettext
+	libtool
+	intltool
+	gcc-c++
+	libstdc++-devel
+	wxgtk2.8
+	libwxgtk2.8
+	libwxgtk2.8-devel
+	upx
+    
+    a - wxWidget 2.8
+      You can use your devel package of wxwidget of your distribution to build Code::Blocks and 
+      BackupAw but I council you to make your own libs from wxGTK after have installed the distrib devel
+      package with this method:
+
+        First Get the gz tarball of laste released 2.8 wxGTK on
+        http://www.wxwidgets.org/downloads/#latest_stable
+        at this hour, the version is 2.8.7
+        on consol in user mode
+        $ wget http://prdownloads.sourceforge.net/wxwindows/wxGTK-2.8.7.tar.gz
+        $ tar -zxf wxGTK-2.8.7.tar.gz
+        $ cd wxGTK-2.8.7
+        $ mkdir build_unicode_shared_monolithic
+        $ cd build_unicode_shared_monolithic/
+        $ ../configure --prefix=/usr --enable-unicode --enable-monolithic --enable-shared
+        
+        If configure stop with error missing lib, get it from your devel distribution package
+        (example on mandriva : urpmi gtk2-devel)
+        Try again the configure command and when it success :
+        
+        $ make
+        
+        This can take a few time, take a coffee...
+        
+        switch to root and type:
+        
+        $ su
+        # make install
+        
+        return to simple user
+        # exit
+        
+        test if the wxGTK are installed correctly by typing:
+        
+        $ wx-config --libs --unicode=yes --static=no --debug=no
+        this should respond: -pthread   -lwx_gtk2u-2.8
+
+    b - Code::blocks nighly build
+      
+      You need to install subversion package (svn)
+      
+      go on http://forums.codeblocks.org/index.php/board,20.0.html and note wich version is out
+      at time this is the 4893
+      
+      so go on consol on simple user:
+      $ mkdir codeblocks
+      $ svn checkout --revision 4893 svn://svn.berlios.de/codeblocks/trunk codeblocks
+      $ cd codeblocks
+      $ ./bootstrap
+      $ aclocal
+      $ ./configure --prefix=/usr
+      $ make
+      $ su
+      # make install
+      # exit
+      
+      Test the good installation of code::blocks
+      
+      $ codeblocks
+      
+      this should launch the code::blocks  IDE
+
+    c - ActiveWorlds SDK 3.6
+    
+      Get the Linux Andras SDK build 41 gz tarball from his website :
+      http://www.andras.net/linuxsdk.html
+      
+      $ mkdir awsdklnx41
+      $ cd awsdklnx41
+      $ tar -zxf ../awsdklnx41.1.tar.gz
+      $ cd awsdklnx41
+      
+      now, convert the static lib to shared one :
+      
+      $ ar -x libaw_sdk.a
+      $ gcc -shared *.o -o libaw_sdk.36.so
+      $ su
+      # cp libaw_sdk.36.so /usr/lib
+      # cp aw.h /usr/include/aw41.h
+      # exit
+    
+    d - ActiveWorlds SDK 4.1
+    
+      Get the linux ActiveWorlds SDK for 4.1 at:
+      $ cd ~
+      $ wget http://objects.activeworlds.com/downloads/awsdk66.tar.gz
+      $ mkdir awsdklnx66
+      $ cd awsdklnx66
+      $ tar -zxf ../awsdk66.tar.gz
+      $ su
+      # cp Aw.h /usr/include/aw66.h
+      # cp libaw_sdk.41.so.66 /usr/lib
+      # /sbin/ldconfig
+      # exit
+
+  2 - Build for 3.6
+
+    in console , go to backupaw folder 
+    $ codeblocks --build --target=Linux36 backupaw.cbp
+    $ cd linux36
+    $ ./backupaw
+    
+  3 - Build for 4.1
+  
+    in console , go to backupaw folder 
+    $ codeblocks --build --target=Linux41 backupaw.cbp
+    $ cd linux41
+    $ ./backupaw
+
+III - Build under Windows
+  1 - Prerequested
+    a - Mingw and make addition
+    b - wxWidgets 2.8
+    c - Code::Blocks Nighly build
+    d - ActiveWorlds SDK for 3.6
+    e - ActiveWorlds SDK for 4.1
+	f - ActiveWorlds SDK for 4.2
+  2 - Choose your build
+  3 - make NSIS package
+  
+IV - Take place to backupaw project
+
+This part is for those who want to perfect this bot, translate, correct it,etc , you can join me
+on my webmail neophile@abyssia.fr.
+My forum is open to ask , comment etc, anything about this bot.

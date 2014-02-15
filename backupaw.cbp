@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Backupaw" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Win36">
+				<Option platforms="Windows;" />
+				<Option output="./win36/Backupaw" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="./win36" />
+				<Option object_output="./win36/obj" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-fno-rtti" />
+					<Add option="-fno-exceptions" />
+					<Add option="-fno-pcc-struct-return" />
+					<Add option="-fstrict-aliasing" />
+					<Add option="-DAW_BUILD_41" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-D__WIN95__" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add directory="C:/wxWidgets-2.8.7/include" />
+					<Add directory="C:/wxWidgets-2.8.7/lib/gcc_lib/mswu" />
+					<Add directory="C:/SDKAW/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="wxmsw28u" />
+					<Add library="comctl32" />
+					<Add library="ole32" />
+					<Add library="oleaut32" />
+					<Add library="uuid" />
+					<Add library="aw36" />
+					<Add directory="C:/wxWidgets-2.8.7/lib/gcc_lib" />
+					<Add directory="C:/SDKAW/lib" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="upx.exe -9 .\win36\Backupaw.exe" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Win41">
+				<Option platforms="Windows;" />
+				<Option output="./win41/Backupaw" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="./win41" />
+				<Option object_output="./win41/obj" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-fno-rtti" />
+					<Add option="-fno-exceptions" />
+					<Add option="-fno-pcc-struct-return" />
+					<Add option="-fstrict-aliasing" />
+					<Add option="-DAW_BUILD_66" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-D__WIN95__" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add directory="C:/wxWidgets-2.8.7/include" />
+					<Add directory="C:/wxWidgets-2.8.7/lib/gcc_lib/mswu" />
+					<Add directory="C:/SDKAW/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="wxmsw28u" />
+					<Add library="comctl32" />
+					<Add library="ole32" />
+					<Add library="oleaut32" />
+					<Add library="uuid" />
+					<Add library="aw66" />
+					<Add directory="C:/wxWidgets-2.8.7/lib/gcc_lib" />
+					<Add directory="C:/SDKAW/lib" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="upx.exe -9 .\win41\Backupaw.exe" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Linux36">
+				<Option platforms="Unix;" />
+				<Option output="./linux36/backupaw" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="./linux36" />
+				<Option object_output="./linux36/objs" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="`wx-config --cflags --unicode=yes --debug=no`" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add option="-DLINUX" />
+					<Add directory="/usr/local/include/awsdk41" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs --unicode=yes --debug=no`" />
+					<Add library="aw_sdk.41" />
+					<Add directory="/usr/local/lib" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="upx -9 ./linux36/backupaw" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Linux41">
+				<Option platforms="Unix;" />
+				<Option output="./linux41/backupaw" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="./linux41" />
+				<Option object_output="./linux41/objs" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-w" />
+					<Add option="`wx-config --cflags --unicode=yes --debug=no`" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add option="-DLINUX" />
+					<Add option="-DAW_BUILD_66" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs --unicode=yes --debug=no`" />
+					<Add library="aw_sdk.41" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="upx -9 ./linux41/backupaw" />
+				</ExtraCommands>
+			</Target>
+			<Target title="LinuxD-41">
+				<Option platforms="Unix;" />
+				<Option output="./linux41/backupawd" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="./linux41" />
+				<Option object_output="./linux41/objsd" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-w" />
+					<Add option="-g" />
+					<Add option="`wx-config --cflags --unicode=yes --debug=yes`" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add option="-DLINUX" />
+					<Add option="-DAW_BUILD_66" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --libs --unicode=yes --debug=yes`" />
+					<Add library="aw_sdk.41" />
+				</Linker>
+			</Target>
+			<Target title="LinuxD-36">
+				<Option platforms="Unix;" />
+				<Option output="./linux36/backupawd" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="./linux36" />
+				<Option object_output="./linux36/objsd" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-g" />
+					<Add option="`wx-config --cflags --unicode=yes --debug=yes`" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add option="-DLINUX" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --libs --unicode=yes --debug=yes`" />
+					<Add library="aw_sdk.36" />
+				</Linker>
+			</Target>
+			<Target title="Win42">
+				<Option platforms="Windows;" />
+				<Option output="./win42/Backupaw" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="./win42" />
+				<Option object_output="./win42/obj" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="`wx-config --cflags`" />
+					<Add option="-DAW_BUILD_77" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-D__WIN95__" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add directory="C:/SDKAW/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs`" />
+					<Add library="aw" />
+					<Add directory="C:/SDKAW/lib" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="upx.exe -9 .\win42\Backupaw.exe" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Win51">
+				<Option platforms="Windows;" />
+				<Option output="./win51/Backupaw" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="./win51" />
+				<Option object_output="./win51/obj" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-w" />
+					<Add option="`wx-config --cflags --unicode=yes --static=yes --debug=no`" />
+					<Add option="-D__WXMSW__" />
+					<Add option="-D__GNUWIN32__" />
+					<Add option="-DAUTRE_UNIV" />
+<<<<<<< .mine
+					<Add option="-DNDEBUG" />
+					<Add directory="C:/devel/activeworlds/sdk93" />
+=======
+					<Add option="-DNDEBUG" />
+					<Add directory="C:\devel\activeworlds\sdk93" />
+>>>>>>> .r17
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs --unicode=yes --static=yes --debug=no`" />
+					<Add library="aw" />
+					<Add directory="C:/devel/activeworlds/sdk93" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="upx.exe -9 .\win51\Backupaw.exe" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Linux51">
+				<Option platforms="Unix;" />
+				<Option output="./linux51/backupaw51" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="./linux51" />
+				<Option object_output="./linux51/objs" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-w" />
+					<Add option="`wx-config --cflags --unicode=yes --debug=no`" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add option="-DLINUX" />
+					<Add option="-DAW_BUILD_66" />
+					<Add directory="/usr/local/include/aw51" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs --unicode=yes --debug=no`" />
+					<Add library="aw_sdk.51" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="upx -9 ./linux51/backupaw51" />
+					<Add after="cp ./linux51/backupaw51 ./" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add directory="include" />
+			<Add directory="icones" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="icones" />
+		</ResourceCompiler>
+		<Unit filename="include/AboutBox.h" />
+		<Unit filename="include/AwObject.h" />
+		<Unit filename="include/CBot.h" />
+		<Unit filename="include/CBuild.h" />
+		<Unit filename="include/CDelete.h" />
+		<Unit filename="include/CFilter.h" />
+		<Unit filename="include/CModify.h" />
+		<Unit filename="include/COutils.h" />
+		<Unit filename="include/Cpasspriv.h" />
+		<Unit filename="include/CtrlCell.h" />
+		<Unit filename="include/CtrlLog.h" />
+		<Unit filename="include/Ctrlaw.h" />
+		<Unit filename="include/Global.h" />
+		<Unit filename="include/MainApp.h" />
+		<Unit filename="include/MainFrame.h" />
+		<Unit filename="include/MapCanvas.h" />
+		<Unit filename="include/OptionBox.h" />
+		<Unit filename="include/ToolBook.h" />
+		<Unit filename="src/AboutBox.cpp" />
+		<Unit filename="src/AwObject.cpp" />
+		<Unit filename="src/CBot.cpp" />
+		<Unit filename="src/CBuild.cpp" />
+		<Unit filename="src/CDelete.cpp" />
+		<Unit filename="src/CFilter.cpp" />
+		<Unit filename="src/CModify.cpp" />
+		<Unit filename="src/COutils.cpp" />
+		<Unit filename="src/Cpasspriv.cpp" />
+		<Unit filename="src/CtrlCell.cpp" />
+		<Unit filename="src/CtrlLog.cpp" />
+		<Unit filename="src/Ctrlaw.cpp" />
+		<Unit filename="src/MainApp.cpp" />
+		<Unit filename="src/MainFrame.cpp" />
+		<Unit filename="src/MapCanvas.cpp" />
+		<Unit filename="src/OptionBox.cpp" />
+		<Unit filename="src/Ressources.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="Win36" />
+			<Option target="Win41" />
+			<Option target="Win42" />
+			<Option target="Win51" />
+		</Unit>
+		<Unit filename="src/ToolBook.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,26 @@
+
+a                     { text-decoration: none; color:black; font-weight:bold}
+a:hover               { text-decoration: underline}
+
+
+.hhc_body
+{
+	border-right: silver outset;
+	border-top: silver outset;
+	border-left: silver outset;
+	border-bottom: silver outset;
+	background-color: gray;
+}
+
+.hhc_td
+{
+	border-right: silver inset;
+	padding-right: 2px;
+	border-top: silver inset;
+	padding-left: 2px;
+	padding-bottom: 2px;
+	border-left: silver inset;
+	padding-top: 2px;
+	border-bottom: silver inset;
+	background-color: white;
+}

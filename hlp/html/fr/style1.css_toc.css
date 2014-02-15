@@ -1,0 +1,23 @@
+﻿
+	
+BODY
+{
+			margin-top: 10px; 
+			margin-bottom: 10px; 
+			margin-left:20px; 
+			margin-right:20px; 
+			background-color:White;
+			color:#0000C0;
+			font-family:Verdana;
+			font-size:small;
+}
+	
+A		{	text-decoration: none; color:#0000C0}
+A:hover	{	text-decoration: underline ;}
+
+.tr1	{	font-size:small}
+.tr2	{	font-size:small}
+.tr3	{	font-size:small}
+
+	
+	

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Created by ArchiDoc - www.netilog.com -->
+<topic ad_title="Delete Tab" ad_seealso_text="Voir aussi : ">
+   <content><![CDATA[<STRONG><FONT color=#8000ff size=5>Delete&nbsp;Tab<BR></FONT></STRONG><BR>The "Delete" is used to destruct an active project. 
+
+<P><STRONG><FONT color=#ff0000>CAUTION : BackupAw use the coord and ID of each object to make reconize them<BR>by AW world Server : So don't use Modifiers before a delete opeation</FONT></STRONG></P>]]></content>
+</topic>

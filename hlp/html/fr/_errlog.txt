@@ -1,0 +1,65 @@
+Microsoft HTML Help Compiler 4.74.8702
+
+Compiling c:\Documents and Settings\gianni\Mes documents\projets\backupaw\hlp\html\fr\hlp-fr.chm
+
+_bin.htm
+ad_popprg.js
+ad_popcss.css
+ad_popdat.js
+ID1010.htm
+ID1012.htm
+ID1014.htm
+ID1016.htm
+ID1018.htm
+ID1020.htm
+ID1022.htm
+ID1024.htm
+ID1026.htm
+ID1028.htm
+ID1030.htm
+ID1032.htm
+ID1034.htm
+ID1036.htm
+ID1038.htm
+ID1040.htm
+ID1042.htm
+ID1044.htm
+ID1046.htm
+ID1048.htm
+ID1050.htm
+ID1054.htm
+ID1056.htm
+_hhc.hhc
+_hhk.hhk
+style1.bullet.gif
+style1.logo.png
+bin\open.jpg
+bin\save.jpg
+bin\save_as.jpg
+bin\connect.jpg
+bin\aw.jpg
+bin\target.jpg
+bin\world.jpg
+bin\grid.jpg
+bin\density.jpg
+bin\coord.jpg
+bin\citizen.jpg
+bin\model.jpg
+bin\description.jpg
+bin\action.jpg
+bin\region.jpg
+bin\citizen_modifier.jpg
+bin\move.jpg
+bin\rotate.jpg
+style1.css_toc.css
+style1.archidoc.css
+
+Compile time: 0 minutes, 1 second
+26	Topics
+46	Local links
+0	Internet links
+20	Graphics
+
+
+Created c:\Documents and Settings\gianni\Mes documents\projets\backupaw\hlp\html\fr\hlp-fr.chm, 99,393 bytes
+Compression decreased file by 114,550 bytes.

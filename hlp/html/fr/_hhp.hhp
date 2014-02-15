@@ -1,0 +1,100 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=hlp-fr.chm
+Contents file=_hhc.hhc
+Default Window=Main
+Default topic=ID1010.htm
+Display compile notes=Yes
+Display compile progress=Yes
+Full-text search=Yes
+Index file=_hhk.hhk
+Language=0x40c Fran?ais (France)
+Title=hlp
+Error log file=_errlog.txt
+
+[WINDOWS]
+Main="hlp","_hhc.hhc","_hhk.hhk",,,,,,,0x420,,0x380E,[0,0,0,0],0x0,0x0,,0,0,0,0
+
+[TEXT POPUPS]
+_pop.h
+_pop.txt
+
+[FILES]
+_bin.htm
+ad_popprg.js
+ad_popcss.css
+ad_popdat.js
+ID1010.htm
+ID1012.htm
+ID1014.htm
+ID1016.htm
+ID1018.htm
+ID1020.htm
+ID1022.htm
+ID1024.htm
+ID1026.htm
+ID1028.htm
+ID1030.htm
+ID1032.htm
+ID1034.htm
+ID1036.htm
+ID1038.htm
+ID1040.htm
+ID1042.htm
+ID1044.htm
+ID1046.htm
+ID1048.htm
+ID1050.htm
+ID1054.htm
+ID1056.htm
+
+[MAP]
+#Define ID1010 1010
+#Define ID1012 1012
+#Define ID1014 1014
+#Define ID1016 1016
+#Define ID1018 1018
+#Define ID1020 1020
+#Define ID1022 1022
+#Define ID1024 1024
+#Define ID1026 1026
+#Define ID1028 1028
+#Define ID1030 1030
+#Define ID1032 1032
+#Define ID1034 1034
+#Define ID1036 1036
+#Define ID1038 1038
+#Define ID1040 1040
+#Define ID1042 1042
+#Define ID1044 1044
+#Define ID1046 1046
+#Define ID1048 1048
+#Define ID1050 1050
+#Define ID1054 1054
+#Define ID1056 1056
+
+[ALIAS]
+ID1010=ID1010.htm
+ID1012=ID1012.htm
+ID1014=ID1014.htm
+ID1016=ID1016.htm
+ID1018=ID1018.htm
+ID1020=ID1020.htm
+ID1022=ID1022.htm
+ID1024=ID1024.htm
+ID1026=ID1026.htm
+ID1028=ID1028.htm
+ID1030=ID1030.htm
+ID1032=ID1032.htm
+ID1034=ID1034.htm
+ID1036=ID1036.htm
+ID1038=ID1038.htm
+ID1040=ID1040.htm
+ID1042=ID1042.htm
+ID1044=ID1044.htm
+ID1046=ID1046.htm
+ID1048=ID1048.htm
+ID1050=ID1050.htm
+ID1054=ID1054.htm
+ID1056=ID1056.htm
+

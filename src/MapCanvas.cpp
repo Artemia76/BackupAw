@@ -1,0 +1,341 @@
+// *****************************************************************************
+// *                                                                           *
+// *                       BACKUPAW : MapCanvas.cpp                            *
+// *                  The Grid Canvas to display project                       *
+// *                                                                           *
+// *****************************************************************************
+// * This file is part of BackupAw.                                            *
+// * BackupAw is free software; you can redistribute it and/or modify          *
+// * it under the terms of the GNU General Public License as published by      *
+// * the Free Software Foundation; either version 2 of the License, or         *
+// * (at your option) any later version.                                       *
+// *                                                                           *
+// * BackupAw is distributed in the hope that it will be useful,               *
+// * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
+// * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
+// * GNU General Public License for more details.                              *
+// *                                                                           *
+// * You should have received a copy of the GNU General Public License         *
+// * along with BackupAw; if not, write to the Free Software                   *
+// * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA *
+// *                                                                           *
+// *****************************************************************************
+// *                                                                           *
+// *   CopyRight 2006 Neophile                                                 *
+// *   Creation          : 28/07/2006                                          *
+// *   Last Modification :                                                     *
+// *   Revision          : A                                                   *
+// *                                                                           *
+// *****************************************************************************
+
+#include "MapCanvas.h"
+#include <math.h>
+#include <wx/dcbuffer.h>
+
+BEGIN_EVENT_TABLE(CMapCanvas, wxWindow)
+    EVT_PAINT		(CMapCanvas::OnPaint)
+    EVT_SIZE		(CMapCanvas::OnSize)
+    EVT_MOTION		(CMapCanvas::OnMouseMove)
+    EVT_MIDDLE_DOWN	(CMapCanvas::OnMClickDown)
+    EVT_MIDDLE_UP	(CMapCanvas::OnMClickUp)
+    EVT_RIGHT_DOWN	(CMapCanvas::OnMClickDown)
+    EVT_RIGHT_UP	(CMapCanvas::OnMClickUp)
+    EVT_LEFT_DOWN	(CMapCanvas::OnLClickDown)
+    EVT_LEFT_UP		(CMapCanvas::OnLClickUp)
+	EVT_ENTER_WINDOW(CMapCanvas::OnEnter)
+END_EVENT_TABLE()
+
+//-----------------------------------------------------------------------------
+
+CMapCanvas::CMapCanvas(wxFrame* parent): wxWindow
+	(
+		parent,
+		wxID_ANY,
+		wxDefaultPosition,
+		wxDefaultSize,
+        wxSUNKEN_BORDER | wxTAB_TRAVERSAL | wxCLIP_CHILDREN
+	)
+{
+	owner = parent;
+	OrigX=0;
+	OrigY=0;
+	Logger = CCtrlLog::Create ();
+    Cell = 8;
+    NbCellx = 0;
+    NbCelly = 0;
+	CellPtX = 0;
+	CellPtY = 0;
+    MCellx=0;
+    MCelly=0;
+    xbar=0;
+    ybar=0;
+    xori=0;
+    yori=0;
+	A2OrigX=0;
+	A2OrigY=0;
+	NbObjMax=40;
+	CatchGrid=false;
+	SelectGrid=false;
+	BlockScroll=false;
+	BlockSelect=false;
+    GetSize (&Larg, &Haut);
+    Filter=0;
+    CtrlCell = CCtrlCell::Create();
+    //SetHelpText("essai aide");
+	MapChange=false;
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::DrawDefault(wxDC& dc)
+{
+	wxString dec;
+	CObject Obj;
+    NbCellx = Larg /Cell;
+    NbCelly = Haut /Cell;
+	dc.SetPen(wxPen(wxColour (127,127,127),0, wxSOLID ));
+	MCellx = (wxCoord)floor ((double)NbCellx/2);
+	MCelly = (wxCoord)floor ((double)NbCelly/2);
+	xori = OrigX + (Cell/2);
+	yori = OrigY + (Cell/2);
+	xbar = (MCellx - ((((int)floor ((double)xori / Cell)) *Cell)+3-OrigX));
+	ybar = (MCelly - ((((int)floor ((double)yori / Cell)) *Cell)+3-OrigY));
+	while ( xbar >= Cell) xbar-=Cell;
+	while ( ybar >= Cell) ybar-=Cell;
+	memset (Tampon, 0, sizeof (Tampon));
+	memset (Sel, false , sizeof (Sel));
+	CtrlCell->Update (&Tampon[0][0],OrigX+MCellx, OrigY+MCelly, NbCellx, NbCelly);
+	CtrlCell->UpdateSel (&Sel[0][0],OrigX+MCellx, OrigY+MCelly, NbCellx, NbCelly);
+	for (int i=0; i<NbCellx; i++)
+	{
+		for (int j=0; j<NbCelly; j++)
+		{
+			dc.SetBrush(wxBrush(GetLevel(Tampon[i][j],Sel[i][j]),wxSOLID));
+			dc.DrawRectangle (i*Cell,j*Cell,Cell, Cell);
+		}
+	}
+	dc.SetPen(wxPen(*wxBLUE, 0, wxSOLID ));
+	while (xbar < NbCellx)
+	{
+		dc.DrawLine ( xbar*Cell, 0 , xbar*Cell , NbCelly*Cell);
+		xbar +=8;
+	}
+	while (ybar < NbCelly)
+	{
+		dc.DrawLine ( 0 , ybar*Cell , NbCellx*Cell , ybar*Cell);
+		ybar +=8;
+	}
+	if (Filter->item43->GetValue())
+	{
+		wxCoord x1,y1,x2,y2;
+		x1=(MCellx-(CtrlCell->RegioW-OrigX))*Cell;
+		y1=(MCelly-(CtrlCell->RegioN-OrigY))*Cell;
+		x2=((MCellx-(CtrlCell->RegioE-OrigX))*Cell)+Cell+1;
+		y2=((MCelly-(CtrlCell->RegioS-OrigY))*Cell)+Cell+1;
+		if (x1<0) x1=0;
+		else if (x1>=Larg) x1=Larg-1;
+		if (x2<0) x2=0;
+		else if (x2>=Larg) x2=Larg-1;
+		if (y1<0) y1=0;
+		else if (y1>=Haut) y1=Haut-1;
+		if (y2<0) y2=0;
+		else if (y2>=Haut) y2=Haut-1;
+		dc.SetPen(wxPen(wxColour (255,0,0),2, wxSOLID ));
+		dc.SetBrush(wxBrush(wxColour(0,0,0),wxTRANSPARENT));
+		dc.DrawRectangle ( x1 , y1 , x2 - x1, y2 - y1);
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnPaint (wxPaintEvent& event)
+{
+	wxBitmap tmpbmp(Larg, Haut);
+	wxMemoryDC tmpdc;
+	tmpdc.SelectObject(tmpbmp);
+    DrawDefault (tmpdc);
+	tmpdc.SelectObject(wxNullBitmap);
+    wxPaintDC dc(this);
+	dc.DrawBitmap(tmpbmp,0, 0, false);
+	event.Skip();
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnSize (wxSizeEvent& WXUNUSED(event))
+{
+    GetSize (&Larg, &Haut);
+	Refresh ();
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnMouseMove(wxMouseEvent &event)
+{
+    wxClientDC dc(this);
+    wxPoint pos = event.GetPosition();
+    long x = dc.DeviceToLogicalX( pos.x );
+    long y = dc.DeviceToLogicalY( pos.y );
+    if (BlockScroll) CatchGrid=false;
+    if (CatchGrid)
+    {
+		OrigX = AOrigX+((x-MouseX)/Cell);
+		OrigY = AOrigY+((y-MouseY)/Cell);
+		if ((OrigX != A2OrigX) || (OrigY != A2OrigY))
+		{
+			Refresh ();
+    		A2OrigX = OrigX;
+    		A2OrigY = OrigY;
+		}
+	}
+	if
+	(
+		(x >=0 ) && ( x <(NbCellx * Cell)) &&
+		(y >=0 ) && ( y <(NbCelly * Cell))
+	)
+	{
+		CellPtX = (MCellx-(wxCoord) floor ((double)(x / Cell)))+OrigX;
+		CellPtY = (MCelly-(wxCoord) floor ((double)(y / Cell)))+OrigY;
+	}
+	wxString Position,Numb;
+	Position=CoordToAw(CellPtX*1000,CellPtY*1000);
+	int NbTamp=Tampon [(OrigX+MCellx)-CellPtX][(OrigY+MCelly)-CellPtY];
+	int NbSel=Sel [(OrigX+MCellx)-CellPtX][(OrigY+MCelly)-CellPtY];
+	if (Sel) Numb.Printf (_(":Nb of Obj=%d in project"), NbSel);
+	else Numb.Printf (_(":Nb of Obj=%d"), NbTamp);
+	owner->SetStatusText ( Position + Numb, 2);
+	if (SelectGrid && Filter && (!BlockSelect))
+	{
+		int x1,x2,y1,y2;
+		if (AOrigX < CellPtX)
+		{
+			x1=CellPtX;
+			x2=AOrigX;
+		}
+		else
+		{
+			x2=CellPtX;
+			x1=AOrigX;
+		}
+		if (AOrigY < CellPtY)
+		{
+			y1=CellPtY;
+			y2=AOrigY;
+		}
+		else
+		{
+			y2=CellPtY;
+			y1=AOrigY;
+		}
+		Filter->item49->SetValue (CoordToAw(x1*1000,y1*1000));
+		Filter->item52->SetValue (CoordToAw(x2*1000,y2*1000));
+		wxCommandEvent event=0;
+		Filter->OnUpdate (event);
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnMClickDown (wxMouseEvent& event)
+{
+    wxClientDC dc(this);
+    if (SelectGrid) return;
+    wxPoint pos = event.GetPosition();
+    MouseX = dc.DeviceToLogicalX( pos.x );
+    MouseY = dc.DeviceToLogicalY( pos.y );
+    AOrigX = OrigX;
+    AOrigY = OrigY;
+	CatchGrid = true;
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnLClickDown (wxMouseEvent& WXUNUSED(event))
+{
+    wxClientDC dc(this);
+    if (CatchGrid || BlockSelect) return;
+    AOrigX = CellPtX;
+	AOrigY = CellPtY;
+	if (Filter)
+	{
+		Filter->item43->SetValue (true);
+		Filter->item45->SetValue (false);
+		Filter->item49->SetValue (CoordToAw(CellPtX*1000,CellPtY*1000));
+		Filter->item52->SetValue (CoordToAw(CellPtX*1000,CellPtY*1000));
+		wxCommandEvent event=0;
+		Filter->OnUpdate (event);
+	}
+	SelectGrid = true;
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnMClickUp (wxMouseEvent& WXUNUSED(event))
+{
+	CatchGrid = false;
+	MapChange = true;
+
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnLClickUp (wxMouseEvent& WXUNUSED(event))
+{
+	SelectGrid = false;
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnEnter (wxMouseEvent& event)
+{
+	if (CatchGrid && (!event.MiddleIsDown ())) CatchGrid = false;
+	if (SelectGrid && (!event.LeftIsDown ())) SelectGrid = false;
+}
+
+//-----------------------------------------------------------------------------
+
+wxColour CMapCanvas::GetLevel (size_t Indice, size_t Sel)
+{
+	size_t Level;
+	if (Sel>0) Level = (Sel *100 )/NbObjMax;
+	else Level = (Indice *100 )/NbObjMax;;
+	int R,V,B;
+	wxString text;
+	if (Level==0)
+	{
+		R=255;
+		V=255;
+		B=255;
+	}
+	else if (Level < 20)
+	{
+		V=0;
+		R=0;
+		B=(int)(127+Level * 6.375);
+	}
+	else if (Level < 40)
+	{
+		V=0;
+		R=(int)(Level * 12.75);
+		B=(int)(255-(Level * 12.75));
+	}
+	else if (Level < 100)
+	{
+		V=(int)((Level-40) * 4.25);
+		R=255;
+		B=0;
+	}
+	else
+	{
+		V=255;
+		R=255;
+		B=0;
+	}
+	if (Sel)
+	{
+		R=255-R;
+		V=255-V;
+		B=255-B;
+	}
+	return wxColour (R,V,B);
+}

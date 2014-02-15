@@ -1,0 +1,1160 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Backup AW 1.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-01-02 21:48+0100\n"
+"PO-Revision-Date: 2013-01-24 19:28+0100\n"
+"Last-Translator: Peschiutta <fgp76@free.fr>\n"
+"Language-Team: FR <neophile@abyssia.fr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: ../../\n"
+"Language: fr_FR\n"
+"X-Poedit-SearchPath-0: ./src\n"
+
+#: src/CBot.cpp:126
+msgid "Unable to create instance, Reason : "
+msgstr "Impossible de créer une instance, Raison : "
+
+#: src/CBot.cpp:132
+msgid "Instance Initialized."
+msgstr "Instance initialisée."
+
+#: src/CBot.cpp:160
+msgid "Disconnected from Universe "
+msgstr "Déconnecté de l'univers"
+
+#: src/CBot.cpp:178
+msgid "Unable to join the universe, Reason :"
+msgstr "Impossible de se connecter à l'univers, raison :"
+
+#: src/CBot.cpp:184
+msgid "Connected on Universe"
+msgstr "Connecté à l'univers"
+
+#: src/CBot.cpp:200
+msgid "Unable to connect on world "
+msgstr "Impossible de se connecter au monde "
+
+#: src/CBot.cpp:202
+msgid ",Reason: "
+msgstr ",Raison: "
+
+#: src/CBot.cpp:211
+msgid "Connected on world "
+msgstr "Connecté au monde "
+
+#: src/CBot.cpp:230
+msgid "Unable to query properties. Reason :"
+msgstr "Impossible de télécharger les objets.Raison :"
+
+#: src/CBot.cpp:318
+#, c-format
+msgid "A reconnection will be tryed in %d sec."
+msgstr "Une tentative de reconnexion sera tentÃ©e dans %d sec."
+
+#: src/CBot.cpp:326
+msgid "End of attempts"
+msgstr "Fin des tentatives."
+
+#: src/CBot.cpp:355
+msgid "Connection lost with universe "
+msgstr "Connexion perdue avec l'univers"
+
+#: src/CBot.cpp:356
+msgid "Connection lost with the world "
+msgstr "Connexion perdue avec le monde"
+
+#: src/CBot.cpp:505
+msgid "Unable to Build object. Reason : "
+msgstr "Impossible de construire. Raison : "
+
+#: src/CBot.cpp:510
+msgid "Unable to Delete object. Reason : "
+msgstr "Impossible de supprimer. Raison : "
+
+#: src/CBot.cpp:544
+msgid "End of deleting project.."
+msgstr "Fin de la suppression du projet."
+
+#: src/CBot.cpp:593
+msgid "End of building project.."
+msgstr "Fin de la construction du projet."
+
+#: src/CBot.cpp:605
+msgid "Start to deleting project.."
+msgstr "Début de la suppression du projet."
+
+#: src/CBot.cpp:616
+msgid "Start to building project.."
+msgstr "Début de la construction du projet."
+
+#: src/CBuild.cpp:51
+msgid "Warning This function can build object."
+msgstr "Attention, cette fonction construit des objets."
+
+#: src/CBuild.cpp:52
+msgid "Build"
+msgstr "Construire"
+
+#: src/CBuild.cpp:53
+msgid "Build as a CareTaker (Use many citizen Nb)"
+msgstr "Construire en tant que CareTaker (Utilise plusieurs citoyens)"
+
+#: src/CBuild.cpp:79
+msgid "Are you sure to want building all object in the project?"
+msgstr "Veuillez confirmer la construction du projet."
+
+#: src/CBuild.cpp:80 src/CDelete.cpp:74 src/MainFrame.cpp:253
+msgid "Warning"
+msgstr "Attention"
+
+#: src/CDelete.cpp:48
+msgid "Warning This function can make irreversible destruction."
+msgstr "Attention , cette fonction peut causer des dégats irréversibles."
+
+#: src/CDelete.cpp:49
+msgid "Delete"
+msgstr "Supprimer"
+
+#: src/CDelete.cpp:73
+msgid "Are you sure to want deleting all object in the project?"
+msgstr "Veuillez confirmer la suppression des objets selectionnés"
+
+#: src/CFilter.cpp:49
+msgid "Citizen"
+msgstr "Citoyen"
+
+#: src/CFilter.cpp:53 src/CFilter.cpp:65 src/CFilter.cpp:77 src/CFilter.cpp:91
+#: src/CFilter.cpp:105
+msgid "Enable"
+msgstr "Actif"
+
+#: src/CFilter.cpp:56 src/CFilter.cpp:68 src/CFilter.cpp:80 src/CFilter.cpp:94
+#: src/CFilter.cpp:108
+msgid "Exclude"
+msgstr "Exclure"
+
+#: src/CFilter.cpp:61
+msgid "Model"
+msgstr "Model"
+
+#: src/CFilter.cpp:73
+msgid "Description"
+msgstr "Description"
+
+#: src/CFilter.cpp:82 src/CFilter.cpp:96
+msgid "Exact Match"
+msgstr "Correspondance Exacte"
+
+#: src/CFilter.cpp:87
+msgid "Action"
+msgstr "Action"
+
+#: src/CFilter.cpp:101
+msgid "Region"
+msgstr "Zone"
+
+#: src/CFilter.cpp:112
+msgid "NW Corner:"
+msgstr "Coin NO:"
+
+#: src/CFilter.cpp:116
+msgid "SE Corner:"
+msgstr "Coin SE:"
+
+#: src/CFilter.cpp:120
+msgid "Update"
+msgstr "Rafraichir"
+
+#: src/CModify.cpp:51
+msgid "Citizen Modifier"
+msgstr "Modificateur de citoyen"
+
+#: src/CModify.cpp:57
+msgid "to"
+msgstr "vers"
+
+#: src/CModify.cpp:60
+msgid "Change"
+msgstr "Changer"
+
+#: src/CModify.cpp:61 src/CModify.cpp:70
+msgid "Move"
+msgstr "Déplacer"
+
+#: src/CModify.cpp:64
+msgid "From\t:"
+msgstr "De\t:"
+
+#: src/CModify.cpp:67
+msgid "To\t:"
+msgstr "à\t:"
+
+#: src/CModify.cpp:71 src/CModify.cpp:80
+msgid "Rotate"
+msgstr "Rotation"
+
+#: src/CModify.cpp:74
+msgid "Pivot point\t:"
+msgstr "Point de pivot\t:"
+
+#: src/CModify.cpp:77
+msgid "CCW Angle in degrees\t:"
+msgstr "Angle en degrés:"
+
+#: src/Ctrlaw.cpp:106
+msgid "Unable to init the SDK, Reason :"
+msgstr "Impossible d'initialiser la SDK, Raison :"
+
+#: src/Ctrlaw.cpp:111
+msgid "SDK Initialized"
+msgstr "SDK initialisée."
+
+#: src/Ctrlaw.cpp:152
+msgid "SDK Stopped."
+msgstr "SDK Stoppée."
+
+#: src/CtrlCell.cpp:452
+msgid " Object(s)\n"
+msgstr " Objet(s)\n"
+
+#: src/CtrlCell.cpp:457
+msgid "No Objects in Project."
+msgstr "Pas d'objets dans le projet."
+
+#: src/CtrlLog.cpp:114
+msgid "Citizen Ship Expired"
+msgstr "Citoyen expiré."
+
+#: src/CtrlLog.cpp:117
+msgid "Land Limit Exceeded"
+msgstr "Taille de monde dépassée."
+
+#: src/CtrlLog.cpp:120
+msgid "No Such Citizen"
+msgstr "Le citoyen n'existe pas."
+
+#: src/CtrlLog.cpp:123
+msgid "Message Length Bad"
+msgstr "Longueur de message incorrecte"
+
+#: src/CtrlLog.cpp:126
+msgid "License Password Contains Space"
+msgstr "Le mot de passe monde contient au moins un espace"
+
+#: src/CtrlLog.cpp:129
+msgid "License Password Too Long"
+msgstr "Le mot de passe monde est trop long"
+
+#: src/CtrlLog.cpp:132
+msgid "License Password Too Short"
+msgstr "Le mot de passe monde est trop court"
+
+#: src/CtrlLog.cpp:135
+msgid "License Range Too Large"
+msgstr "La taille du monde est trop grande"
+
+#: src/CtrlLog.cpp:138
+msgid "License Range Too Small"
+msgstr "La taille du monde est trop petite"
+
+#: src/CtrlLog.cpp:141
+msgid "License Users Too Large"
+msgstr "La limite d'utilisateur est trop grande"
+
+#: src/CtrlLog.cpp:144
+msgid "License Users Too Small"
+msgstr "La limite d'utilisateur est trop petite "
+
+#: src/CtrlLog.cpp:147
+msgid "License Contains Invalid Char"
+msgstr "Le nom du monde contient des caractères invalides"
+
+#: src/CtrlLog.cpp:150
+msgid "Invalid Password"
+msgstr "Mot de passe invalide"
+
+#: src/CtrlLog.cpp:153
+msgid "Unable To Mail Back Number"
+msgstr "Impossible de retourner le numéro"
+
+#: src/CtrlLog.cpp:156
+msgid "License World Too Short"
+msgstr "Le nom du monde est trop court"
+
+#: src/CtrlLog.cpp:159
+msgid "License World Too Long"
+msgstr "Le nom du monde est trop long"
+
+#: src/CtrlLog.cpp:162
+msgid "Server Out Of Memory"
+msgstr "Le serveur en dépassement mémoire"
+
+#: src/CtrlLog.cpp:165
+msgid "Invalid World"
+msgstr "Monde invalide"
+
+#: src/CtrlLog.cpp:168
+msgid "Server Outdated"
+msgstr "Serveur périmé"
+
+#: src/CtrlLog.cpp:171
+msgid "World Already Started"
+msgstr "Le monde est déjà démarré"
+
+#: src/CtrlLog.cpp:174
+msgid "No Such World"
+msgstr "Pas de monde"
+
+#: src/CtrlLog.cpp:177
+msgid "Not Logged In"
+msgstr "Pas connecté"
+
+#: src/CtrlLog.cpp:180
+msgid "Unauthorized"
+msgstr "Non autorisé"
+
+#: src/CtrlLog.cpp:183
+msgid "World Already Exists"
+msgstr "Le monde existe déjà"
+
+#: src/CtrlLog.cpp:186
+msgid "No Such License"
+msgstr "Pas de nom de monde"
+
+#: src/CtrlLog.cpp:189
+msgid "Identity Already In Use"
+msgstr "Identité déjà utilisée"
+
+#: src/CtrlLog.cpp:192
+msgid "Unable To Report Location"
+msgstr "Impossible de rapporter la position"
+
+#: src/CtrlLog.cpp:195
+msgid "Invalid Email"
+msgstr "Email invalide"
+
+#: src/CtrlLog.cpp:198
+msgid "No Such Acting Citizen"
+msgstr "Pas de privilèges"
+
+#: src/CtrlLog.cpp:201
+msgid "Acting Password Invalid"
+msgstr "Mot de passe privilèges invalide"
+
+#: src/CtrlLog.cpp:204
+msgid "Universe Full"
+msgstr "Univers plein"
+
+#: src/CtrlLog.cpp:207
+msgid "Billing Timeout"
+msgstr "Payement expiré"
+
+#: src/CtrlLog.cpp:210
+msgid "Billing Recv Failed"
+msgstr "Réception du payement échoué"
+
+#: src/CtrlLog.cpp:213
+msgid "Billing Response Invalid"
+msgstr "Confirmation du payement invalide"
+
+#: src/CtrlLog.cpp:216
+msgid "Billing Rejected"
+msgstr "Payement refusé"
+
+#: src/CtrlLog.cpp:219
+msgid "Billing_Blocked"
+msgstr "Payement bloqué"
+
+#: src/CtrlLog.cpp:222
+msgid "Too Many Worlds"
+msgstr "Trop de mondes"
+
+#: src/CtrlLog.cpp:225
+msgid "Must Upgrade"
+msgstr "Mise à jour nécéssaire"
+
+#: src/CtrlLog.cpp:228
+msgid "Bot Limit Exceeded"
+msgstr "Limite de bot dépassée"
+
+#: src/CtrlLog.cpp:231
+msgid "World_Expired"
+msgstr "Monde expiré"
+
+#: src/CtrlLog.cpp:234
+msgid "Citizen Does Not Expire"
+msgstr "La citoyenneté n'expire pas"
+
+#: src/CtrlLog.cpp:237
+msgid "License Sarts With Number"
+msgstr "Le nom du monde commence par un chiffre"
+
+#: src/CtrlLog.cpp:240
+msgid "No Such Ejection"
+msgstr "Pas d'ejection"
+
+#: src/CtrlLog.cpp:243
+msgid "No Such Session"
+msgstr "Pas de session"
+
+#: src/CtrlLog.cpp:246
+msgid "Ejection Expired"
+msgstr "Ejection expirée"
+
+#: src/CtrlLog.cpp:249
+msgid "Acting Citizen Expired"
+msgstr "Citoyen privilège expiré"
+
+#: src/CtrlLog.cpp:252
+msgid "Already_Started"
+msgstr "Déjà démarré"
+
+#: src/CtrlLog.cpp:255
+msgid "World Running"
+msgstr "Le monde fonctionne"
+
+#: src/CtrlLog.cpp:258
+msgid "World Not Set"
+msgstr "Le monde n'est pas configuré"
+
+#: src/CtrlLog.cpp:261
+msgid "No Such Cell"
+msgstr "Pas de cellule"
+
+#: src/CtrlLog.cpp:264
+msgid "No Registry"
+msgstr "Pas de registry"
+
+#: src/CtrlLog.cpp:267
+msgid "Can't Open Registry"
+msgstr "Ne peux pas ouvrir la registry"
+
+#: src/CtrlLog.cpp:270
+msgid "Citizen_Disabled"
+msgstr "Citoyens interdits"
+
+#: src/CtrlLog.cpp:273
+msgid "World Disabled"
+msgstr "Mondes interdits"
+
+#: src/CtrlLog.cpp:276
+msgid "Beta Required"
+msgstr "Version Beta requise"
+
+#: src/CtrlLog.cpp:279
+msgid "Acting Citizen Disabled"
+msgstr "Citoyen privilège non autorisé"
+
+#: src/CtrlLog.cpp:282
+msgid "Invalid Uuser Count"
+msgstr "Compte utilisateur invalide"
+
+#: src/CtrlLog.cpp:285
+msgid "Private World"
+msgstr "Monde privé"
+
+#: src/CtrlLog.cpp:288
+msgid "No Tourists"
+msgstr "Pas de touristes"
+
+#: src/CtrlLog.cpp:291
+msgid "EMail Contains Invalid Char"
+msgstr "l'EMail contient des caractères invalides"
+
+#: src/CtrlLog.cpp:294
+msgid "EMail Ends With Blank"
+msgstr "L'EMail se termine par un blanc"
+
+#: src/CtrlLog.cpp:297
+msgid "EMail Missing Dot"
+msgstr "L'EMail na pas de point"
+
+#: src/CtrlLog.cpp:300
+msgid "EMail Missing At"
+msgstr "L'EMail n'a pas de @"
+
+#: src/CtrlLog.cpp:303
+msgid "EMail Starts With Blank"
+msgstr "L'Email commence par un blanc"
+
+#: src/CtrlLog.cpp:306
+msgid "EMail Too Long"
+msgstr "EMail trop long"
+
+#: src/CtrlLog.cpp:309
+msgid "EMail Too Short"
+msgstr "Email trop court"
+
+#: src/CtrlLog.cpp:312
+msgid "Name Already Used"
+msgstr "Le nom est déjà utilisé"
+
+#: src/CtrlLog.cpp:315
+msgid "Name Contains Nonalphanumeric Char"
+msgstr "Le nom contient des caractères non alphanumériques"
+
+#: src/CtrlLog.cpp:318
+msgid "Name Contains Invalid Blank"
+msgstr "Le nom contient des blancs invalides"
+
+#: src/CtrlLog.cpp:321
+msgid "Name Doesn't Exist"
+msgstr "Le nom n'existe pas"
+
+#: src/CtrlLog.cpp:324
+msgid "Name Ends With Blank"
+msgstr "Le nom se termine par un blanc"
+
+#: src/CtrlLog.cpp:327
+msgid "Name Too Long"
+msgstr "Nom trop long"
+
+#: src/CtrlLog.cpp:330
+msgid "Name Too Short"
+msgstr "Nom trop court"
+
+#: src/CtrlLog.cpp:333
+msgid "Name Unused"
+msgstr "Nom inutilisé"
+
+#: src/CtrlLog.cpp:336
+msgid "Password Too Long"
+msgstr "Mot de passe trop long"
+
+#: src/CtrlLog.cpp:339
+msgid "Password Too Short"
+msgstr "Mot de passe trop court"
+
+#: src/CtrlLog.cpp:342
+msgid "Password Wrong"
+msgstr "Mot de passe incorrect"
+
+#: src/CtrlLog.cpp:345
+msgid "Unable To Delete Name"
+msgstr "Impossible de supprimer le nom"
+
+#: src/CtrlLog.cpp:348
+msgid "Unable To Get Citizen"
+msgstr "Impossible de récuperer le citoyen"
+
+#: src/CtrlLog.cpp:351
+msgid "Unable To Insert Citizen"
+msgstr "Impossible d'insérer le citoyen"
+
+#: src/CtrlLog.cpp:354
+msgid "Unable To Insert Name"
+msgstr "Impossible d'insérer le nom"
+
+#: src/CtrlLog.cpp:357
+msgid "Unable To Put Citizen Count"
+msgstr "Impossible d'établir le compte citoyen"
+
+#: src/CtrlLog.cpp:360
+msgid "Unable To Delete Citizen"
+msgstr "Impossible de supprimer la citoyenneté"
+
+#: src/CtrlLog.cpp:363
+msgid "Number Already Used"
+msgstr "Numéro déjà utilisé"
+
+#: src/CtrlLog.cpp:366
+msgid "Number Out Of Range"
+msgstr "Numéro hors limite"
+
+#: src/CtrlLog.cpp:369
+msgid "Privilege Password Is Too Short"
+msgstr "Le mot de passe privilège est trop court"
+
+#: src/CtrlLog.cpp:372
+msgid "Privilege Password Is Too Long"
+msgstr "Le mot de passe privilège est trop long"
+
+#: src/CtrlLog.cpp:375
+msgid "Not Change Owner"
+msgstr "Propriétaire inchangé"
+
+#: src/CtrlLog.cpp:378
+msgid "Can't Find Old Element"
+msgstr "Ne peux trouver l'ancien élément"
+
+#: src/CtrlLog.cpp:381
+msgid "Unable To Change Attribute"
+msgstr "Impossible de changer les paramètres"
+
+#: src/CtrlLog.cpp:384
+msgid "Can't Change Owner"
+msgstr "Ne peux pas changer de propriétaire"
+
+#: src/CtrlLog.cpp:387
+msgid "Imposter"
+msgstr "Imposteur"
+
+#: src/CtrlLog.cpp:390
+msgid "Invalid Request"
+msgstr "Requête invalide"
+
+#: src/CtrlLog.cpp:393
+msgid "Can't Build Here"
+msgstr "Ne peux pas construire ici"
+
+#: src/CtrlLog.cpp:396
+msgid "Encroaches"
+msgstr "Chevauchement"
+
+#: src/CtrlLog.cpp:399
+msgid "No Such Object"
+msgstr "Pas d'objets"
+
+#: src/CtrlLog.cpp:402
+msgid "Not Delete Owner"
+msgstr "Pas le droit de supprimer"
+
+#: src/CtrlLog.cpp:405
+msgid "Too Many Bytes"
+msgstr "Trop d'octets"
+
+#: src/CtrlLog.cpp:408
+msgid "Unable To Store"
+msgstr "Impossible de stocker"
+
+#: src/CtrlLog.cpp:411
+msgid "Unregistered Object"
+msgstr "Objet non enregistré"
+
+#: src/CtrlLog.cpp:414
+msgid "Element Already Exists"
+msgstr "L'élément existe déjà"
+
+#: src/CtrlLog.cpp:417
+msgid "Restricted Command"
+msgstr "Commande restreinte"
+
+#: src/CtrlLog.cpp:420
+msgid "No Build Rights"
+msgstr "Pas le droit de construire"
+
+#: src/CtrlLog.cpp:423
+msgid "Out Of Bounds"
+msgstr "En dehors des limites"
+
+#: src/CtrlLog.cpp:426
+msgid "Restricted Object"
+msgstr "Objet Privé"
+
+#: src/CtrlLog.cpp:429
+msgid "Restricted Area"
+msgstr "Zone Privée"
+
+#: src/CtrlLog.cpp:432
+msgid "Out Of Memory"
+msgstr "Dépassement de mémoire"
+
+#: src/CtrlLog.cpp:435
+msgid "Not Yet"
+msgstr "Pas prêt"
+
+#: src/CtrlLog.cpp:438
+msgid "Timeout"
+msgstr "Temps expiré"
+
+#: src/CtrlLog.cpp:441
+msgid "Null Pointer"
+msgstr "Pointeur nul"
+
+#: src/CtrlLog.cpp:444
+msgid "Unable To Contact Universe"
+msgstr "Impossible de contacter l'univers"
+
+#: src/CtrlLog.cpp:447
+msgid "Unable To Contact World"
+msgstr "Impossible de contacter le monde"
+
+#: src/CtrlLog.cpp:450
+msgid "Invalid World Name"
+msgstr "Nom du monde invalide"
+
+#: src/CtrlLog.cpp:453
+msgid "Send Failed"
+msgstr "Envoi échoué"
+
+#: src/CtrlLog.cpp:456
+msgid "Receive Failed"
+msgstr "Réception échouée"
+
+#: src/CtrlLog.cpp:459
+msgid "Stream Empty"
+msgstr "Flux vide"
+
+#: src/CtrlLog.cpp:462
+msgid "Stream Message Too Long"
+msgstr "Message de flux trop long"
+
+#: src/CtrlLog.cpp:465
+msgid "World Name Too Long"
+msgstr "Le nom du monde est trop long"
+
+#: src/CtrlLog.cpp:468
+msgid "Message Too Long"
+msgstr "Message trop long"
+
+#: src/CtrlLog.cpp:471
+msgid "Too Many Resets"
+msgstr "Trop de réinitialisation"
+
+#: src/CtrlLog.cpp:474
+msgid "Unable To Create Socket"
+msgstr "Impossible de creer la connexion"
+
+#: src/CtrlLog.cpp:477
+msgid "Unable To Connect"
+msgstr "Impossible de connecter"
+
+#: src/CtrlLog.cpp:480
+msgid "Unable To Set NonBlocking"
+msgstr "Impossible de mettre en non bloquant"
+
+#: src/CtrlLog.cpp:483
+msgid "Can't Open Stream"
+msgstr "Ne peux pas ouvrir le flux"
+
+#: src/CtrlLog.cpp:486
+msgid "Can't Write Stream"
+msgstr "Ne peux pas écrire le flux"
+
+#: src/CtrlLog.cpp:489
+msgid "Can't Close Stream"
+msgstr "Ne peux pas fermer le flux"
+
+#: src/CtrlLog.cpp:492
+msgid "No Connection"
+msgstr "Pas de connexion"
+
+#: src/CtrlLog.cpp:495
+msgid "Unable To Initialize Network"
+msgstr "Impossible d'initialiser le réseau"
+
+#: src/CtrlLog.cpp:498
+msgid "Incorrect Message Length"
+msgstr "Longueur de message incorrecte"
+
+#: src/CtrlLog.cpp:501
+msgid "Not Initialized"
+msgstr "Pas initialisé"
+
+#: src/CtrlLog.cpp:504
+msgid "No Instance"
+msgstr "Pas d'instance"
+
+#: src/CtrlLog.cpp:507
+msgid "Out Buffer Full"
+msgstr "Tampon de sortie plein"
+
+#: src/CtrlLog.cpp:510
+msgid "Invalid Callback"
+msgstr "Appel différé invalide"
+
+#: src/CtrlLog.cpp:513
+msgid "Invalid Attribute"
+msgstr "Attribut invalide"
+
+#: src/CtrlLog.cpp:516
+msgid "Type Mismatch"
+msgstr "Le type ne concorde pas"
+
+#: src/CtrlLog.cpp:519
+msgid "String Too Long"
+msgstr "Chaîne trop longue"
+
+#: src/CtrlLog.cpp:522
+msgid "Read Only"
+msgstr "Lecture seule"
+
+#: src/CtrlLog.cpp:525
+msgid "Unable To Register Resolve"
+msgstr "Impossible de référencer la résolution"
+
+#: src/CtrlLog.cpp:528
+msgid "Invalid Instance"
+msgstr "L'instance est invalide"
+
+#: src/CtrlLog.cpp:531
+msgid "Version Mismatch"
+msgstr "La version ne concorde pas"
+
+#: src/CtrlLog.cpp:534
+msgid "In Buffer Full"
+msgstr "Tampon d'entrée plein"
+
+#: src/CtrlLog.cpp:537
+msgid "Protocol Error"
+msgstr "Erreur de protocole"
+
+#: src/CtrlLog.cpp:540
+msgid "Query In Progress"
+msgstr "Téléchargement en cours"
+
+#: src/CtrlLog.cpp:543
+msgid "World Full"
+msgstr "Monde complet"
+
+#: src/CtrlLog.cpp:546
+msgid "Ejected"
+msgstr "Ejecté"
+
+#: src/CtrlLog.cpp:549
+msgid "Not Welcome"
+msgstr "Pas le bienvenu"
+
+#: src/CtrlLog.cpp:552
+msgid "Unable To Bind"
+msgstr "Impossible de résoudre"
+
+#: src/CtrlLog.cpp:555
+msgid "Unable To Listen"
+msgstr "Impossible d'écouter"
+
+#: src/CtrlLog.cpp:558
+msgid "Unable To Accept"
+msgstr "Impossible d'accepter"
+
+#: src/CtrlLog.cpp:561
+msgid "Connection Lost"
+msgstr "Connexion perdue"
+
+#: src/CtrlLog.cpp:564
+msgid "No Stream"
+msgstr "Pas de flux"
+
+#: src/CtrlLog.cpp:567
+msgid "Not Available"
+msgstr "Pas disponible"
+
+#: src/CtrlLog.cpp:570
+msgid "Old Universe"
+msgstr "Ancien Univers"
+
+#: src/CtrlLog.cpp:573
+msgid "Old World"
+msgstr "Ancien Monde."
+
+#: src/CtrlLog.cpp:576
+msgid "World Not Running"
+msgstr "Le monde n'est pas en marche."
+
+#: src/CtrlLog.cpp:579
+msgid "Invalid Argument"
+msgstr "Paramètre invalide"
+
+#: src/CtrlLog.cpp:582
+msgid "Unknow Raison Code"
+msgstr "Code inconnu"
+
+#: src/MainFrame.cpp:99
+msgid "&New"
+msgstr "&Nouveau"
+
+#: src/MainFrame.cpp:99
+msgid "New project"
+msgstr "Nouveau projet"
+
+#: src/MainFrame.cpp:100
+msgid "&Open"
+msgstr "&Ouvrir"
+
+#: src/MainFrame.cpp:100
+msgid "Open a project file"
+msgstr "Ouvrir un projet"
+
+#: src/MainFrame.cpp:101
+msgid "&Save"
+msgstr "&Enregistrer"
+
+#: src/MainFrame.cpp:101 src/MainFrame.cpp:102
+msgid "Save the project to file"
+msgstr "Enregistrer le projet"
+
+#: src/MainFrame.cpp:102
+msgid "&Save As"
+msgstr "&Enregistrer sous"
+
+#: src/MainFrame.cpp:104
+msgid "E&xit"
+msgstr "&Quitter"
+
+#: src/MainFrame.cpp:104
+msgid "Exiting BackupAw"
+msgstr "Quitter BackupAw"
+
+#: src/MainFrame.cpp:107 src/MainFrame.cpp:140 src/MainFrame.cpp:365
+msgid "Connect"
+msgstr "Connexion"
+
+#: src/MainFrame.cpp:107 src/MainFrame.cpp:366
+msgid "Connecting AW"
+msgstr "Connection à AW"
+
+#: src/MainFrame.cpp:108
+msgid "&Setup"
+msgstr "&Options"
+
+#: src/MainFrame.cpp:108
+msgid "AW Setup"
+msgstr "Options AW"
+
+#: src/MainFrame.cpp:111 src/MainFrame.cpp:143
+msgid "Set Origin"
+msgstr "Définir Origine"
+
+#: src/MainFrame.cpp:111
+msgid "Set the origin of the grid"
+msgstr "Définie l'origine de la grille"
+
+#: src/MainFrame.cpp:112
+msgid "Set Relative"
+msgstr "Définie les coordonées relatives"
+
+#: src/MainFrame.cpp:112
+msgid "Set the relative origin for project save"
+msgstr "Définie l'origine relative pour le projet"
+
+#: src/MainFrame.cpp:113 src/MainFrame.cpp:144
+msgid "Zoom In"
+msgstr "Zoom"
+
+#: src/MainFrame.cpp:113 src/MainFrame.cpp:144
+msgid "Make the grid cells bigger"
+msgstr "Agrandit la grille"
+
+#: src/MainFrame.cpp:114 src/MainFrame.cpp:145
+msgid "Zoom Out"
+msgstr "Dézoom"
+
+#: src/MainFrame.cpp:114 src/MainFrame.cpp:145
+msgid "Make the grid cells smaller"
+msgstr "Diminue la grille"
+
+#: src/MainFrame.cpp:117
+msgid "S&can"
+msgstr "S&can"
+
+#: src/MainFrame.cpp:117 src/MainFrame.cpp:142 src/MainFrame.cpp:422
+msgid "Scan World"
+msgstr "Scanner le monde"
+
+#: src/MainFrame.cpp:121
+msgid "&?"
+msgstr "&?"
+
+#: src/MainFrame.cpp:121
+msgid "Help on BackupAw"
+msgstr "Aide sur BackupAW"
+
+#: src/MainFrame.cpp:123
+msgid "&Forum"
+msgstr "&Forum"
+
+#: src/MainFrame.cpp:123
+msgid "Official forum for BackupAw"
+msgstr "Forum de Backup AW"
+
+#: src/MainFrame.cpp:124
+msgid "A&bout"
+msgstr "A Propos"
+
+#: src/MainFrame.cpp:124
+msgid "About the BackupAw"
+msgstr "A Propos de BackupAw"
+
+#: src/MainFrame.cpp:127
+msgid "&Project"
+msgstr "&Projet"
+
+#: src/MainFrame.cpp:128
+msgid "&Aw"
+msgstr "&AW"
+
+#: src/MainFrame.cpp:129
+msgid "&Grid"
+msgstr "&Grille"
+
+#: src/MainFrame.cpp:130
+msgid "&World"
+msgstr "&Monde"
+
+#: src/MainFrame.cpp:131
+msgid "&Help"
+msgstr "&Aide"
+
+#: src/MainFrame.cpp:137
+msgid "Open"
+msgstr "Ouvrir"
+
+#: src/MainFrame.cpp:137 src/MainFrame.cpp:458
+msgid "Open Project"
+msgstr "Ouvrir le projet"
+
+#: src/MainFrame.cpp:138
+msgid "Save"
+msgstr "Enregistrer"
+
+#: src/MainFrame.cpp:138 src/MainFrame.cpp:139 src/MainFrame.cpp:491
+msgid "Save Project"
+msgstr "Enregistrer le projet"
+
+#: src/MainFrame.cpp:139
+msgid "Save As"
+msgstr "Enregistrer sous"
+
+#: src/MainFrame.cpp:140
+msgid "deco"
+msgstr "déco"
+
+#: src/MainFrame.cpp:141
+msgid "Aw Setup"
+msgstr "Options AW"
+
+#: src/MainFrame.cpp:143 src/MainFrame.cpp:301
+msgid "Set Grid Origin"
+msgstr "Définir le centre de la grille"
+
+#: src/MainFrame.cpp:174
+msgid "The Program Can't continue : Please check the log"
+msgstr "Le programme ne peut plus continuer."
+
+#: src/MainFrame.cpp:175
+msgid "Error"
+msgstr "Erreur"
+
+#: src/MainFrame.cpp:193
+msgid "BackupAw Started."
+msgstr "BackupAw Démarré."
+
+#: src/MainFrame.cpp:239
+msgid " Stopped."
+msgstr " Stoppé."
+
+#: src/MainFrame.cpp:252
+msgid "Are you sure want abording attempts of reconnection?"
+msgstr "Veuillez confirmer l'annulation des éssais de reconnexion."
+
+#: src/MainFrame.cpp:259
+msgid "Abording Attempts of reconnections"
+msgstr "Annulation des essais de reconnexions."
+
+#: src/MainFrame.cpp:282
+msgid "Active Worlds Setting"
+msgstr "Paramètres AW"
+
+#: src/MainFrame.cpp:301
+msgid "Please Enter an AW Coord location :"
+msgstr "Veuillez entrer des coordonnées AW :"
+
+#: src/MainFrame.cpp:336
+msgid "About..."
+msgstr "A Propos..."
+
+#: src/MainFrame.cpp:356
+msgid "Disconnect"
+msgstr "Déconnexion"
+
+#: src/MainFrame.cpp:357
+msgid "AW Disconnection"
+msgstr "Déconnexion d'AW"
+
+#: src/MainFrame.cpp:427
+msgid "BackupAw : On "
+msgstr "BackupAw : Sur "
+
+#: src/MainFrame.cpp:434
+msgid "BackupAw : Disconnected"
+msgstr "BackupAw : Déconnecté"
+
+#: src/MainFrame.cpp:438
+#, c-format
+msgid "Total Objects : %d"
+msgstr "Total des objets : %d"
+
+#: src/MainFrame.cpp:461 src/MainFrame.cpp:494
+msgid "BackupAw Project (*.bap)|*.bap|All Files (*.*)|*.*"
+msgstr "Projet BackupAw (*.bap)|*.bap|Tous (*.*)|*.*"
+
+#: src/MainFrame.cpp:532
+msgid "Please Enter an AW Coord Relative :"
+msgstr "Veuillez entrer des coordonnées relatives:"
+
+#: src/MainFrame.cpp:532
+msgid "Set Relative Object Coord"
+msgstr "Définit les coordonnées relatives"
+
+#: src/MainFrame.cpp:538
+msgid "Set Relative Coord to "
+msgstr "Définition des coordonées relatives à "
+
+#: src/MapCanvas.cpp:204
+#, c-format
+msgid ":Nb of Obj=%d in project"
+msgstr ":Nb des Obj=%d dans le projet"
+
+#: src/MapCanvas.cpp:205
+#, c-format
+msgid ":Nb of Obj=%d"
+msgstr ":Nb des Obj=%d"
+
+#: src/OptionBox.cpp:66
+msgid "Citizen :"
+msgstr "Citoyen :"
+
+#: src/OptionBox.cpp:68
+msgid "PassWord :"
+msgstr "Mot de Passe:"
+
+#: src/OptionBox.cpp:71
+msgid "Universe :"
+msgstr "Univers :"
+
+#: src/OptionBox.cpp:73
+msgid "Port :"
+msgstr "Port :"
+
+#: src/OptionBox.cpp:77
+msgid "Bot Name :"
+msgstr "Nom du Bot :"
+
+#: src/OptionBox.cpp:79
+msgid "World :"
+msgstr "Monde :"
+
+#: src/OptionBox.cpp:82
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/OptionBox.cpp:83
+msgid "OK"
+msgstr "OK"
+
+#: src/OptionBox.cpp:84
+msgid "Auto connection on startup"
+msgstr "Connexion Auto au démarrage"
+
+#: src/OptionBox.cpp:87
+msgid "Reconnection Delay (sec) :"
+msgstr "Délai de reconnexion (sec) :"
+
+#: src/OptionBox.cpp:90
+msgid "Number of attempts :"
+msgstr "Nombres d'éssais"
+
+#: src/ToolBook.cpp:64
+msgid "Filters"
+msgstr "Filtres"
+
+#: src/ToolBook.cpp:65
+msgid "Modify"
+msgstr "Modifier"
+
+#~ msgid " by "
+#~ msgstr " par "
