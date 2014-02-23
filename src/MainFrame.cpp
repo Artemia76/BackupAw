@@ -315,14 +315,14 @@ void CMainFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 
 void CMainFrame::OnHelp(wxCommandEvent& WXUNUSED(event))
 {
-	::wxLaunchDefaultBrowser (_T("http://www.symerion.fr/backupaw/"));
+	::wxLaunchDefaultBrowser (BackupAW_Help);
 }
 
 //------------------------------------------------------------------------------
 
 void CMainFrame::OnForum(wxCommandEvent& WXUNUSED(event))
 {
-	::wxLaunchDefaultBrowser (_T("http://www.symerion.fr/forum/"));
+	::wxLaunchDefaultBrowser (BackupAW_Forum);
 }
 
 
@@ -506,22 +506,14 @@ void	CMainFrame::OnSaveAs (wxCommandEvent& WXUNUSED(event))
 
 void	CMainFrame::OnZoomIn (wxCommandEvent& WXUNUSED(event))
 {
-	if (MapCanvas->Cell < 16)
-	{
-		MapCanvas->Cell++;
-		MapCanvas->Refresh();
-	}
+	MapCanvas->ZoomIn();
 }
 
 //------------------------------------------------------------------------------
 
 void	CMainFrame::OnZoomOut (wxCommandEvent& WXUNUSED(event))
 {
-	if (MapCanvas->Cell > 4)
-	{
-		MapCanvas->Cell--;
-		MapCanvas->Refresh();
-	}
+	MapCanvas->ZoomOut();
 }
 
 //------------------------------------------------------------------------------

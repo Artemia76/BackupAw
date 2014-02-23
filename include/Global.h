@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2005-2007 Neophile                                            *
 // *   Creation          : 08/11/2005                                          *
-// *   Last Modification : 10/07/2007                                          *
-// *   Revision          : B                                                   *
+// *   Last Modification : 23/02/2014                                          *
+// *   Revision          : C                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -39,6 +39,7 @@
 #include <wx/wxprec.h>
 #include <wx/stdpaths.h>
 #include <wx/filename.h>
+#include <wx/version.h> 
 #include <aw.h>
 
 static const wxString CGRevision = _T("BackupAw V1.5.2");
@@ -67,9 +68,14 @@ static const  int NbLigneMax = 150;
 
 static const  wxString CGLicence = CGVersion
 +   _T("\nThis software is under GPL v2")
-+	_T("\nThird Part License Terms\n\n")
++	_T("\nBuild with ") + wxVERSION_STRING
++	_T("\n\nThird Part License Terms:\n")
 +	_T("BACKUPAW use the (c)Activeworlds SDK published for devellopers, then this software depend of the AW terms in the \"AW_SDK_License_(aw.dll).rtf\" file.")
 ;
+
+static wxString BackupAW_Website = _T("https://sourceforge.net/projects/backupaw/");
+static wxString BackupAW_Forum = _T("https://sourceforge.net/p/backupaw/discussion/?source=navbar");
+static wxString BackupAW_Help = _T("https://sourceforge.net/p/backupaw/wiki/Home/");
 
 static wxString ConfPath;
 

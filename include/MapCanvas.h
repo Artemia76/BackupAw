@@ -82,6 +82,8 @@ class CMapCanvas: public wxWindow, public COutils
     	size_t		NbObjMax;
     	CFilter*	Filter;
     	bool		MapChange;
+		void		ZoomIn ();
+		void		ZoomOut ();
 	protected:
 		void		OnPaint (wxPaintEvent& event);
 		void		OnSize (wxSizeEvent& event);
@@ -91,6 +93,8 @@ class CMapCanvas: public wxWindow, public COutils
 		void		OnLClickDown (wxMouseEvent& event);
 		void		OnLClickUp (wxMouseEvent& event);
 		void		OnEnter (wxMouseEvent& event);
+		void		OnLeave (wxMouseEvent& event);
+		void		OnWheel (wxMouseEvent& event);
 		DECLARE_EVENT_TABLE()
 };
 

@@ -22,9 +22,9 @@
 // *****************************************************************************
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
-// *   Creation          : 28/07/2006                                          *
+// *   Creation          : 23/02/2014                                          *
 // *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -138,7 +138,7 @@ AboutBox::~AboutBox ()
 
 void AboutBox::On_lien_site (wxCommandEvent& WXUNUSED(event))
 {
-	::wxLaunchDefaultBrowser (_T("http://www.symerion.fr/"));
+	::wxLaunchDefaultBrowser (BackupAW_Website);
 }
 
 //------------------------------------------------------------------------------

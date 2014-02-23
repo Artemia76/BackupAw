@@ -1,22 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "backupaw", "backupaw.vcxproj", "{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
-		Release_sdk41|Win32 = Release_sdk41|Win32
-		Release_sdk84|Win32 = Release_sdk84|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug|Win32.Build.0 = Debug|Win32
-		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk41|Win32.ActiveCfg = Release_sdk41|Win32
-		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk41|Win32.Build.0 = Release_sdk41|Win32
-		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk84|Win32.ActiveCfg = Release_sdk100|Win32
-		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk84|Win32.Build.0 = Release_sdk100|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release|Win32.ActiveCfg = Release_sdk100|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release|Win32.Build.0 = Release_sdk100|Win32
 	EndGlobalSection

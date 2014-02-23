@@ -43,6 +43,8 @@ BEGIN_EVENT_TABLE(CMapCanvas, wxWindow)
     EVT_LEFT_DOWN	(CMapCanvas::OnLClickDown)
     EVT_LEFT_UP		(CMapCanvas::OnLClickUp)
 	EVT_ENTER_WINDOW(CMapCanvas::OnEnter)
+	EVT_LEAVE_WINDOW(CMapCanvas::OnLeave)
+	EVT_MOUSEWHEEL	(CMapCanvas::OnWheel)
 END_EVENT_TABLE()
 
 //-----------------------------------------------------------------------------
@@ -232,6 +234,7 @@ void CMapCanvas::OnMouseMove(wxMouseEvent &event)
 		wxCommandEvent event=0;
 		Filter->OnUpdate (event);
 	}
+	event.Skip();
 }
 
 //-----------------------------------------------------------------------------
@@ -246,11 +249,12 @@ void CMapCanvas::OnMClickDown (wxMouseEvent& event)
     AOrigX = OrigX;
     AOrigY = OrigY;
 	CatchGrid = true;
+	event.Skip();
 }
 
 //-----------------------------------------------------------------------------
 
-void CMapCanvas::OnLClickDown (wxMouseEvent& WXUNUSED(event))
+void CMapCanvas::OnLClickDown (wxMouseEvent& event)
 {
     wxClientDC dc(this);
     if (CatchGrid || BlockSelect) return;
@@ -266,31 +270,52 @@ void CMapCanvas::OnLClickDown (wxMouseEvent& WXUNUSED(event))
 		Filter->OnUpdate (event);
 	}
 	SelectGrid = true;
+	event.Skip();
 }
 
 //-----------------------------------------------------------------------------
 
-void CMapCanvas::OnMClickUp (wxMouseEvent& WXUNUSED(event))
+void CMapCanvas::OnMClickUp (wxMouseEvent& event)
 {
 	CatchGrid = false;
 	MapChange = true;
-
+	event.Skip();
 }
 
 //-----------------------------------------------------------------------------
 
-void CMapCanvas::OnLClickUp (wxMouseEvent& WXUNUSED(event))
+void CMapCanvas::OnLClickUp (wxMouseEvent& event)
 {
 	SelectGrid = false;
+	event.Skip();
+}
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnWheel (wxMouseEvent& event)
+{
+	if (event.GetWheelRotation() > 0) ZoomIn ();
+	else ZoomOut ();
 }
 
 //-----------------------------------------------------------------------------
 
 void CMapCanvas::OnEnter (wxMouseEvent& event)
 {
+	this->SetFocus();
 	if (CatchGrid && (!event.MiddleIsDown ())) CatchGrid = false;
 	if (SelectGrid && (!event.LeftIsDown ())) SelectGrid = false;
+	event.Skip();
 }
+
+//-----------------------------------------------------------------------------
+
+void CMapCanvas::OnLeave (wxMouseEvent& event)
+{
+	owner->SetFocus();
+	event.Skip();
+}
+
 
 //-----------------------------------------------------------------------------
 
@@ -338,4 +363,26 @@ wxColour CMapCanvas::GetLevel (size_t Indice, size_t Sel)
 		B=255-B;
 	}
 	return wxColour (R,V,B);
+}
+
+//------------------------------------------------------------------------------
+
+void	CMapCanvas::ZoomIn ()
+{
+	if (Cell < 16)
+	{
+		Cell++;
+		Refresh();
+	}
+}
+
+//------------------------------------------------------------------------------
+
+void	CMapCanvas::ZoomOut ()
+{
+	if (Cell > 4)
+	{
+		Cell--;
+		Refresh();
+	}
 }
