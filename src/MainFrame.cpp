@@ -196,7 +196,7 @@ CMainFrame::CMainFrame
 		y = pConfig->Read(_T("/Fenetre/priny"), 50),
 		w = pConfig->Read(_T("/Fenetre/prinw"), 665),
 		h = pConfig->Read(_T("/Fenetre/prinh"), 660);
-    if ((x<1) || (x<1))
+    if ((x<1) || (y<1))
     {
         x=50;
         y=50;
