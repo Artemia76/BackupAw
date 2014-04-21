@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -36,18 +36,32 @@
 #endif
 #include <wx/wxprec.h>
 
-#include "CtrlLog.h"
-#include "CtrlLog.h"
+#include "CBackupCtrl.h"
 #include "CtrlCell.h"
 #include "CFilter.h"
 #include "COutils.h"
 
 class CMapCanvas: public wxWindow, public COutils
 {
+	public:
+    				CMapCanvas( wxFrame *parent);
+		void		DrawDefault(wxDC& dc);
+    	wxCoord		Cell;
+    	wxCoord		CellPtX;
+    	wxCoord		CellPtY;
+    	size_t		NbObjMax;
+    	CFilter*	Filter;
+    	bool		MapChange;
+
+
+		void		ZoomIn ();
+		void		ZoomOut ();
+
 	private:
 		wxFrame*	owner;
 		CCtrlCell*	CtrlCell;
-		CCtrlLog*	Logger;
+		CBackupCtrl* BackupCtrl;
+
 		int			Tampon [200][200];
 		int			Sel [200][200];
 		wxCoord		NbCellx;
@@ -69,22 +83,9 @@ class CMapCanvas: public wxWindow, public COutils
         int			Larg;
         int			Haut;
         wxColour	GetLevel (size_t Indice=0, size_t Sel=0);
-	public:
-    				CMapCanvas( wxFrame *parent);
-		void		DrawDefault(wxDC& dc);
-		int			OrigX;
-		int			OrigY;
-		bool		BlockScroll;
-		bool		BlockSelect;
-    	wxCoord		Cell;
-    	wxCoord		CellPtX;
-    	wxCoord		CellPtY;
-    	size_t		NbObjMax;
-    	CFilter*	Filter;
-    	bool		MapChange;
-		void		ZoomIn ();
-		void		ZoomOut ();
+
 	protected:
+
 		void		OnPaint (wxPaintEvent& event);
 		void		OnSize (wxSizeEvent& event);
 		void		OnMouseMove (wxMouseEvent& event);
@@ -95,7 +96,7 @@ class CMapCanvas: public wxWindow, public COutils
 		void		OnEnter (wxMouseEvent& event);
 		void		OnLeave (wxMouseEvent& event);
 		void		OnWheel (wxMouseEvent& event);
-		DECLARE_EVENT_TABLE()
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif

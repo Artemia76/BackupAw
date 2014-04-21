@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006-2007 Neophile                                            *
 // *   Creation          : 30/07/2006                                          *
-// *   Last Modification : 07/10/2007                                          *
-// *   Revision          : B                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : C                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -74,7 +74,6 @@ CCtrlCell::CCtrlCell ()
 	RegioW=0;
 	RegioS=0;
 	RegioE=0;
-	Logger=CCtrlLog::Create ();
 	FileName=_T("");
 	RelX=0;
 	RelZ=0;
@@ -90,25 +89,25 @@ CCtrlCell::~CCtrlCell ()
 
 void CCtrlCell::DelGrid ()
 {
-	Cell.Clear();
+	Cell.clear();
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlCell::DelSel ()
 {
-	Selection.Clear();
+	Selection.clear();
 }
 
 //------------------------------------------------------------------------------
 
 CellRes CCtrlCell::AddObj (CObject Obj)
 {
-	for (uint i=0; i < Cell.Count (); i++)
+	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
-		if ((Obj.Number==Cell[i].Number)&&(Obj.X==Cell[i].X)&&(Obj.Y==Cell[i].Y)) return CELL_OBJ_ALREADY_EXIST;
+		if ((Obj.Number==i->Number)&&(Obj.X==i->X)&&(Obj.Y==i->Y)) return CELL_OBJ_ALREADY_EXIST;
 	}
-	Cell.Add (Obj);
+	Cell.push_back(Obj);
 	return CELL_OK;
 }
 
@@ -116,8 +115,20 @@ CellRes CCtrlCell::AddObj (CObject Obj)
 
 CellRes	CCtrlCell::GetObj (CObject& Obj, size_t index)
 {
-	if (index >= Cell.Count()) return CELL_INDEX_TOO_BIG;
-	Obj = Cell [index];
+	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	{
+		if ((Obj.Number==i->Number)&&(Obj.X==i->X)&&(Obj.Y==i->Y)) return CELL_OBJ_ALREADY_EXIST;
+	}
+	Selection.push_back(Obj);
+	return CELL_OK;
+}
+
+//------------------------------------------------------------------------------
+
+CellRes CCtrlCell::UpdateObj (CObject Obj, size_t index)
+{
+	if (index >= GetNbObj()) return CELL_INDEX_TOO_BIG;
+	Cell [index] = Obj;
 	return CELL_OK;
 }
 
@@ -125,7 +136,7 @@ CellRes	CCtrlCell::GetObj (CObject& Obj, size_t index)
 
 CellRes	CCtrlCell::GetObjSel (CObject& Obj, size_t index)
 {
-	if (index >= Selection.Count()) return CELL_INDEX_TOO_BIG;
+	if (index >= GetNbSel()) return CELL_INDEX_TOO_BIG;
 	Obj = Selection [index];
 	return CELL_OK;
 }
@@ -136,10 +147,10 @@ size_t CCtrlCell::GetNbObj (int x, int y)
 {
 	size_t cnt=0;
 	double X,Y;
-	for (size_t i=0; i < Cell.Count(); i++)
+	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
-		X=Cell[i].X/1000;
-		Y=Cell[i].Z/1000;
+		X=i->X/1000;
+		Y=i->Z/1000;
 		if (((int) (floor (X)) == x ) && ((int) (floor (Y)) == y)) cnt++;
 	}
 	return cnt;
@@ -149,22 +160,22 @@ size_t CCtrlCell::GetNbObj (int x, int y)
 
 size_t CCtrlCell::GetNbObj ()
 {
-	return Cell.Count ();
+	return (Cell.end()-Cell.begin());
 }
 
 //------------------------------------------------------------------------------
 
 size_t CCtrlCell::GetNbSel ()
 {
-	return Selection.Count ();
+	return (Selection.end()-Selection.begin());
 }
 
 //------------------------------------------------------------------------------
 
 CellRes	CCtrlCell::DelObj ( size_t index)
 {
-	if (index >= Cell.Count()) return CELL_INDEX_TOO_BIG;
-	Cell.RemoveAt (index);
+	if (index >= GetNbObj()) return CELL_INDEX_TOO_BIG;
+	Cell.erase (Cell.begin() + index);
 	return CELL_OK;
 }
 
@@ -172,8 +183,8 @@ CellRes	CCtrlCell::DelObj ( size_t index)
 
 CellRes	CCtrlCell::DelObjSel ( size_t index)
 {
-	if (index >= Selection.Count()) return CELL_INDEX_TOO_BIG;
-	Selection.RemoveAt (index);
+	if (index >= GetNbSel ()) return CELL_INDEX_TOO_BIG;
+	Selection.erase (Selection.begin() + index);
 	return CELL_OK;
 }
 
@@ -181,7 +192,7 @@ CellRes	CCtrlCell::DelObjSel ( size_t index)
 
 CellRes CCtrlCell::ChangeObj (const CObject& Obj,size_t index)
 {
-	if (index >= Cell.Count()) return CELL_INDEX_TOO_BIG;
+	if (index >= GetNbObj()) return CELL_INDEX_TOO_BIG;
 	Cell[index]=Obj;
 	return CELL_OK;
 }
@@ -190,11 +201,11 @@ CellRes CCtrlCell::ChangeObj (const CObject& Obj,size_t index)
 
 CellRes CCtrlCell::FindObjNum (size_t& index, int ObjNum)
 {
-	for (uint i=0; i<Cell.Count() ; i++)
+	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
-		if (Cell[i].Number==ObjNum)
+		if (i->Number==ObjNum)
 		{
-			index=i;
+			index=i-Cell.begin();
 			return CELL_OK;
 		}
 	}
@@ -205,44 +216,44 @@ CellRes CCtrlCell::FindObjNum (size_t& index, int ObjNum)
 
 CellRes CCtrlCell::SortObj ()
 {
-	Selection.Clear();
+	Selection.clear();
 	bool FM,FD,FA,FC,FR;
 	double x,y;
 	int X,Z;
 	wxString s;
-	for (uint i=0; i<Cell.Count(); i++)
+	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
 		FC=false;
 		FM=false;
 		FD=false;
 		FA=false;
 		FR=false;
-		x=Cell[i].X;
-		y=Cell[i].Z;
+		x=i->X;
+		y=i->Z;
 		X=(int)floor(x/1000);
 		Z=(int)floor(y/1000);
 		if (CitFilt)
 		{
-			s.Printf(_T("%d"),Cell[i].Owner);
+			s.Printf(_T("%d"),i->Owner);
 			if (CitList==s) FC=true;
 			if (CitExcl) FC=!FC;
 		}
 
 		if (ModelFilt)
 		{
-			if (Cell[i].Model==ModelName) FM=true;
+			if (i->Model==ModelName) FM=true;
 			if (ModelExcl) FM=!FM;
 		}
 		if (DescrFilt)
 		{
-			if (DescrMatch) FD=Cell[i].Description==DescrName;
-			else FD=Cell[i].Description.Contains(DescrName);
+			if (DescrMatch) FD=i->Description==DescrName;
+			else FD=i->Description.Contains(DescrName);
 			if (DescrExcl) FD=!FD;
 		}
 		if (ActionFilt)
 		{
-			if (ActionMatch) FA=Cell[i].Action==ActionName;
-			else FA=Cell[i].Action.Contains(ActionName);
+			if (ActionMatch) FA=i->Action==ActionName;
+			else FA=i->Action.Contains(ActionName);
 			if (ActionExcl) FA=!FA;
 		}
 		if (RegioFilt)
@@ -268,7 +279,7 @@ CellRes CCtrlCell::SortObj ()
 					((!RegioFilt) || FR)
 				)
 			{
-				Selection.Add (Cell[i]);
+				Selection.push_back (*i);
 			}
 		}
 	}
@@ -282,10 +293,10 @@ CellRes	CCtrlCell::Update (int* Buffer, int XMax,int YMax,int w, int h)
 	int X,Z;
 	int* Pt=0;
 	double x,y;
-	for (uint i=0; i < Cell.Count(); i++)
+	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
-		x=Cell[i].X;
-		y=Cell[i].Z;
+		x=i->X;
+		y=i->Z;
 		X=(int)floor(x/1000);
 		Z=(int)floor(y/1000);
 		if ( (X <= XMax) && (X > (XMax-w)) && (Z <=YMax) && (Z > (YMax-h)))
@@ -304,10 +315,10 @@ CellRes	CCtrlCell::UpdateSel (int* Buffer, int XMax,int YMax,int w, int h)
 	int X,Z;
 	int* Pt=0;
 	double x,y;
-	for (uint i=0; i < Selection.Count(); i++)
+	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
-		x=Selection[i].X;
-		y=Selection[i].Z;
+		x=i->X;
+		y=i->Z;
 		X=(int)floor(x/1000);
 		Z=(int)floor(y/1000);
 		if ( (X <= XMax) && (X > (XMax-w)) && (Z <=YMax) && (Z > (YMax-h)))
@@ -328,8 +339,51 @@ CellRes CCtrlCell::LoadSel ()
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
 	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T(""), FileName);
-	wxConfigBase::Set(pConfig);
-	Selection.Clear ();
+	Selection.clear ();
+	pConfig->Read(_T("General/NbObj"), &NbObj, 0);
+	pConfig->Read(_T("General/RelX"), &RelX, 0);
+	pConfig->Read(_T("General/RelZ"), &RelZ, 0);
+	pConfig->Read(_T("General/RelY"), &RelY, 0);
+	pConfig->Read(_T("General/RelYAW"), &RelYaw, 0);
+
+	for (int i=0; i < NbObj; i++)
+	{
+		s.Printf (_T("Objet%d/"),i);
+		pConfig->Read(s+_T("Number"),&Obj.Number,0);
+		pConfig->Read(s+_T("Owner"),&Obj.Owner,0);
+		pConfig->Read(s+_T("BTime"),&Obj.BuildTime,0);
+		pConfig->Read(s+_T("X"),&Obj.X,0);
+		pConfig->Read(s+_T("Y"),&Obj.Y,0);
+		pConfig->Read(s+_T("Z"),&Obj.Z,0);
+		pConfig->Read(s+_T("Yaw"),&Obj.Yaw,0);
+		pConfig->Read(s+_T("Tilt"),&Obj.Tilt,0);
+		pConfig->Read(s+_T("Roll"),&Obj.Roll,0);
+		pConfig->Read(s+_T("Model"),&Obj.Model,_T(""));
+		pConfig->Read(s+_T("Descr"),&Obj.Description,_T(""));
+		pConfig->Read(s+_T("Action"),&Obj.Action,_T(""));
+#if AW_BUILD>41
+        pConfig->Read(s+_T("ID"),&Obj.ID,0);
+		pConfig->Read(s+_T("Type"),&Obj.Type,0);
+		if (Obj.Type>1)
+		{
+			pConfig->Read(s+_T("Data"),&Obj.DataV4,_T(""));
+		}
+#endif
+		Selection.push_back (Obj);
+	}
+	return CELL_OK;
+}
+
+//------------------------------------------------------------------------------
+
+CellRes CCtrlCell::LoadGrid ()
+{
+	wxString s;
+	int NbObj;
+	CObject Obj;
+	if (FileName==_T("")) return CELL_BAD_FILENAME;
+	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T(""), FileName);
+	Cell.clear ();
 	pConfig->Read(_T("General/NbObj"), &NbObj, 0);
 	for (int i=0; i < NbObj; i++)
 	{
@@ -346,16 +400,17 @@ CellRes CCtrlCell::LoadSel ()
 		pConfig->Read(s+_T("Model"),&Obj.Model,_T(""));
 		pConfig->Read(s+_T("Descr"),&Obj.Description,_T(""));
 		pConfig->Read(s+_T("Action"),&Obj.Action,_T(""));
-		#if AW_BUILD>41
+#if AW_BUILD>41
         pConfig->Read(s+_T("ID"),&Obj.ID,0);
-		pConfig->Read(s+_T("Type"),&Obj.Obj_Type,0);
-		if (Obj.Obj_Type>1)
+		pConfig->Read(s+_T("Type"),&Obj.Type,0);
+		if (Obj.Type>1)
 		{
 			pConfig->Read(s+_T("Data"),&Obj.DataV4,_T(""));
 		}
-		#endif
-		Selection.Add (Obj);
+#endif
+		Cell.push_back(Obj);
 	}
+	delete pConfig;
 	return CELL_OK;
 }
 
@@ -368,34 +423,36 @@ CellRes CCtrlCell::SaveSel ()
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
 	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T("") , FileName);
-	wxConfigBase::Set(pConfig);
-	NbObj=Selection.Count();
+	NbObj=GetNbSel();
 	pConfig->DeleteAll ();
 	pConfig->Write(_T("General/NbObj"), NbObj);
-	for (int i=0; i < NbObj; i++)
+	pConfig->Write(_T("General/RelX"), RelX);
+	pConfig->Write(_T("General/RelZ"), RelZ);
+	pConfig->Write(_T("General/RelY"), RelY);
+	pConfig->Write(_T("General/RelYAW"), RelYaw);
+	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
-		Obj=Selection.Item (i);
-		s.Printf (_T("Objet%d/"),i);
-		pConfig->Write(s+_T("Number"),Obj.Number);
-		pConfig->Write(s+_T("Owner"),Obj.Owner);
-		pConfig->Write(s+_T("BTime"),Obj.BuildTime);
-		pConfig->Write(s+_T("X"),(Obj.X - RelX));
-		pConfig->Write(s+_T("Y"),Obj.Y);
-		pConfig->Write(s+_T("Z"),(Obj.Z - RelZ));
-		pConfig->Write(s+_T("Yaw"),Obj.Yaw);
-		pConfig->Write(s+_T("Tilt"),Obj.Tilt);
-		pConfig->Write(s+_T("Roll"),Obj.Roll);
-		pConfig->Write(s+_T("Model"),Obj.Model);
-		pConfig->Write(s+_T("Descr"),Obj.Description);
-		pConfig->Write(s+_T("Action"),Obj.Action);
-		#if AW_BUILD>41
-        pConfig->Write(s+_T("ID"),Obj.ID);
-		if (Obj.Obj_Type>1)
+		s.Printf (_T("Objet%d/"),i-Selection.begin());
+		pConfig->Write(s+_T("Number"),i->Number);
+		pConfig->Write(s+_T("Owner"),i->Owner);
+		pConfig->Write(s+_T("BTime"),i->BuildTime);
+		pConfig->Write(s+_T("X"),(i->X - RelX));
+		pConfig->Write(s+_T("Y"),(i->Y - RelY));
+		pConfig->Write(s+_T("Z"),(i->Z - RelZ));
+		pConfig->Write(s+_T("Yaw"),i->Yaw);
+		pConfig->Write(s+_T("Tilt"),i->Tilt);
+		pConfig->Write(s+_T("Roll"),i->Roll);
+		pConfig->Write(s+_T("Model"),i->Model);
+		pConfig->Write(s+_T("Descr"),i->Description);
+		pConfig->Write(s+_T("Action"),i->Action);
+#if AW_BUILD>41
+        pConfig->Write(s+_T("ID"),i->ID);
+		if (i->Type>1)
 		{
-			pConfig->Write(s+_T("Type"),Obj.Obj_Type);
-			pConfig->Write(s+_T("Data"),Obj.DataV4);
+			pConfig->Write(s+_T("Type"),i->Type);
+			pConfig->Write(s+_T("Data"),i->DataV4);
 		}
-		#endif
+#endif
 	}
 	pConfig->Flush();
 	return CELL_OK;
@@ -403,14 +460,59 @@ CellRes CCtrlCell::SaveSel ()
 
 //------------------------------------------------------------------------------
 
+CellRes CCtrlCell::SaveGrid ()
+{
+	wxString s;
+	int NbObj=0;
+	CObject Obj;
+	if (FileName==_T("")) return CELL_BAD_FILENAME;
+	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T("") , FileName);
+	pConfig->DeleteAll ();
+	pConfig->Write(_T("General/NbObj"), GetNbObj());
+	pConfig->Write(_T("General/RelX"), RelX);
+	pConfig->Write(_T("General/RelZ"), RelZ);
+	pConfig->Write(_T("General/RelY"), RelY);
+	pConfig->Write(_T("General/RelYAW"), RelYaw);
+	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	{
+		s.Printf (_T("Objet%d/"),i-Cell.begin());
+		pConfig->Write(s+_T("Number"),i->Number);
+		pConfig->Write(s+_T("Owner"),i->Owner);
+		pConfig->Write(s+_T("BTime"),i->BuildTime);
+		pConfig->Write(s+_T("X"),i->X);
+		pConfig->Write(s+_T("Y"),i->Y);
+		pConfig->Write(s+_T("Z"),i->Z);
+		pConfig->Write(s+_T("Yaw"),i->Yaw);
+		pConfig->Write(s+_T("Tilt"),i->Tilt);
+		pConfig->Write(s+_T("Roll"),i->Roll);
+		pConfig->Write(s+_T("Model"),i->Model);
+		pConfig->Write(s+_T("Descr"),i->Description);
+		pConfig->Write(s+_T("Action"),i->Action);
+#if AW_BUILD>41
+        pConfig->Write(s+_T("ID"),i->ID);
+		if (i->Type>1)
+		{
+			pConfig->Write(s+_T("Type"),i->Type);
+			pConfig->Write(s+_T("Data"),i->DataV4);
+		}
+#endif
+	}
+	pConfig->Flush();
+	delete pConfig;
+	return CELL_OK;
+}
+
+
+//------------------------------------------------------------------------------
+
 CellRes CCtrlCell::ChgeCitSel (int CitSrc, int CitDest)
 {
 	CellRes Result=CELL_CIT_NOT_FOUND;
-	for (size_t i=0; i < Selection.Count (); i++)
+	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
-		if ((Selection[i].Owner == CitSrc) || (CitSrc<0))
+		if ((i->Owner == CitSrc) || (CitSrc<0))
 		{
-			if (Selection[i].Owner != CitDest) Selection[i].Owner =CitDest;
+			if (i->Owner != CitDest) i->Owner =CitDest;
 			Result=CELL_OK;
 		}
 	}
@@ -428,9 +530,9 @@ CellRes CCtrlCell::GetCitSel (wxTextCtrl* TxtZone)
 	int rc;
 	long Lon;
 	int Nombre;
-	for (size_t i=0; i < Selection.Count (); i++)
+	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
-		s.Printf(_T("%d"), Selection[i].Owner);
+		s.Printf(_T("%d"), i->Owner);
 		rc=Liste.Index (s, false);
 		if (rc < 0)
 		{
@@ -444,9 +546,9 @@ CellRes CCtrlCell::GetCitSel (wxTextCtrl* TxtZone)
 			Nombre=0;
 			Liste[i].ToLong(&Lon);
 			rc=(int)Lon;
-			for (size_t j=0; j<Selection.Count (); j++)
+			for (wxVector<CObject>::iterator j = Selection.begin(); j < Selection.end (); j++)
 			{
-				if (Selection[j].Owner==rc) Nombre ++;
+				if (j->Owner==rc) Nombre ++;
 			}
 			s.Printf(_T("%d"),Nombre);
 			TxtZone->AppendText (Liste [i]+_T("\t:")+s+_(" Object(s)\n"));
@@ -463,11 +565,11 @@ CellRes CCtrlCell::GetCitSel (wxTextCtrl* TxtZone)
 
 CellRes CCtrlCell::MoveSel (int x, int y, int a)
 {
-	for (size_t i=0; i<Selection.Count (); i++)
+	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
-		Selection[i].X+=x;
-		Selection[i].Z+=y;
-		Selection[i].Y+=a;
+		i->X+=x;
+		i->Z+=y;
+		i->Y+=a;
 	}
 	return CELL_OK;
 }
@@ -476,15 +578,15 @@ CellRes CCtrlCell::MoveSel (int x, int y, int a)
 
 CellRes CCtrlCell::RotateSel (int x, int y, int alpha)
 {
-    double XO,YO,XA,YA,ALPHA,BETA,R;
+     double XO,YO,XA,YA,ALPHA,BETA,R;
     XO=(double)y;
     YO=(double)x;
     wxString s;
     ALPHA=(double)(alpha*(3.1415/180));
-	for (size_t i=0; i<Selection.Count (); i++)
+	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
-		XA=(double)Selection[i].Z;
-		YA=(double)Selection[i].X;
+		XA=(double)i->Z;
+		YA=(double)i->X;
 		R=sqrt( pow((XA-XO),2)+pow((YA-YO),2));
 		BETA= atan2 ((YA-YO),(XA-XO));
 		/*if (i==0)
@@ -492,9 +594,9 @@ CellRes CCtrlCell::RotateSel (int x, int y, int alpha)
 		    s.Printf("Valeur du rayon : %f, XO=%f, Y0=%f,XA=%f,YA=%f,BETA=%f",R,XO,YO,XA,YA,BETA);
 		    Logger->Log( s ,"BLACK");
 		}*/
-		Selection[i].Yaw-=(alpha*10);
-		Selection[i].Z = (int)(XO+(R * cos(BETA-ALPHA)));
-		Selection[i].X = (int)(YO+(R * sin(BETA-ALPHA)));
+		i->Yaw-=(alpha*10);
+		i->Z = (int)(XO+(R * cos(BETA-ALPHA)));
+		i->X = (int)(YO+(R * sin(BETA-ALPHA)));
 	}
 	return CELL_OK;
 }

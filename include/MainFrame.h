@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006-2007 Neophile                                            *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification : 07/10/2007                                          *
-// *   Revision          : B                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : C                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -39,12 +39,12 @@
     #include <wx/wx.h>
 #endif
 #include <wx/wxprec.h>
-#include <wx/fileconf.h>
+#include <wx/config.h>
 #include <wx/toolbar.h>
 
+#include "CBackupCtrl.h"
 #include "MapCanvas.h"
 #include "ToolBook.h"
-#include "CtrlLog.h"
 #include "Ctrlaw.h"
 #include "CBot.h"
 #include "OptionBox.h"
@@ -73,19 +73,22 @@ enum MF_COMMANDS
 
 class CMainFrame : public wxFrame, public COutils
 {
+	public:
+								CMainFrame (wxLocale& locale);
+		virtual					~CMainFrame ();
+
 	private:
-		DECLARE_EVENT_TABLE()
 		wxTextCtrl*				LogZone;
 		wxBoxSizer* 			SizerPrin;
 		wxBoxSizer* 			SizerSec;
-		CCtrlLog*				Logger;
 		CMapCanvas*				MapCanvas;
 		CToolBook*				Tools;
-		wxFileConfig* 			pConfig;
+		wxConfigBase* 			pConfig;
 		wxToolBar*				ToolBar;
         wxTimer*                TUpdate;
 		bool					AConnect;
 		CCtrlAw*				CtrlAw;
+		CBackupCtrl*			BackupCtrl;
 		CBot*					Bot;
 		CCtrlCell*				Cell;
 		int						CntEarth;
@@ -93,9 +96,7 @@ class CMainFrame : public wxFrame, public COutils
 		int						Cnt;
 		bool					CntSens;
 		wxLocale&				m_locale;
-	public:
-								CMainFrame (wxLocale& locale,wxFileConfig* fConfig);
-		virtual					~CMainFrame ();
+
 	protected:
 
 		void				OnNew (wxCommandEvent& event);
@@ -114,6 +115,8 @@ class CMainFrame : public wxFrame, public COutils
 		void				OnZoomOut (wxCommandEvent& event);
 		void				OnZoomIn (wxCommandEvent& event);
 		void				OnSetRelative (wxCommandEvent& event);
+		void				OnCloseWindow (wxCloseEvent& event);
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif

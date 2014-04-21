@@ -23,7 +23,7 @@
 // *                                                                           *
 // *   CopyRight 2005-2007 Neophile                                            *
 // *   Creation          : 15/05/2005                                          *
-// *   Last Modification : 07/10/2007                                          *
+// *   Last Modification : 20/04/2014                                          *
 // *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
@@ -36,140 +36,84 @@
 #endif
 
 #include <wx/wxprec.h>
-#include <wx/fileconf.h>
+#include <wx/config.h>
 
-#include "CtrlLog.h"
 #include "Cpasspriv.h"
-#include "MapCanvas.h"
-#include "CtrlCell.h"
 #include "COutils.h"
 
 enum
 {
-	CG_RECO=10300,
-	OBJ_TIME
+	CG_RECO=wxID_HIGHEST
 };
 
 class CBot : public wxEvtHandler, public COutils
 {
-	protected:
-// ---------------
-// POINTEURS PRIVES
-// ---------------
-
-		CPassPriv*		PassPriv;
-		wxTimer*		CGRecoTimer;
-		wxTimer*		ObjectTimer;
-		CCtrlCell*		Cell;
-		void*			Instance;
-
-// -----------------
-// VARIABLES PRIVEES
-// -----------------
-
-// Booléen
-
-		bool			On_Universe;		// Etat de la connection univers
-		bool			On_World;			// Etat de la connection au monde
-		bool			Visible;			// Etat de la visibilité
-		bool			Scanning;
-		bool			Survey;
-		size_t			DelEC;
-		size_t			BuildEC;
-
-// Entiers
-
-		int				sequence[5][5];
-		int				CellX;
-		int				CellZ;
-		int				CellMax;
-// Couleur
-
-// ----------------
-// METHODES PRIVEES
-// ----------------
-
-		void			OnCGRecoEvent	(wxTimerEvent  & event);
-		void			OnObjTimer		(wxTimerEvent  & event);
-
 	public:
 
-// -----------------
-// POINTEURS PUBLICS
-// -----------------
+	friend class CCtrlAw;
 
-		CCtrlLog*		Logger;		// Pointeur du Logger
-		wxFileConfig*	pConfig;
-		CMapCanvas*		Map;
+		bool				Global;			// Mode Global
+		bool				CGConAuto;
+		bool				CGRecoEna;
+		int					CGRecoDelay;	// Temps de Reconnection sur AW
+		int					CGRecoRetry;	// Nombres d'essais sur AW
+		int					Citoyen;		// Numéro du citoyen
+		int					Port;			// Port de l'univers
+		int					CGRecoCnt;			// Compteur de tentative de reconnections AW
+		int					CGRetente;
+		bool				ModeReco;
 
-// -----------------
-// VARIABLES PUBLICS
-// -----------------
-		bool			Global;			// Mode Global
-		bool			CGConAuto;
-		bool			CGRecoEna;
-		bool			PerteUniv;
-		bool			PerteMonde;
-		bool			DemCon;
-		bool			ConEC;
-		bool			EntEC;
-		bool			DemDeco;
-		bool			ModeReco;
-		bool			CTBuild;
-		bool			Deleting;
-		bool			Building;
+		wxString			Monde;			// Nom du Monde
+		wxString			Nom;			// Nom du Bot
+		wxString			PassWord;		// Mot de Passe Citoyen
+		wxString			Univers;		// Adresse de l'univers
 
-		int				CGRecoDelay;	// Temps de Reconnection sur AW
-		int				CGRecoRetry;	// Nombres d'essais sur AW
-		int				Citoyen;		// Numéro du citoyen
-		int				Port;			// Port de l'univers
-		int				CGRecoCnt;			// Compteur de tentative de reconnections AW
-		int				CGRetente;
+		void				Connection	(bool);	// Connection/Deconnection de l'univers
+		void				Enter		();	// Entrer/Sortir du monde
+		void				Connect		();
+		void				Deconnect	();
+virtual	void				Update		();
+		void				Login_CB	(int rc);
+		void				Enter_CB	(int rc);
+		void				World_Attribute ();
+		void				StartDelete	();
+		void				StartBuild	();
+		void				Tentative	();
 
-		wxString		Monde;			// Nom du Monde
-		wxString		Nom;			// Nom du Bot
-		wxString		PassWord;		// Mot de Passe Citoyen
-		wxString		Univers;		// Adresse de l'univers
+		bool				IsOnUniverse();
+		bool				IsOnWorld	();
+virtual	void				Sauve		();
+virtual	void				Charge		();
+		bool				SetInstance			();
+		void*				GetInstance			();
 
-// ----------------
-// METHODES PUBLICS
-// ----------------
+static	wxString			GetRCString			(int); // Traduction littérale du reason code
 
-// Constructeur et Destructeur
-						CBot ();
-						~CBot();
+	protected:
+							CBot ();		// Constructeur
+							~CBot();		// Destructeur
+		wxTimer*			CGRecoTimer;
 
-// Entiers
 
-		void			Connection	(bool);	// Connection/Deconnection de l'univers
-		void			Enter		();	// Entrer/Sortir du monde
-		void			Connect		();
-		void			Deconnect	();
-		void			Scan		();
-		bool			IsScanning	();
-		bool			IsSurvey	();
-virtual	void			Update		();
-		void			Login_CB	(int rc);
-		void			Enter_CB	(int rc);
-		void			Query_CB	(int rc);
-		void			Object_CB	(int rc);
-		void			Cell_Begin	();
-		void			Cell_Object ();
-		void			Object_Add	();
-		void			Object_Delete ();
-		void			World_Attribute ();
-		void			StartDelete	();
-		void			StartBuild	();
-		void			Tentative	();
+		void				OnCGRecoEvent	(wxTimerEvent  & event);
 
-		bool			IsOnUniverse();
-		bool			IsOnWorld	();
-virtual	void			Sauve		();
-virtual	void			Charge		();
+		// Table d'Evenements
+		wxDECLARE_EVENT_TABLE();
+	private:
 
-// Tzble d'Evenements
+		wxConfigBase*		pConfig;
 
-		DECLARE_EVENT_TABLE()
+		bool				PerteUniv;
+		bool				PerteMonde;
+		bool				DemCon;
+		bool				ConEC;
+		bool				EntEC;
+		bool				On_Universe;		// Etat de la connection univers
+		bool				On_World;			// Etat de la connection au monde
+		bool				DemDeco;
+		bool				Visible;			// Etat de la visibilité
+		CPassPriv*			PassPriv;
+		void*				Instance;
 };
 
 #endif

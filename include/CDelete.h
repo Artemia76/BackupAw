@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 09/08/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -37,12 +37,11 @@
 
 #include <wx/wxprec.h>
 #include "CtrlCell.h"
-#include "MapCanvas.h"
-#include "CBot.h"
+#include "CBackupCtrl.h"
 
 enum
 {
-	CD_DELETE = 15250
+	CD_DELETE = wxID_HIGHEST
 };
 
 class CDelete : public wxPanel
@@ -50,8 +49,7 @@ class CDelete : public wxPanel
 	public:
 							CDelete (wxWindow* Parent);
 							~CDelete ();
-		CMapCanvas*			Map;
-		CBot*				Bot;
+		CBackupCtrl*		BackupCtrl;
 	private:
 		CCtrlCell*			Cell;
 		wxWindow*			Owner;
@@ -60,7 +58,7 @@ class CDelete : public wxPanel
 		wxButton*			item2;
 
 		void				OnDelete (wxCommandEvent& event);
-		DECLARE_EVENT_TABLE()
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif

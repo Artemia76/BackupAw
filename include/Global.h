@@ -42,7 +42,7 @@
 #include <wx/version.h> 
 #include <aw.h>
 
-static const wxString CGRevision = _T("BackupAw V1.5.4");
+static const wxString CGRevision = _T("BackupAw V1.6.0");
 
 #if AW_BUILD<77
 static const wxString CGVersion = CGRevision + _T(" For AW 3.6");

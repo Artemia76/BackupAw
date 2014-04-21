@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 12/08/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -39,12 +39,11 @@
 #include <wx/spinctrl.h>
 
 #include "CtrlCell.h"
-#include "MapCanvas.h"
 #include "COutils.h"
 
 enum
 {
-	CM_CHANGE_CIT = 17250,
+	CM_CHANGE_CIT = wxID_HIGHEST,
 	CM_MOVE,
 	CM_ROTATE
 };
@@ -52,12 +51,12 @@ enum
 
 class CModify : public wxPanel , public COutils
 {
-	public:
+public:
 							CModify (wxWindow* Parent);
 							~CModify ();
-		CMapCanvas*			Map;
+		wxWindow*			Map;
 		void				MAJ ();
-	private:
+private:
 		CCtrlCell*			Cell;
 		wxWindow*			Owner;
 		wxBoxSizer*			item0;
@@ -95,11 +94,12 @@ class CModify : public wxPanel , public COutils
 		wxBoxSizer*			item29;
 		wxButton*			item30;
 
+protected:
 		void				OnChange (wxCommandEvent& event);
 		void				OnMove (wxCommandEvent& event);
 		void				OnRotate (wxCommandEvent& event);
 
-		DECLARE_EVENT_TABLE()
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif

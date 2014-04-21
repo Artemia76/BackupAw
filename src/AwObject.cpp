@@ -23,17 +23,12 @@
 // *                                                                           *
 // *   CopyRight 2006-2007 Neophile                                            *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification : 07/10/2007                                          *
-// *   Revision          : C                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : D                                                   *
 // *                                                                           *
 // *****************************************************************************
 
 #include "AwObject.h"
-
-#include <wx/arrimpl.cpp>
-
-WX_DEFINE_OBJARRAY(AObject);
-
 CObject::CObject
 	(
 		int Obj_Numb,
@@ -48,11 +43,11 @@ CObject::CObject
 		wxString Obj_Model,
 		wxString Obj_Descr,
 		wxString Obj_Action
-        #if AW_BUILD>76
-		,int ObjType,
+#if AW_BUILD>76
+		,int Type,
 		wxString Dat,
 		int id
-		#endif
+#endif
 	)
 {
 	Number=Obj_Numb;
@@ -67,11 +62,32 @@ CObject::CObject
 	Model=Obj_Model;
 	Description=Obj_Descr;
 	Action=Obj_Action;
-	#if AW_BUILD>76
-	Obj_Type=ObjType;
+#if AW_BUILD>76
+	Type=Type;
 	DataV4=Dat;
 	ID=id;
-	#endif
+#endif
+}
+
+CObject::CObject (const CObject& Obj)
+{
+	Number=Obj.Number;
+	Owner=Obj.Owner;
+	BuildTime=Obj.BuildTime;
+	X=Obj.X;
+	Y=Obj.Y;
+	Z=Obj.Z;
+	Yaw=Obj.Yaw;
+	Tilt=Obj.Tilt;
+	Roll=Obj.Roll;
+	Model=Obj.Model;
+	Description=Obj.Description;
+	Action=Obj.Action;
+#if AW_BUILD>76
+	Type=Obj.Type;
+	DataV4=Obj.DataV4;
+	ID=Obj.ID;
+#endif
 }
 
 CObject::~CObject()

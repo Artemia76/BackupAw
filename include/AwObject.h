@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006-2007 Neophile                                            *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification : 07/10/2007                                          *
-// *   Revision          : C                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : D                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -36,8 +36,6 @@
 #endif
 
 #include <wx/wxprec.h>
-
-#include <wx/dynarray.h>
 
 #include <aw.h>
 
@@ -58,12 +56,13 @@ class CObject
 						wxString Obj_Model=_T(""),
 						wxString Obj_Descr=_T(""),
 						wxString Obj_Action=_T("")
-                        #if AW_BUILD>76
-						,int ObjType=0,
+#if AW_BUILD>76
+						,int Type=0,
 						wxString Dat=_T(""),
 						int id=0
-						#endif
+#endif
 					);
+				CObject (const CObject& Obj);
 				~CObject ();
 
 		int			Number;
@@ -75,17 +74,15 @@ class CObject
 		int			Yaw;
 		int			Tilt;
 		int			Roll;
-        #if AW_BUILD>76
-		int			Obj_Type;
+#if AW_BUILD>76
+		int			Type;
 		wxString	DataV4;
         int			ID;
-        #endif
+#endif
 		wxString	Model;
 		wxString	Description;
 		wxString	Action;
 };
-
-WX_DECLARE_OBJARRAY(CObject, AObject);
 
 #endif
 

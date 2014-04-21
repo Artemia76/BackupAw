@@ -1,7 +1,7 @@
 // *****************************************************************************
 // *                                                                           *
-// *                         BACKUPAW : CtrlLog.h                              *
-// *              Controller for logging message and SDK errors                *
+// *                       BACKUPAW : CBackupCtrl.h                            *
+// *                  The Grid Canvas to display project                       *
 // *                                                                           *
 // *****************************************************************************
 // * This file is part of BackupAw.                                            *
@@ -21,42 +21,80 @@
 // *                                                                           *
 // *****************************************************************************
 // *                                                                           *
-// *   CopyRight 2005 Neophile                                                 *
-// *   Creation          : 29/04/2005                                          *
+// *   CopyRight 2014 Neophile                                                 *
+// *   Creation          : 21/04/2014                                          *
 // *   Last Modification :                                                     *
 // *   Revision          : A                                                   *
 // *                                                                           *
 // *****************************************************************************
 
-#ifndef CTRLLOG_H
-#define CTRLLOG_H
+#ifndef BACKUPCTRL_H
+#define BACKUPCTRL_H
 
-
-#ifndef  WX_PRECOMP
-	#include <wx/wx.h>
+#ifndef WX_PRECOMP
+    #include "wx/wx.h"
 #endif
-
 #include <wx/wxprec.h>
-#include <wx/datetime.h>
+#include <wx/config.h>
 
-class CCtrlLog
+#include "CtrlAw.h"
+#include "CtrlCell.h"
+
+enum
 {
-    private:
-static	CCtrlLog*	PtCtrlLog;
-        			CCtrlLog	(wxTextCtrl*);
-        			~CCtrlLog	();
-        wxWindow*	Parent;
-        bool		Init;
-        wxDateTime	Horloge;
-		wxTextCtrl*	FenLog;
+	OBJ_TIME = wxID_HIGHEST
+};
 
-	public:
-static	CCtrlLog*	Create(wxTextCtrl* LogZone=0);
-static	void		Kill();
-        int			Log 	(wxString Message=_T(""),wxColour Coul=_T("BLACK"), bool date = false, int Reason=0);
-        wxString	RC		(int); // Traduction littérale du reason code
-        void		SetLogZone (wxTextCtrl* LogZone=0);
+class CBackupCtrl: public wxEvtHandler, public COutils, public CAwListenner
+{
+public:
+static	CBackupCtrl*	Create ();
+static	void			Kill ();
+		void			Scan		();
+		bool			IsScanning	();
+		bool			IsSurvey	();
+		void			Reset ();
+		void			StartDelete	();
+		void			StartBuild	();
+
+		bool			CTBuild;
+		bool			Deleting;
+		bool			Building;
+		bool			BlockScroll;
+		bool			BlockSelect;
+		int				OrigX;
+		int				OrigY;
+		wxWindow*		Map;
+
+private:
+static	CBackupCtrl*	PtCBackupCtrl;
+	
+						CBackupCtrl();
+						~CBackupCtrl();
+		void			Query_CB	(int rc, CBot* Bot);
+		void			Object_CB	(int rc, CBot* Bot);
+		void			Cell_Begin	(CBot* Bot);
+		void			Cell_Object (CBot* Bot);
+		void			Object_Delete (CBot* Bot);
+
+		wxTimer*		ObjectTimer;
+		wxConfigBase*	pConfig;
+		CCtrlCell*		Cell;
+		int			CellX;
+		int			CellZ;
+
+protected:
+		bool			Scanning;
+		bool			Survey;
+		size_t			DelEC;
+		size_t			BuildEC;
+		int				sequence[5][5];
+
+		bool			Event (AW_EVENT_ATTRIBUTE id, CBot* Bot);
+		bool			CallBack (AW_CALLBACK id, int rc, CBot* Bot);
+
+		void			OnObjTimer		(wxTimerEvent  & event);
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif
-

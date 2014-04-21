@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -40,6 +40,7 @@
 #endif
 #include <wx/notebook.h>
 
+#include "CBackupCtrl.h"
 #include "CFilter.h"
 #include "CDelete.h"
 #include "CBuild.h"
@@ -47,23 +48,25 @@
 
 enum
 {
-	TB_PAGE_CHANGE=17500
+	TB_PAGE_CHANGE=wxID_HIGHEST
 };
 
 class CToolBook: public wxScrolledWindow
 {
-	private:
+private:
 		wxWindow*	owner;
 		wxBoxSizer*	SizerPrin;
 		wxNotebook* Tools;
-		void		OnPageChange (wxNotebookEvent& event);
-		DECLARE_EVENT_TABLE()
-	public:
+		CBackupCtrl* BackupCtrl;
+public:
 		CFilter*	Filter;
 		CDelete*	Delete;
 		CBuild*		Build;
 		CModify*	Modify;
    					CToolBook( wxWindow *parent );
+protected:
+		void		OnPageChange (wxNotebookEvent& event);
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif

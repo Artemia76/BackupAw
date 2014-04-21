@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 29/07/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -36,9 +36,9 @@
 #endif
 
 #include <wx/wxprec.h>
+#include <wx/vector.h>
 
 #include "AwObject.h"
-#include "CtrlLog.h"
 
 typedef enum
 {
@@ -71,8 +71,11 @@ static	void				Kill ();
 		void				DelGrid ();
 		void				DelSel ();
 		CellRes				AddObj (CObject Obj);
+		CellRes				AddObjSel (CObject Obj);
 		CellRes				GetObj (CObject& Obj, size_t index=0);
+		CellRes				UpdateObj (CObject Obj, size_t index=0);
 		CellRes				GetObjSel (CObject& Obj, size_t index=0);
+		CellRes				UpdateObjSel (CObject Obj, size_t index=0);
 		size_t				GetNbObj (int x, int y);
 		size_t				GetNbObj ();
 		size_t				GetNbSel ();
@@ -84,7 +87,9 @@ static	void				Kill ();
 		CellRes				FindObjNum (size_t& index, int ObjNum=0);
 		CellRes				SortObj ();
 		CellRes				LoadSel ();
+		CellRes				LoadGrid ();
 		CellRes				SaveSel ();
+		CellRes				SaveGrid ();
 		CellRes				ChgeCitSel (int CitSrc, int CitDest);
 		CellRes				GetCitSel (wxTextCtrl* TxtZone=0);
 		CellRes				MoveSel (int x=0, int y=0, int a=0);
@@ -112,6 +117,8 @@ static	void				Kill ();
 		wxString			FileName;
 		int					RelX;
 		int					RelZ;
+		int					RelY;
+		int					RelYaw;
 
 	private:
 
@@ -119,9 +126,8 @@ static	CCtrlCell*			PtCCtrlCell;
 
 							CCtrlCell ();
 							~CCtrlCell ();
-		AObject				Cell;
-		AObject				Selection;
-		CCtrlLog*			Logger;
+		wxVector<CObject>	Cell;
+		wxVector<CObject>	Selection;
 };
 
 #endif

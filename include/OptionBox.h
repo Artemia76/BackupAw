@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -46,7 +46,7 @@ class COptDial : public wxDialog
 {
 	private:
 		CBot*			Bot;
-		wxFileConfig*	pConfig;
+		wxConfigBase*	pConfig;
 		wxBoxSizer*		item0;
 		wxBoxSizer*		item1;
 		wxStaticText*	item2;
@@ -77,7 +77,6 @@ class COptDial : public wxDialog
 						(
 							wxWindow *parent,
 							CBot* Robot,
-							wxFileConfig* fConfig,
 							const wxString &title,
 							const wxPoint &pos = wxDefaultPosition,
 							const wxSize &size = wxDefaultSize,
@@ -88,7 +87,7 @@ virtual	bool			Validate();
 
 	protected:
 		void			OnOk(wxCommandEvent & event);
-		DECLARE_EVENT_TABLE()
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif

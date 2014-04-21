@@ -23,16 +23,16 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 05/08/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
 #include "CFilter.h"
 
-BEGIN_EVENT_TABLE (CFilter, wxPanel)
+wxBEGIN_EVENT_TABLE (CFilter, wxPanel)
 	EVT_BUTTON		( CF_UPDATE, CFilter::OnUpdate)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CFilter::CFilter(wxWindow* Parent) : wxPanel
 	(

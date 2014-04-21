@@ -27,8 +27,8 @@
 // *                                                                           *
 // *   CopyRight 2006-2008 Neophile                                            *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification : 08/03/2008                                          *
-// *   Revision          : B                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : C                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -73,12 +73,12 @@ class CMainApp : public wxApp
 	private:
 		wxFileConfig*		pConfig;
 	public:
-		virtual bool	OnInit ();
-		virtual int 	OnExit();
+		virtual bool		OnInit ();
+		virtual int			OnExit();
 	protected:
 		wxLocale			m_locale;
 };
 
-DECLARE_APP (CMainApp)
+wxDECLARE_APP (CMainApp);
 
 #endif

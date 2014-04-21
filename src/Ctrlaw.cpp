@@ -23,18 +23,28 @@
 // *                                                                           *
 // *   CopyRight 2005 Neophile                                                 *
 // *   Creation          : 22/04/2005                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 14/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
 #include "Ctrlaw.h"
 
-#include <aw.h>
 
-BEGIN_EVENT_TABLE(CCtrlAw, wxEvtHandler)
+CAwListenner::CAwListenner ()
+{
+	CtrlAw = CCtrlAw::Create ();
+	CtrlAw->AddListenner(this);
+}
+
+CAwListenner::~CAwListenner ()
+{
+	CtrlAw->DelListenner(this);
+}
+
+wxBEGIN_EVENT_TABLE(CCtrlAw, wxEvtHandler)
 	EVT_TIMER (HEARTBEAT, CCtrlAw::On_HeartBeat)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 //------------------------------------------------------------------------------
 // SingleTon Private pointer
@@ -43,23 +53,14 @@ CCtrlAw* CCtrlAw::PtCCtrlAw = 0;
 
 //------------------------------------------------------------------------------
 // Creator
-CCtrlAw* CCtrlAw::Create( wxFileConfig *fConfig, CMapCanvas* Carte)
+CCtrlAw* CCtrlAw::Create()
 {
 	if (!PtCCtrlAw)
 	{
-		PtCCtrlAw = new CCtrlAw(fConfig, Carte);
+		PtCCtrlAw = new CCtrlAw();
 	}
 	return PtCCtrlAw;
 }
-
-//------------------------------------------------------------------------------
-// Get Singleton pointer
-
-CCtrlAw* CCtrlAw::Get()
-{
-	return PtCCtrlAw;
-}
-
 
 //------------------------------------------------------------------------------
 // Singleton killer
@@ -73,13 +74,10 @@ void CCtrlAw::Kill()
 //------------------------------------------------------------------------------
 // Private Constructor
 
-CCtrlAw::CCtrlAw ( wxFileConfig *fConfig, CMapCanvas* Carte)
+CCtrlAw::CCtrlAw ()
 {
-	Bot=0;
-	Map=Carte;
 	AwInit=false;
-	Logger=CCtrlLog::Create();
-	pConfig=fConfig;
+	pConfig=wxConfigBase::Get();
 	Heart = new wxTimer (this, HEARTBEAT);
 }
 
@@ -95,20 +93,20 @@ CCtrlAw::~CCtrlAw()
 // bool flag = TRUE : Initialization
 //           = FALSE : Close SDK
 
-int CCtrlAw::Init (bool flag)
+int CCtrlAw::Init (bool flag, size_t NbBot)
 {
 	int rc;
+	if (NbBot<1) NbBot=1;
 	if ((flag) && (!AwInit))
 	{
-		Bot = new CBot;
 		if ((rc=aw_init (AW_BUILD)))
 		{
-			Logger->Log(_("Unable to init the SDK, Reason :"), _T("RED"), false, rc);
+			wxLogMessage(_("Unable to init the SDK, Reason :")+ CBot::GetRCString(rc));
 			return rc;
 		}
 		else
 		{
-			Logger->Log(_("SDK Initialized"), _T("BLUE"));
+			wxLogMessage(_("SDK Initialized"));
 		}
 		// Install AW Events
 		aw_event_set (AW_EVENT_WORLD_DISCONNECT, CCtrlAw::On_World_Disconnect);
@@ -123,79 +121,44 @@ int CCtrlAw::Init (bool flag)
 		aw_callback_set (AW_CALLBACK_QUERY, CCtrlAw::On_Query);
 		aw_callback_set (AW_CALLBACK_OBJECT_RESULT, CCtrlAw::On_Object);
 		AwInit=true;
-		Bot->pConfig=pConfig;
-		Bot->Map=Map;
-		Bot->Charge ();
-		if (Bot->CGConAuto)
+		for (size_t i=0 ; i<NbBot ; i++)
 		{
-			Bot->Global=true;
-			if (Bot->CGRecoEna)
+			Bot.push_back(new CBot());
+			Bot.back()->Charge ();
+			if (Bot.back()->CGConAuto)
 			{
-				Bot->CGRecoCnt=0;
-				Bot->CGRetente=Bot->CGRecoDelay;
-				Bot->ModeReco=true;
+				Bot.back()->Global=true;
+				if (Bot.back()->CGRecoEna)
+				{
+					Bot.back()->CGRecoCnt=0;
+					Bot.back()->CGRetente=Bot.back()->CGRecoDelay;
+					Bot.back()->ModeReco=true;
+				}
+				Bot.back()->Connect();
 			}
-			Bot->Connect();
 		}
 		Heart->Start(200);
 		return 0;
 	}
 	else if((!flag) && (AwInit))
 	{
-		if (Bot->IsOnWorld())
-		{
-			Bot->Connection(false);
-		}
 		Heart->Stop();
-		delete Bot;
+		for (wxVector<CBot*>::iterator i = Bot.begin() ; i < Bot.end(); i++)
+		{
+			if ( (*i)->SetInstance())
+			{
+				(*i)->Connection(false);
+			}
+			(*i)->Sauve();
+			delete (*i);
+		}
+		Bot.clear();
+		AwInit=false;
 		aw_term();
-		Logger->Log(_("SDK Stopped."), _T("BLUE"));
+		wxLogMessage(_("SDK Stopped."));
 		return 0;
 	}
 	return 1000;
-}
-
-//------------------------------------------------------------------------------
-// Static Members for AW events
-
-void CCtrlAw::On_Admin_Worlds_Delete(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Admin_Worlds_Info(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Avatar_Add(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Avatar_Change(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Avatar_Delete(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Avatar_Click(void)
-{
-
 }
 
 //------------------------------------------------------------------------------
@@ -203,146 +166,58 @@ void CCtrlAw::On_Avatar_Click(void)
 
 void CCtrlAw::On_Cell_Begin(void)
 {
-	CBot* Robot=PtCCtrlAw->Bot;
-	Robot->Cell_Begin ();
+	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
+	PtCCtrlAw->EventDispatch (AW_EVENT_CELL_BEGIN, Robot);
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlAw::On_Cell_End(void)
 {
-
+	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
+	PtCCtrlAw->EventDispatch (AW_EVENT_CELL_END, Robot);
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlAw::On_Cell_Object(void)
 {
-	CBot* Robot=PtCCtrlAw->Bot;
-	Robot->Cell_Object ();
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Chat(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Console_Message(void)
-{
-
+	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
+	PtCCtrlAw->EventDispatch (AW_EVENT_CELL_OBJECT, Robot);
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlAw::On_Object_Add(void)
 {
-	CBot* Robot=PtCCtrlAw->Bot;
-	Robot->Object_Add ();
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Object_Click(void)
-{
-
+	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
+	PtCCtrlAw->EventDispatch (AW_EVENT_OBJECT_ADD, Robot);
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlAw::On_Object_Delete(void)
 {
-	CBot* Robot=PtCCtrlAw->Bot;
-	Robot->Object_Delete ();
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Object_select(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Teleport(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Universe_Attributes(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Url(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_World_Attributes(void)
-{
-
+	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
+	PtCCtrlAw->EventDispatch (AW_EVENT_OBJECT_DELETE, Robot);
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlAw::On_World_Disconnect(void)
 {
-	CBot* Robot;
-	Robot=PtCCtrlAw->GetBot();
+	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	Robot->PerteMonde=true;
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_World_Info(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Terrain_Begin(void)
-{
-
-}
-
-void CCtrlAw::On_Terrain_Changed(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Terrain_Data(void)
-{
-
-}
-
-//------------------------------------------------------------------------------
-
-void CCtrlAw::On_Terrain_End(void)
-{
-
+	PtCCtrlAw->EventDispatch (AW_EVENT_WORLD_DISCONNECT, Robot);
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlAw::On_Universe_Disconnect(void)
 {
-	CBot* Robot;
-	Robot=PtCCtrlAw->GetBot();
+	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	Robot->PerteUniv=true;
+	PtCCtrlAw->EventDispatch (AW_EVENT_UNIVERSE_DISCONNECT, Robot);
 }
 
 //------------------------------------------------------------------------------
@@ -350,45 +225,55 @@ void CCtrlAw::On_Universe_Disconnect(void)
 
 void CCtrlAw::On_Login (int rc)
 {
-	CBot* Robot;
-	Robot=PtCCtrlAw->GetBot();
+	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	Robot->Login_CB(rc);
+	PtCCtrlAw->CallBackDispatch (AW_CALLBACK_LOGIN,rc,Robot);
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlAw::On_Enter (int rc)
 {
-	CBot* Robot;
-	Robot=PtCCtrlAw->GetBot();
+	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	Robot->Enter_CB(rc);
+	PtCCtrlAw->CallBackDispatch (AW_CALLBACK_ENTER,rc,Robot);
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlAw::On_Query (int rc)
 {
-	CBot* Robot;
-	Robot=PtCCtrlAw->GetBot();
-	Robot->Query_CB (rc);
+	PtCCtrlAw->CallBackDispatch (AW_CALLBACK_QUERY,rc,PtCCtrlAw->GetBotInst(aw_instance()));
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlAw::On_Object (int rc)
 {
-	CBot* Robot;
-	Robot=PtCCtrlAw->GetBot();
-	Robot->Object_CB (rc);
+	PtCCtrlAw->CallBackDispatch (AW_CALLBACK_OBJECT_RESULT, rc, PtCCtrlAw->GetBotInst(aw_instance()));
 }
 
 
 //------------------------------------------------------------------------------
-// Return Current Bot Pointer
 
-CBot* CCtrlAw::GetBot ()
+CBot* CCtrlAw::GetBot (unsigned int num)
 {
-	return Bot;
+	if ( (num >= Bot.size()) || (!AwInit) ) return 0;
+	return Bot[num];
+}
+
+//------------------------------------------------------------------------------
+
+CBot* CCtrlAw::GetBotInst(void* Instance)
+{
+	for (wxVector<CBot*>::iterator i = Bot.begin(); i< Bot.end(); i++)
+	{
+		if ((*i)->GetInstance()==Instance)
+		{
+			return (*i);
+		}
+	}
+	return 0;
 }
 
 //------------------------------------------------------------------------------
@@ -397,5 +282,59 @@ CBot* CCtrlAw::GetBot ()
 void CCtrlAw::On_HeartBeat (wxTimerEvent& WXUNUSED(event))
 {
 	aw_wait(0);
-	Bot->Update();
+	for (wxVector<CBot*>::iterator i = Bot.begin(); i< Bot.end(); i++)
+	{
+		(*i)->SetInstance();
+		(*i)->Update();
+	}
+}
+
+//------------------------------------------------------------------------------
+// Add a listenner to list
+
+void CCtrlAw::AddListenner (CAwListenner* pListenner)
+{
+	if (pListenner)
+	{
+		Listenners.push_back(pListenner);
+	}
+}
+
+//------------------------------------------------------------------------------
+// Del a listenner from list
+
+void CCtrlAw::DelListenner (CAwListenner* pListenner)
+{
+	if (pListenner)
+	{
+		for (wxVector<CAwListenner*>::iterator i = Listenners.begin(); i != Listenners.end();)
+		{
+			if ( *i == pListenner)
+			{
+				i = Listenners.erase(i);
+				break;
+			}
+			else ++i;
+		}
+	}
+}
+
+//------------------------------------------------------------------------------
+// Dispatch Event to suscribers
+void CCtrlAw::EventDispatch (AW_EVENT_ATTRIBUTE id, CBot* Bot)
+{
+	for (wxVector<CAwListenner*>::iterator i = Listenners.begin(); i != Listenners.end();i++)
+	{
+		(*i)->Event (id, Bot);
+	}
+}
+
+//------------------------------------------------------------------------------
+// Dispatch CallBacks to suscribers
+void CCtrlAw::CallBackDispatch (AW_CALLBACK id, int rc, CBot* Bot)
+{
+	for (wxVector<CAwListenner*>::iterator i = Listenners.begin(); i != Listenners.end();i++)
+	{
+		(*i)->CallBack (id,rc,Bot);
+	}
 }

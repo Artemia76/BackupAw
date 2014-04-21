@@ -23,16 +23,16 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
 #include "ToolBook.h"
 
-BEGIN_EVENT_TABLE (CToolBook, wxScrolledWindow)
+wxBEGIN_EVENT_TABLE (CToolBook, wxScrolledWindow)
 	EVT_NOTEBOOK_PAGE_CHANGED(TB_PAGE_CHANGE, CToolBook::OnPageChange)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CToolBook::CToolBook(wxWindow* parent): wxScrolledWindow
 	(
@@ -43,6 +43,7 @@ CToolBook::CToolBook(wxWindow* parent): wxScrolledWindow
         wxSUNKEN_BORDER| wxTAB_TRAVERSAL
 	)
 {
+
 	owner = parent;
 	SetScrollRate( 8, 8 );
     SetVirtualSize( 800, 800 );

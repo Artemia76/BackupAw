@@ -23,17 +23,19 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 10/08/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
 #include "CBuild.h"
 
-BEGIN_EVENT_TABLE (CBuild, wxPanel)
+#include <wx/config.h>
+
+wxBEGIN_EVENT_TABLE (CBuild, wxPanel)
 	EVT_CHECKBOX	( CB_CTBUILD, CBuild::OnChkCTBuild)
 	EVT_BUTTON		( CB_BUILD, CBuild::OnBuild)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CBuild::CBuild(wxWindow* Parent) : wxPanel
 	(
@@ -44,14 +46,12 @@ CBuild::CBuild(wxWindow* Parent) : wxPanel
 	)
 {
 	Owner = Parent;
-	Map = 0;
-	CtrlAw = CCtrlAw::Get();
-	Bot=CtrlAw->GetBot ();
+	BackupCtrl = CBackupCtrl::Create();
 	Cell = CCtrlCell::Create();
 	item1 = new wxStaticText( this, -1, _("Warning This function can build object."), wxDefaultPosition, wxSize(-1,40),0 );
 	item2 = new wxButton (this, CB_BUILD, _("Build"), wxDefaultPosition, wxDefaultSize, 0);
 	item3 = new wxCheckBox (this, CB_CTBUILD, _("Build as a CareTaker (Use many citizen Nb)"),wxDefaultPosition, wxSize(-1,40), 0);
-	item3->SetValue (Bot->CTBuild);
+	item3->SetValue (BackupCtrl->CTBuild);
 	item0 = new wxBoxSizer( wxVERTICAL );
 	item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 	item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
@@ -82,7 +82,7 @@ void CBuild::OnBuild (wxCommandEvent& WXUNUSED(event))
 	);
 	if (BoiteOuiNon.ShowModal()==wxID_YES)
 	{
-		Bot->StartBuild	();
+		BackupCtrl->StartBuild	();
 	}
 }
 
@@ -90,9 +90,7 @@ void CBuild::OnBuild (wxCommandEvent& WXUNUSED(event))
 
 void CBuild::OnChkCTBuild (wxCommandEvent& WXUNUSED(event))
 {
-	if (Bot)
-	{
-		Bot->CTBuild=item3->GetValue ();
-		Bot->Sauve();
-	}
+	BackupCtrl->CTBuild=item3->GetValue ();
+	wxConfigBase* pConfig = wxConfigBase::Get();
+	pConfig->Write(_T("Bot/BuildMode"), BackupCtrl->CTBuild);
 }

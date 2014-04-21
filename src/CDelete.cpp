@@ -23,16 +23,16 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 09/08/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
 #include "CDelete.h"
 
-BEGIN_EVENT_TABLE (CDelete, wxPanel)
+wxBEGIN_EVENT_TABLE (CDelete, wxPanel)
 	EVT_BUTTON ( CD_DELETE, CDelete::OnDelete)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CDelete::CDelete(wxWindow* Parent) : wxPanel
 	(
@@ -43,7 +43,7 @@ CDelete::CDelete(wxWindow* Parent) : wxPanel
 	)
 {
 	Owner = Parent;
-	Map = 0;
+	BackupCtrl = CBackupCtrl::Create();
 	Cell = CCtrlCell::Create();
 	item1 = new wxStaticText( this, -1, _("Warning This function can make irreversible destruction."), wxDefaultPosition, wxSize (-1,40),0 );
 	item2 = new wxButton (this, CD_DELETE, _("Delete"), wxDefaultPosition, wxDefaultSize, 0);
@@ -76,6 +76,6 @@ void CDelete::OnDelete (wxCommandEvent& WXUNUSED(event))
 	);
 	if (BoiteOuiNon.ShowModal()==wxID_YES)
 	{
-		Bot->StartDelete	();
+		BackupCtrl->StartDelete	();
 	}
 }

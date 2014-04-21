@@ -1,4 +1,4 @@
-// *****************************************************************************
+﻿// *****************************************************************************
 // *                                                                           *
 // *                           BACKUPAW : CBot.cpp                             *
 // *                       Represent An ActiveWorld Bot                        *
@@ -23,7 +23,7 @@
 // *                                                                           *
 // *   CopyRight 2005-2007 Neophile                                            *
 // *   Creation          : 15/05/2005                                          *
-// *   Last Modification : 07/10/2007                                          *
+// *   Last Modification : 20/04/2014                                          *
 // *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
@@ -38,22 +38,20 @@
 	#define AwDefaultPort 5670
 #endif
 
-// Event du Serveur Xelagot
+// Events
 
-BEGIN_EVENT_TABLE(CBot,wxEvtHandler)
+wxBEGIN_EVENT_TABLE(CBot,wxEvtHandler)
 	EVT_TIMER  (CG_RECO,	CBot::OnCGRecoEvent)
-	EVT_TIMER  (OBJ_TIME,	CBot::OnObjTimer)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 //------------------------------------------------------------------------------
 // Contructeur
 
 CBot::CBot ()
 {
-// D�claration des instances
+	pConfig = wxConfigBase::Get();
+// Déclaration des instances
 	CGRecoTimer = new wxTimer(this, CG_RECO);
-	ObjectTimer = new wxTimer(this, OBJ_TIME);
-	Logger = CCtrlLog::Create();
 	PassPriv = CPassPriv::Create();
 
 // Initialisation des variables internes
@@ -71,16 +69,7 @@ CBot::CBot ()
 	EntEC=false;
 	DemDeco=false;
 	ModeReco=false;
-	Map=0;
-	Scanning=false;
-	Survey=false;
-	Deleting=false;
-	Building=false;
-	BuildEC=0;
-	DelEC=0;
-	CellMax=0;
-	CTBuild=false;
-	Cell = CCtrlCell::Create();
+	Visible=false;
 }
 
 //------------------------------------------------------------------------------
@@ -100,7 +89,7 @@ void CBot::Connect()
 }
 
 //------------------------------------------------------------------------------
-// Methode de D�connection
+// Methode de Déconnection
 
 void CBot::Deconnect()
 {
@@ -108,7 +97,7 @@ void CBot::Deconnect()
 }
 
 //------------------------------------------------------------------------------
-// Methode d'entr�e/sortie d'univers
+// Methode d'entrée/sortie d'univers
 
 void CBot::Connection(bool flag)
 {
@@ -123,13 +112,13 @@ void CBot::Connection(bool flag)
         if ((rc=aw_create(Univers.mb_str(), Port, &Instance))!=0)
 #endif
 		{
-			Logger->Log(_("Unable to create instance, Reason : "), _T("RED"), false, rc);
+			wxLogMessage (_("Unable to create instance, Reason : ") + GetRCString(rc));
 			DemCon=false;
 			if (ModeReco) Tentative();
 		}
 		else
 		{
-			Logger->Log(_("Instance Initialized."), _T("BLUE"));
+			wxLogMessage (_("Instance Initialized."));
 			aw_int_set (AW_LOGIN_OWNER, Citoyen);
 #if AW_BUILD>77
             aw_string_set (AW_LOGIN_PRIVILEGE_PASSWORD,PassWord);
@@ -142,26 +131,16 @@ void CBot::Connection(bool flag)
 #endif
 			aw_login();
 			ConEC=true;
+			CGRecoTimer->Start(15000,wxTIMER_ONE_SHOT);
 		}
 	}
 	else
 	{
-		Scanning=false;
-		Cell->DelGrid ();
-		Map->BlockScroll=false;
-		Map->BlockSelect=false;
-		Survey=false;
-		Building=false;
-		Deleting =false;
-		Map->Refresh ();
-		CellMax=0;
 		aw_destroy();
 		Instance=0;
-		Logger->Log(_("Disconnected from Universe "),_T("BLUE"));
+		wxLogMessage (_("Disconnected from Universe "));
 		On_Universe=false;
 		On_World=false;
-		BuildEC=0;
-		DelEC=0;
 		DemDeco=false;
 	}
 }
@@ -172,22 +151,23 @@ void CBot::Connection(bool flag)
 void CBot::Login_CB(int rc)
 {
 	ConEC=false;
+	if (CGRecoTimer->IsRunning()) CGRecoTimer->Stop();
 	if (rc)
 	{
 		DemCon=false;
-		Logger->Log(_("Unable to join the universe, Reason :"), _T("RED"), false, rc);
+		wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(rc));
 		aw_destroy();
 		if (ModeReco) Tentative();
 	}
 	else
 	{
-		Logger->Log(_("Connected on Universe"), _T("BLUE"));
+		wxLogMessage (_("Connected on Universe"));
 		On_Universe=true;
 	}
 }
 
 //------------------------------------------------------------------------------
-// Retour Callback d'une demande d'entr�e sur un monde
+// Retour Callback d'une demande d'entrée sur un monde
 
 void CBot::Enter_CB(int rc)
 {
@@ -197,20 +177,15 @@ void CBot::Enter_CB(int rc)
 	if (rc)
 	{
 		DemCon=false;
-		Message.Append (_("Unable to connect on world "));
-		Message.Append (Monde);
-		Message.Append (_(",Reason: "));
-		Logger->Log(Message, _T("RED"), false, rc);
+		wxLogMessage (_("Unable to connect on world ") + Monde + _(",Reason: ") + GetRCString (rc));
+		aw_destroy();
 		On_World=false;
 		On_Universe=false;
-		aw_destroy();
 		if (ModeReco) Tentative();
 	}
 	else
 	{
-		Message.Append (_("Connected on world "));
-		Message.Append (Monde);
-		Logger->Log(Message, _T("BLUE"));
+		wxLogMessage (_("Connected on world ")+Monde);
 		On_World=true;
 		ModeReco=false;
 		if (Visible)
@@ -221,30 +196,7 @@ void CBot::Enter_CB(int rc)
 }
 
 //------------------------------------------------------------------------------
-// Retour Callback d'un query
-
-void CBot::Query_CB(int rc)
-{
-	if (rc)
-	{
-		Logger->Log(_("Unable to query properties. Reason :"), _T("RED"), false, rc);
-		Scanning=false;
-		Map->BlockScroll=false;
-	}
-	else
-	{
-		if (aw_bool(AW_QUERY_COMPLETE))
-		{
-			Scanning=false;
-			Map->BlockScroll=false;
-			Survey=true;
-		}
-		else aw_query_5x5 (aw_sector_from_cell (Map->OrigX), aw_sector_from_cell (Map->OrigY), sequence);
-	}
-}
-
-//------------------------------------------------------------------------------
-// Methode d'entr�e ou de sortie d'un monde
+// Methode d'entrée ou de sortie d'un monde
 
 void CBot::Enter()
 {
@@ -258,34 +210,28 @@ void CBot::Enter()
 }
 
 //------------------------------------------------------------------------------
-// Charge les Param�tres du bot
+// Charge les Paramètres du bot
 
 void CBot::Charge ()
 {
-	wxString ParcPath = ::wxGetCwd();
-	wxString s;
-	wxConfigBase::Set(pConfig);
 	Univers=pConfig->Read(_T("Bot/Univers") , _T("auth.activeworlds.com"));
 	Monde=pConfig->Read(_T("Bot/Monde") , _T(""));
 	Citoyen=pConfig->Read(_T("Bot/Citoyen") , 0l);
-	s=pConfig->Read(_T("Bot/PassPriv") , _T(""));
-	PassWord=PassPriv->Decode(s);
+	PassWord=PassPriv->Decode(pConfig->Read(_T("Bot/PassPriv"), _T("")));
 	Nom=pConfig->Read(_T("Bot/Nom") , _T("Bot"));
 	Port=pConfig->Read(_T("Bot/Port") , AwDefaultPort);
-	CGConAuto=pConfig->Read(_T("Bot/AutoConnect") , 0l);
+	pConfig->Read(_T("Bot/AutoConnect"), &CGConAuto, false);
 	CGRecoDelay=pConfig->Read(_T("Bot/Delai") , 15l);
 	CGRecoRetry=pConfig->Read(_T("Bot/Essais") , 3l);
 	if (CGRecoRetry != 0) CGRecoEna=true;
 	else CGRecoEna=false;
-	CTBuild=pConfig->Read(_T("Bot/BuildMode"), 1l);
 }
 
 //------------------------------------------------------------------------------
-// Sauvegarde les param�tres du bot
+// Sauvegarde les paramètres du bot
 
 void CBot::Sauve ()
 {
-	wxConfigBase::Set(pConfig);
 	pConfig->Write(_T("Bot/Univers") ,Univers);
 	pConfig->Write(_T("Bot/Monde") ,Monde);
 	pConfig->Write(_T("Bot/Citoyen") ,Citoyen);
@@ -295,16 +241,22 @@ void CBot::Sauve ()
 	pConfig->Write(_T("Bot/AutoConnect") , CGConAuto);
 	pConfig->Write(_T("Bot/Delai")  , CGRecoDelay);
 	pConfig->Write(_T("Bot/Essais") , CGRecoRetry);
-	pConfig->Write(_T("Bot/BuildMode"), CTBuild);
 	pConfig->Flush(true);
 }
 
 //------------------------------------------------------------------------------
-// M�thode de reconnection automatique du chat global
+// Méthode de reconnection automatique du chat global
 
 void CBot::OnCGRecoEvent (wxTimerEvent& WXUNUSED(event))
 {
-	Connect();
+	if (ConEC)
+	{
+		Login_CB(1000);
+	}
+	else
+	{
+		Connect();
+	}
 }
 
 //------------------------------------------------------------------------------
@@ -315,21 +267,20 @@ void CBot::Tentative ()
 	wxString Tampon;
 	if ((CGRecoCnt<CGRecoRetry) || (CGRecoRetry < 0))
 	{
-		Tampon.Printf(_("A reconnection will be tryed in %d sec."),CGRetente);
-		Logger->Log(Tampon,_T("RED"));
+		wxLogMessage(wxString::Format(_("A reconnection will be tryed in %i sec."),CGRetente));
 		CGRecoTimer->Start(CGRetente * 1000,wxTIMER_ONE_SHOT);
 		if (CGRecoRetry > (-1)) CGRecoCnt++;
 		if (CGRetente < 900) CGRetente = CGRetente * 2;
 	}
 	else
 	{
-		Logger->Log(_("End of attempts"),_T("RED"));
+		wxLogMessage("End of attempts");
 		ModeReco=false;
 	}
 }
 
 //------------------------------------------------------------------------------
-// Retourne l'�tat connection sur un monde
+// Retourne l'état connection sur un monde
 
 bool CBot::IsOnWorld()
 {
@@ -337,7 +288,7 @@ bool CBot::IsOnWorld()
 }
 
 //------------------------------------------------------------------------------
-// Retourne l'�tat connect� sur l'univers
+// Retourne l'état connecté sur l'univers
 
 bool CBot::IsOnUniverse()
 {
@@ -345,31 +296,38 @@ bool CBot::IsOnUniverse()
 }
 
 //------------------------------------------------------------------------------
-// Mises � jours p�riodiques
+// On Règle l'instance sur notre bot actuel
+
+bool CBot::SetInstance ()
+{
+	if (!Instance) return false;
+	aw_instance_set(Instance);
+	return true;
+}
+
+//------------------------------------------------------------------------------
+// On retourne l'instance du bot
+
+void* CBot::GetInstance ()
+{
+	return Instance;
+}
+
+
+//------------------------------------------------------------------------------
+// Mises à jours périodiques
 
 void CBot::Update ()
 {
 	wxString Message;
 	if (PerteUniv || PerteMonde)
 	{
-		if (PerteUniv) Message=_("Connection lost with universe ") + Univers + _T(".");
-		else Message=_("Connection lost with the world ") + Monde + _T(".");
-		Logger->Log(Message, _T("RED") );
+		if (PerteUniv) wxLogMessage(_("Connection lost with universe ") + Univers + _T("."));
+		else wxLogMessage(_("Connection lost with the world ") + Monde + _T("."));
 		PerteUniv=false;
 		PerteMonde=false;
 		On_Universe=false;
 		On_World=false;
-		Scanning=false;
-		Map->BlockScroll=false;
-		Map->BlockSelect=false;
-		Survey=false;
-		Building=false;
-		Deleting =false;
-		BuildEC=0;
-		DelEC=0;
-		Cell->DelGrid ();
-		CellMax=0;
-		Map->Refresh ();
 		aw_destroy();
 		Instance=0;
 		if (CGRecoEna)
@@ -380,248 +338,495 @@ void CBot::Update ()
 			ModeReco=true;
 		}
 	}
-	if (Map->MapChange && (!Scanning))
-	{
-		if (On_World && Survey) Scan ();
-		Map->MapChange=false;
-	}
 	if (DemCon && (!On_Universe) && (!ConEC)) Connection(true);
 	if (DemCon && On_Universe && (!On_World) && (!EntEC)) Enter();
 	if (DemDeco) Connection(false);
-	if (CGRecoTimer->IsRunning() && (!ModeReco)) CGRecoTimer->Stop();
+	if (CGRecoTimer->IsRunning() && (!ConEC) && (!ModeReco)) CGRecoTimer->Stop();
 }
 
-//------------------------------------------------------------------------------
 
-void CBot::Scan ()
+//------------------------------------------------------------------------------
+// Methode de Traduction du codes d'erreurs
+
+wxString CBot::GetRCString (int rc)
 {
-	if ((!Scanning)&&On_World)
+	wxString rcs;
+	switch (rc)
 	{
-		memset (sequence, 0, sizeof (sequence));
-		aw_query_5x5 (aw_sector_from_cell (Map->OrigX), aw_sector_from_cell (Map->OrigY), sequence);
-		Scanning=true;
-		Map->BlockScroll=true;
-	}
-}
-
-//------------------------------------------------------------------------------
-
-void CBot::Cell_Begin()
-{
-	int sector_x;
-	int sector_z;
-	int sectorxmax = 2 - aw_sector_from_cell (Map->OrigX);
-	int sectorzmax = 2 - aw_sector_from_cell (Map->OrigY);
-	CellX = aw_int (AW_CELL_X);
-	CellZ = aw_int (AW_CELL_Z);
-	sector_x = aw_sector_from_cell (CellX);
-	sector_z = aw_sector_from_cell (CellZ);
-	sequence[sectorzmax+sector_z][sectorxmax+sector_x] = aw_int (AW_CELL_SEQUENCE);
-}
-
-//------------------------------------------------------------------------------
-
-void CBot::Cell_Object ()
-{
-	CObject NObj;
-    #if AW_BUILD>41
-	unsigned char* DatPtr=0;
-	unsigned int DatLen=0;
-	#endif
-	NObj.Number = aw_int (AW_OBJECT_NUMBER);
-	NObj.X=aw_int (AW_OBJECT_X);
-	NObj.Y=aw_int (AW_OBJECT_Y);
-	NObj.Z=aw_int (AW_OBJECT_Z);
-	NObj.Yaw=aw_int (AW_OBJECT_YAW);
-	NObj.Roll=aw_int (AW_OBJECT_ROLL);
-	NObj.Tilt=aw_int (AW_OBJECT_TILT);
-	NObj.Owner=aw_int (AW_OBJECT_OWNER);
-	NObj.BuildTime=aw_int (AW_OBJECT_BUILD_TIMESTAMP);
-	#if AW_BUILD>77
-        NObj.Model= aw_string (AW_OBJECT_MODEL);
-        NObj.Description = aw_string (AW_OBJECT_DESCRIPTION);
-        NObj.Action = aw_string (AW_OBJECT_ACTION);
-	#else
-        NObj.Model= wxString::From8BitData(aw_string (AW_OBJECT_MODEL));
-        NObj.Description = 	wxString::From8BitData(aw_string (AW_OBJECT_DESCRIPTION));
-        NObj.Action = wxString::From8BitData(aw_string (AW_OBJECT_ACTION));
-	#endif
-
-    #if AW_BUILD>41
-	NObj.ID = aw_int (AW_OBJECT_ID);
-	NObj.Obj_Type = aw_int (AW_OBJECT_TYPE);
-	if (NObj.Obj_Type>1)
-	{
-		DatPtr = (unsigned char*) aw_data (AW_OBJECT_DATA, &DatLen);
-		NObj.DataV4 = BinToHex (DatPtr,DatLen);
-	}
-	#endif
-	Cell->AddObj (NObj);
-	Map->Refresh ();
-}
-
-//------------------------------------------------------------------------------
-
-bool CBot::IsScanning	()
-{
-	return Scanning;
-}
-
-//------------------------------------------------------------------------------
-
-void CBot::Object_Add()
-{
-	Cell_Object ();
-}
-
-//------------------------------------------------------------------------------
-
-void CBot::Object_Delete()
-{
-	if (Survey)
-	{
-		size_t Index;
-		if (Cell->FindObjNum (Index, aw_int (AW_OBJECT_NUMBER))==CELL_OK)
-		{
-			Cell->DelObj(Index);
-			Map->Refresh ();
-		}
-	}
-}
-
-//------------------------------------------------------------------------------
-
-void CBot::World_Attribute()
-{
-	CellMax=aw_int (AW_WORLD_CELL_LIMIT);
-}
-
-//------------------------------------------------------------------------------
-
-void CBot::Object_CB (int rc)
-{
-	if (BuildEC)
-	{
-		if (rc) Logger->Log (_("Unable to Build object. Reason : "),_T("RED"),false,rc);
-		BuildEC--;
-	}
-	else if (DelEC)
-	{
-		if (rc) Logger->Log (_("Unable to Delete object. Reason : "),_T("RED"),false,rc);
-		DelEC--;
-	}
-}
-
-//------------------------------------------------------------------------------
-
-void CBot::OnObjTimer (wxTimerEvent& WXUNUSED(event))
-{
-	size_t NbObj=10;
-	#if AW_BUILD>41
-    size_t LenDat=0;
-	unsigned char* DataV4=0;
-	#endif
-	CObject Obj;
-	if (!On_World) return;
-	if (Deleting)
-	{
-		if (Cell->GetNbSel() < NbObj) NbObj=Cell->GetNbSel();
-		for (size_t i=0; i < NbObj; i++)
-		{
-			Cell->GetObjSel(Obj,0);
-			aw_int_set (AW_OBJECT_NUMBER, Obj.Number);
-			aw_int_set (AW_OBJECT_X, Obj.X);
-			aw_int_set (AW_OBJECT_Z, Obj.Z);
-			aw_object_delete ();
-			Cell->DelObjSel(0);
-			DelEC++;
-		}
-		if (Cell->GetNbSel() >0) ObjectTimer->Start (1000,true);
-		else
-		{
-			Deleting=false;
-			Map->BlockSelect=false;
-			Logger->Log (_("End of deleting project.."), _T("BLUE"));
-		}
-		Map->Refresh ();
-		return;
-	}
-	if (Building)
-	{
-		if (Cell->GetNbSel() < NbObj) NbObj=Cell->GetNbSel();
-		for (size_t i=0; i < NbObj; i++)
-		{
-			Cell->GetObjSel(Obj,0);
-			aw_int_set (AW_OBJECT_X, Obj.X);
-			aw_int_set (AW_OBJECT_Y, Obj.Y);
-			aw_int_set (AW_OBJECT_Z, Obj.Z);
-			aw_int_set (AW_OBJECT_YAW, Obj.Yaw);
-			aw_int_set (AW_OBJECT_TILT, Obj.Tilt);
-			aw_int_set (AW_OBJECT_ROLL, Obj.Roll);
-            #if AW_BUILD>77
-                aw_string_set (AW_OBJECT_MODEL, Obj.Model);
-                aw_string_set (AW_OBJECT_DESCRIPTION, Obj.Description);
-                aw_string_set (AW_OBJECT_ACTION, Obj.Action);
-            #else
-                aw_string_set (AW_OBJECT_MODEL, Obj.Model.To8BitData());
-                aw_string_set (AW_OBJECT_DESCRIPTION, Obj.Description.To8BitData());
-                aw_string_set (AW_OBJECT_ACTION, Obj.Action.To8BitData());
-            #endif
-			aw_int_set (AW_OBJECT_OWNER, Obj.Owner);
-			aw_int_set (AW_OBJECT_BUILD_TIMESTAMP, Obj.BuildTime);
-            #if AW_BUILD>41
-			aw_int_set (AW_OBJECT_TYPE, Obj.Obj_Type);
-			if (Obj.Obj_Type>1)
-			{
-				LenDat = Obj.DataV4.Len()/2;
-				DataV4= new unsigned char[LenDat];
-				HexToBin(Obj.DataV4,DataV4);
-				aw_data_set (AW_OBJECT_DATA, (char*)DataV4,LenDat);
-				delete DataV4;
-			}
-			#endif
-			if (CTBuild)	aw_object_load ();
-			else if (Obj.Owner==Citoyen) aw_object_add ();
-			Cell->DelObjSel(0);
-			BuildEC++;
-		}
-		if (Cell->GetNbSel() >0) ObjectTimer->Start (1000,true);
-		else
-		{
-			Building=false;
-			Map->BlockSelect=false;
-			Logger->Log (_("End of building project.."), _T("BLUE"));
-		}
-		Map->Refresh ();
-		return;
-	}
-}
-
-//------------------------------------------------------------------------------
-
-void CBot::StartDelete ()
-{
-	if (Scanning || (!On_World) || Building) return;
-	Logger->Log (_("Start to deleting project.."), _T("BLUE"));
-	ObjectTimer->Start (1000,true);
-	Deleting=true;
-	Map->BlockSelect=true;
-}
-
-//------------------------------------------------------------------------------
-
-void CBot::StartBuild ()
-{
-	if (Scanning || (!On_World) || Deleting) return;
-	Logger->Log (_("Start to building project.."), _T("BLUE"));
-	ObjectTimer->Start (1000,true);
-	Building=true;
-	Map->BlockSelect=true;
-}
-
-//------------------------------------------------------------------------------
-
-bool CBot::IsSurvey()
-{
-	return Survey;
+		case 0 :
+			rcs=_T("");
+			break;
+		case 1 :
+			rcs=_("Citizen Ship Expired");
+			break;
+		case 2 :
+			rcs=_("Land Limit Exceeded");
+			break;
+		case 3 :
+			rcs=_("No Such Citizen");
+			break;
+		case 4 :
+			rcs=_("Message Length Bad");
+			break;
+		case 5 :
+			rcs=_("License Password Contains Space");
+			break;
+		case 6 :
+			rcs=_("License Password Too Long");
+			break;
+		case 7 :
+    	    rcs=_("License Password Too Short");
+    	    break;
+		case 8 :
+			rcs=_("License Range Too Large");
+			break;
+		case 9 :
+			rcs=_("License Range Too Small");
+			break;
+		case 10 :
+			rcs=_("License Users Too Large");
+			break;
+		case 11 :
+			rcs=_("License Users Too Small");
+			break;
+		case 12 :
+			rcs=_("License Contains Invalid Char");
+			break;
+		case 13 :
+			rcs=_("Invalid Password");
+			break;
+		case 14 :
+			rcs=_("Unable To Mail Back Number");
+			break;
+		case 15 :
+			rcs=_("License World Too Short");
+			break;
+		case 16 :
+			rcs=_("License World Too Long");
+			break;
+		case 17 :
+			rcs=_("Server Out Of Memory");
+			break;
+		case 20 :
+			rcs=_("Invalid World");
+			break;
+		case 21 :
+			rcs=_("Server Outdated");
+			break;
+		case 22 :
+			rcs=_("World Already Started");
+			break;
+		case 27 :
+			rcs=_("No Such World");
+			break;
+		case 31 :
+			rcs=_("Not Logged In");
+			break;
+		case 32 :
+			rcs=_("Unauthorized");
+			break;
+		case 33 :
+			rcs=_("World Already Exists");
+			break;
+		case 34 :
+			rcs=_("No Such License");
+			break;
+		case 39 :
+			rcs=_("Identity Already In Use");
+			break;
+		case 40 :
+			rcs=_("Unable To Report Location");
+			break;
+		case 41 :
+			rcs=_("Invalid Email");
+			break;
+		case 42 :
+			rcs=_("No Such Acting Citizen");
+			break;
+		case 43 :
+			rcs=_("Acting Password Invalid");
+			break;
+		case 45 :
+			rcs=_("Universe Full");
+			break;
+		case 46 :
+			rcs=_("Billing Timeout");
+			break;
+		case 47 :
+			rcs=_("Billing Recv Failed");
+			break;
+		case 48 :
+			rcs=_("Billing Response Invalid");
+			break;
+		case 55 :
+			rcs=_("Billing Rejected");
+			break;
+		case 56 :
+			rcs=_("Billing_Blocked");
+			break;
+		case 57 :
+			rcs=_("Too Many Worlds");
+			break;
+		case 58 :
+			rcs=_("Must Upgrade");
+			break;
+		case 59 :
+			rcs=_("Bot Limit Exceeded");
+			break;
+		case 61 :
+			rcs=_("World_Expired");
+			break;
+		case 62 :
+			rcs=_("Citizen Does Not Expire");
+			break;
+		case 64 :
+			rcs=_("License Sarts With Number");
+			break;
+		case 66 :
+			rcs=_("No Such Ejection");
+			break;
+		case 67 :
+			rcs=_("No Such Session");
+			break;
+		case 69 :
+			rcs=_("Ejection Expired");
+			break;
+		case 70 :
+			rcs=_("Acting Citizen Expired");
+			break;
+		case 71 :
+			rcs=_("Already_Started");
+			break;
+		case 72 :
+			rcs=_("World Running");
+			break;
+		case 73 :
+			rcs=_("World Not Set");
+			break;
+		case 74 :
+			rcs=_("No Such Cell");
+			break;
+		case 75 :
+			rcs=_("No Registry");
+			break;
+		case 76 :
+			rcs=_("Can't Open Registry");
+			break;
+		case 77 :
+			rcs=_("Citizen_Disabled");
+			break;
+		case 78 :
+			rcs=_("World Disabled");
+			break;
+		case 79 :
+			rcs=_("Beta Required");
+			break;
+		case 80 :
+			rcs=_("Acting Citizen Disabled");
+			break;
+		case 81 :
+			rcs=_("Invalid Uuser Count");
+			break;
+		case 91 :
+			rcs=_("Private World");
+			break;
+		case 92 :
+			rcs=_("No Tourists");
+			break;
+		case 100 :
+			rcs=_("EMail Contains Invalid Char");
+			break;
+		case 101 :
+			rcs=_("EMail Ends With Blank");
+			break;
+		case 102 :
+			rcs=_("EMail Missing Dot");
+			break;
+		case 103 :
+			rcs=_("EMail Missing At");
+			break;
+		case 104 :
+			rcs=_("EMail Starts With Blank");
+			break;
+		case 105 :
+			rcs=_("EMail Too Long");
+			break;
+		case 106 :
+			rcs=_("EMail Too Short");
+			break;
+		case 107 :
+			rcs=_("Name Already Used");
+			break;
+		case 108 :
+			rcs=_("Name Contains Nonalphanumeric Char");
+			break;
+		case 109 :
+			rcs=_("Name Contains Invalid Blank");
+			break;
+		case 110 :
+			rcs=_("Name Doesn't Exist");
+			break;
+		case 111 :
+			rcs=_("Name Ends With Blank");
+			break;
+		case 112 :
+			rcs=_("Name Too Long");
+			break;
+      	case 113 :
+			rcs=_("Name Too Short");
+			break;
+		case 114 :
+			rcs=_("Name Unused");
+			break;
+		case 115 :
+			rcs=_("Password Too Long");
+			break;
+		case 116 :
+			rcs=_("Password Too Short");
+			break;
+		case 117 :
+			rcs=_("Password Wrong");
+			break;
+		case 119 :
+			rcs=_("Unable To Delete Name");
+			break;
+		case 120 :
+			rcs=_("Unable To Get Citizen");
+			break;
+		case 121 :
+			rcs=_("Unable To Insert Citizen");
+			break;
+		case 122 :
+			rcs=_("Unable To Insert Name");
+			break;
+		case 123 :
+			rcs=_("Unable To Put Citizen Count");
+			break;
+		case 124 :
+			rcs=_("Unable To Delete Citizen");
+			break;
+		case 126 :
+			rcs=_("Number Already Used");
+			break;
+		case 127 :
+			rcs=_("Number Out Of Range");
+			break;
+		case 128 :
+			rcs=_("Privilege Password Is Too Short");
+			break;
+		case 129 :
+			rcs=_("Privilege Password Is Too Long");
+			break;
+		case 203 :
+			rcs=_("Not Change Owner");
+			break;
+		case 204 :
+			rcs=_("Can't Find Old Element");
+			break;
+		case 210 :
+			rcs=_("Unable To Change Attribute");
+			break;
+		case 211 :
+			rcs=_("Can't Change Owner");
+			break;
+		case 212 :
+			rcs=_("Imposter");
+			break;
+		case 213 :
+			rcs=_("Invalid Request");
+			break;
+		case 216 :
+			rcs=_("Can't Build Here");
+			break;
+		case 300 :
+			rcs=_("Encroaches");
+			break;
+		case 301 :
+			rcs=_("No Such Object");
+			break;
+		case 302 :
+			rcs=_("Not Delete Owner");
+			break;
+		case 303 :
+			rcs=_("Too Many Bytes");
+			break;
+		case 305 :
+			rcs=_("Unable To Store");
+			break;
+		case 306 :
+			rcs=_("Unregistered Object");
+			break;
+		case 308 :
+			rcs=_("Element Already Exists");
+			break;
+		case 309 :
+			rcs=_("Restricted Command");
+			break;
+		case 310 :
+			rcs=_("No Build Rights");
+			break;
+		case 311 :
+			rcs=_("Out Of Bounds");
+			break;
+		case 313 :
+			rcs=_("Restricted Object");
+			break;
+		case 314 :
+			rcs=_("Restricted Area");
+			break;
+		case 400 :
+			rcs=_("Out Of Memory");
+			break;
+		case 401 :
+			rcs=_("Not Yet");
+			break;
+		case 402 :
+			rcs=_("Timeout");
+			break;
+		case 403 :
+			rcs=_("Null Pointer");
+			break;
+		case 404 :
+			rcs=_("Unable To Contact Universe");
+			break;
+		case 405 :
+			rcs=_("Unable To Contact World");
+			break;
+		case 406 :
+			rcs=_("Invalid World Name");
+			break;
+		case 415 :
+			rcs=_("Send Failed");
+			break;
+		case 416 :
+			rcs=_("Receive Failed");
+			break;
+		case 421 :
+			rcs=_("Stream Empty");
+			break;
+		case 422 :
+			rcs=_("Stream Message Too Long");
+			break;
+		case 423 :
+			rcs=_("World Name Too Long");
+			break;
+		case 426 :
+			rcs=_("Message Too Long");
+			break;
+		case 427 :
+			rcs=_("Too Many Resets");
+			break;
+		case 428 :
+			rcs=_("Unable To Create Socket");
+			break;
+		case 429 :
+			rcs=_("Unable To Connect");
+			break;
+		case 430 :
+			rcs=_("Unable To Set NonBlocking");
+			break;
+		case 434 :
+			rcs=_("Can't Open Stream");
+			break;
+		case 435 :
+			rcs=_("Can't Write Stream");
+			break;
+		case 436 :
+			rcs=_("Can't Close Stream");
+			break;
+		case 439 :
+			rcs=_("No Connection");
+			break;
+		case 442 :
+			rcs=_("Unable To Initialize Network");
+			break;
+		case 443 :
+			rcs=_("Incorrect Message Length");
+			break;
+		case 444 :
+			rcs=_("Not Initialized");
+			break;
+		case 445 :
+			rcs=_("No Instance");
+			break;
+		case 446 :
+			rcs=_("Out Buffer Full");
+			break;
+		case 447 :
+			rcs=_("Invalid Callback");
+			break;
+		case 448 :
+			rcs=_("Invalid Attribute");
+			break;
+		case 449 :
+			rcs=_("Type Mismatch");
+			break;
+		case 450 :
+			rcs=_("String Too Long");
+			break;
+		case 451 :
+			rcs=_("Read Only");
+			break;
+		case 452 :
+			rcs=_("Unable To Register Resolve");
+			break;
+		case 453 :
+			rcs=_("Invalid Instance");
+			break;
+		case 454 :
+			rcs=_("Version Mismatch");
+			break;
+		case 461 :
+			rcs=_("In Buffer Full");
+			break;
+		case 463 :
+			rcs=_("Protocol Error");
+			break;
+		case 464 :
+			rcs=_("Query In Progress");
+			break;
+		case 465 :
+			rcs=_("World Full");
+			break;
+		case 466 :
+			rcs=_("Ejected");
+			break;
+		case 467 :
+			rcs=_("Not Welcome");
+			break;
+		case 468 :
+			rcs=_("Unable To Bind");
+			break;
+		case 469 :
+			rcs=_("Unable To Listen");
+			break;
+		case 470 :
+			rcs=_("Unable To Accept");
+			break;
+		case 471 :
+			rcs=_("Connection Lost");
+			break;
+		case 473 :
+			rcs=_("No Stream");
+			break;
+		case 474 :
+			rcs=_("Not Available");
+			break;
+		case 487 :
+			rcs=_("Old Universe");
+			break;
+		case 488 :
+			rcs=_("Old World");
+			break;
+		case 489 :
+			rcs=_("World Not Running");
+			break;
+		case 505 :
+			rcs=_("Invalid Argument");
+			break;
+		default:
+			rcs=_("Unknow Raison Code");
+			break;
+   }
+   return rcs;
 }

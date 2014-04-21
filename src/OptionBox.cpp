@@ -23,23 +23,22 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
 #include "OptionBox.h"
 
-BEGIN_EVENT_TABLE (COptDial, wxDialog)
+wxBEGIN_EVENT_TABLE (COptDial, wxDialog)
 	EVT_BUTTON ( wxID_OK, COptDial::OnOk)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 COptDial::COptDial
 	(
 		wxWindow* parent,
 		CBot* Robot,
-		wxFileConfig* fConfig,
 		const wxString &title,
 		const wxPoint &position,
 		const wxSize &size,
@@ -55,8 +54,7 @@ COptDial::COptDial
 		style
 	)
 {
-	pConfig = fConfig;
-	wxConfigBase::Set(pConfig);
+	pConfig=wxConfigBase::Get();
 	wxString s;
 	Bot=Robot;
 // Création des Items
@@ -133,7 +131,6 @@ COptDial::COptDial
 
 COptDial::~COptDial ()
 {
-	wxConfigBase::Set(pConfig);
 	int x, y;
 	GetPosition(&x, &y);
 	pConfig->Write(_T("/Fenetre/optx"), (long) x);

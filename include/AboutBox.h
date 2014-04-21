@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -36,11 +36,11 @@
 #endif
 
 #include <wx/wxprec.h>
-#include <wx/fileconf.h>
+#include <wx/config.h>
 
 enum
 {
-	ID_SB_WXWINDOWS = 10400,
+	ID_SB_WXWINDOWS = wxID_HIGHEST,
 	ID_BTHOME
 };
 
@@ -51,7 +51,6 @@ class AboutBox: public wxDialog
 						AboutBox
 						(
 							wxWindow *parent,
-							wxFileConfig* fConfig,
 							const wxString &title,
 							const wxPoint &pos = wxDefaultPosition,
 							const wxSize &size = wxDefaultSize,
@@ -59,12 +58,12 @@ class AboutBox: public wxDialog
 						);
 						~AboutBox ();
 	private:
-		wxFileConfig*	pConfig;
+		wxConfigBase*	pConfig;
 		wxStaticText	*StaticText;
 	protected:
 		void			On_lien_site (wxCommandEvent & event);
 		void			On_lien_wxwidget (wxCommandEvent & event);
-		DECLARE_EVENT_TABLE()
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif

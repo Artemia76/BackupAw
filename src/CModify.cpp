@@ -23,18 +23,18 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 12/08/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
 #include "CModify.h"
 
-BEGIN_EVENT_TABLE (CModify, wxPanel)
+wxBEGIN_EVENT_TABLE (CModify, wxPanel)
 	EVT_BUTTON ( CM_CHANGE_CIT, CModify::OnChange)
 	EVT_BUTTON ( CM_MOVE, CModify::OnMove)
     EVT_BUTTON ( CM_ROTATE, CModify::OnRotate)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 CModify::CModify(wxWindow* Parent) : wxPanel
 	(
@@ -44,8 +44,8 @@ CModify::CModify(wxWindow* Parent) : wxPanel
 		wxDefaultSize
 	)
 {
+	Map=0;
 	Owner = Parent;
-	Map = 0;
 	Cell = CCtrlCell::Create();
 	item0 = new wxBoxSizer( wxVERTICAL );
 	item2 = new wxStaticBox( this, -1, _("Citizen Modifier") );

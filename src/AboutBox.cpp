@@ -1,4 +1,4 @@
-// *****************************************************************************
+﻿// *****************************************************************************
 // *                                                                           *
 // *                          BACKUPAW : About.cpp                             *
 // *                              About Dialog                                 *
@@ -23,7 +23,7 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 23/02/2014                                          *
-// *   Last Modification :                                                     *
+// *   Last Modification : 20/04/2014                                          *
 // *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
@@ -37,10 +37,10 @@
 //------------------------------------------------------------------------------
 // Event definition
 
-BEGIN_EVENT_TABLE (AboutBox, wxDialog)
+wxBEGIN_EVENT_TABLE (AboutBox, wxDialog)
 	EVT_BUTTON (ID_BTHOME, AboutBox::On_lien_site)
 	EVT_BUTTON (ID_SB_WXWINDOWS, AboutBox::On_lien_wxwidget)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 
 //------------------------------------------------------------------------------
@@ -49,7 +49,6 @@ END_EVENT_TABLE()
 AboutBox::AboutBox
 	(
 		wxWindow *parent,
-		wxFileConfig* fConfig,
 		const wxString &title,
 		const wxPoint &position,
 		const wxSize &size,
@@ -65,8 +64,7 @@ AboutBox::AboutBox
 		style
 	)
 {
-	pConfig = fConfig;
-	wxConfigBase::Set(pConfig);
+	pConfig = wxConfigBase::Get();
 	wxString text;
 	text.append(CGVersion);
 
@@ -126,7 +124,6 @@ AboutBox::AboutBox
 
 AboutBox::~AboutBox ()
 {
-	wxConfigBase::Set(pConfig);
 	int x, y;
 	GetPosition(&x, &y);
 	pConfig->Write(_T("/Fenetre/propx"), (long) x);

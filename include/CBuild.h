@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 10/08/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -37,13 +37,11 @@
 
 #include <wx/wxprec.h>
 #include "CtrlCell.h"
-#include "MapCanvas.h"
-#include "Ctrlaw.h"
-#include "CBot.h"
+#include "CBackupCtrl.h"
 
 enum
 {
-	CB_BUILD = 16250,
+	CB_BUILD = wxID_HIGHEST,
 	CB_CTBUILD
 };
 
@@ -52,8 +50,7 @@ class CBuild : public wxPanel
 	public:
 							CBuild (wxWindow* Parent);
 							~CBuild ();
-		CMapCanvas*			Map;
-		CBot*				Bot;
+		CBackupCtrl*		BackupCtrl;
 	private:
 		CCtrlCell*			Cell;
 		wxWindow*			Owner;
@@ -65,7 +62,7 @@ class CBuild : public wxPanel
 
 		void				OnBuild (wxCommandEvent& event);
 		void				OnChkCTBuild (wxCommandEvent& event);
-		DECLARE_EVENT_TABLE()
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif

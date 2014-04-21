@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006-2007 Neophile                                            *
 // *   Creation          : 28/07/2006                                          *
-// *   Last Modification : 07/10/2007                                          *
-// *   Revision          : B                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : C                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -50,34 +50,34 @@
 #include "loupe_m.xpm"
 #include "loupe_p.xpm"
 
-BEGIN_EVENT_TABLE(CMainFrame, wxFrame)
+wxBEGIN_EVENT_TABLE(CMainFrame, wxFrame)
 
-	EVT_MENU(MF_MENU_NEW,CMainFrame::OnNew)
-	EVT_MENU(MF_MENU_OPEN,CMainFrame::OnLoad)
-	EVT_MENU(MF_MENU_SAVE,CMainFrame::OnSave)
-	EVT_MENU(MF_MENU_SAVE_AS,CMainFrame::OnSaveAs)
-	EVT_MENU(MF_MENU_EXIT,CMainFrame::OnExit)
-	EVT_MENU(MF_MENU_HELP,CMainFrame::OnHelp)
-	EVT_MENU(MF_MENU_FORUM,CMainFrame::OnForum)
-	EVT_MENU(MF_MENU_ABOUT,CMainFrame::OnAbout)
-	EVT_MENU(MF_MENU_AWCON,CMainFrame::OnAwCon)
-	EVT_MENU(MF_MENU_SCAN,CMainFrame::OnScan)
-	EVT_MENU(MF_MENU_AWSETUP,CMainFrame::OnAwSetup)
-	EVT_MENU(MF_MENU_SETORI,CMainFrame::OnSetOri)
-	EVT_MENU(MF_MENU_ZOOM_OUT,CMainFrame::OnZoomOut)
-	EVT_MENU(MF_MENU_ZOOM_IN,CMainFrame::OnZoomIn)
-	EVT_MENU(MF_MENU_SET_REL,CMainFrame::OnSetRelative)
-	EVT_TIMER(MF_UPDATE,CMainFrame::OnTUpdate)
+	EVT_MENU	(MF_MENU_NEW,		CMainFrame::OnNew)
+	EVT_MENU	(MF_MENU_OPEN,		CMainFrame::OnLoad)
+	EVT_MENU	(MF_MENU_SAVE,		CMainFrame::OnSave)
+	EVT_MENU	(MF_MENU_SAVE_AS,	CMainFrame::OnSaveAs)
+	EVT_MENU	(MF_MENU_EXIT,		CMainFrame::OnExit)
+	EVT_MENU	(MF_MENU_HELP,		CMainFrame::OnHelp)
+	EVT_MENU	(MF_MENU_FORUM,		CMainFrame::OnForum)
+	EVT_MENU	(MF_MENU_ABOUT,		CMainFrame::OnAbout)
+	EVT_MENU	(MF_MENU_AWCON,		CMainFrame::OnAwCon)
+	EVT_MENU	(MF_MENU_SCAN,		CMainFrame::OnScan)
+	EVT_MENU	(MF_MENU_AWSETUP,	CMainFrame::OnAwSetup)
+	EVT_MENU	(MF_MENU_SETORI,	CMainFrame::OnSetOri)
+	EVT_MENU	(MF_MENU_ZOOM_OUT,	CMainFrame::OnZoomOut)
+	EVT_MENU	(MF_MENU_ZOOM_IN,	CMainFrame::OnZoomIn)
+	EVT_MENU	(MF_MENU_SET_REL,	CMainFrame::OnSetRelative)
+	EVT_TIMER	(MF_UPDATE,			CMainFrame::OnTUpdate)
+	EVT_CLOSE	(					CMainFrame::OnCloseWindow)
 
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 //------------------------------------------------------------------------------
 // Constructeur
 
 CMainFrame::CMainFrame
 	(
-		wxLocale& locale,
-		wxFileConfig* fConfig
+		wxLocale& locale
 	) : wxFrame
 	(
 		(wxWindow*)NULL,
@@ -90,8 +90,7 @@ CMainFrame::CMainFrame
 	),
 	m_locale (locale)
 {
-	pConfig = fConfig;
-	wxConfigBase::Set(pConfig);
+	pConfig = wxConfigBase::Get();
 
 	AConnect=false;
 
@@ -158,13 +157,11 @@ CMainFrame::CMainFrame
 			wxTE_READONLY |
 			wxTE_RICH
 		);
-	Logger = CCtrlLog::Create ();
-	Logger->SetLogZone(LogZone);
+	wxLog::SetActiveTarget(new wxLogTextCtrl(LogZone));
 	Cell = CCtrlCell::Create();
 	SizerPrin = new wxBoxSizer(wxVERTICAL);
 	SizerSec = new wxBoxSizer(wxHORIZONTAL);
-	MapCanvas = new CMapCanvas (this);
-	CtrlAw = CCtrlAw::Create (pConfig,MapCanvas);
+	CtrlAw = CCtrlAw::Create ();
 	int rc=CtrlAw->Init(true);
 	if (rc)
 	{
@@ -178,19 +175,19 @@ CMainFrame::CMainFrame
 		ErrorBox.ShowModal ();
 		Close();
 	}
+	BackupCtrl = CBackupCtrl::Create();
+	MapCanvas = new CMapCanvas (this);
 	Tools = new CToolBook(this);
-	Tools->Filter->Map=MapCanvas;
 	MapCanvas->Filter=Tools->Filter;
-	Tools->Delete->Map=MapCanvas;
-	Tools->Modify->Map=MapCanvas;
+	Tools->Filter->Map = MapCanvas;
+	Tools->Modify->Map = MapCanvas;
 	Bot=CtrlAw->GetBot();
-	Tools->Delete->Bot=Bot;
 	SizerSec->Add(MapCanvas, 1 , wxEXPAND);
 	SizerSec->Add(Tools, 1, wxEXPAND);
 	SizerPrin->Add(SizerSec, 3, wxEXPAND);
 	SizerPrin->Add(LogZone, 1, wxEXPAND);
 	SetSizer(SizerPrin);
-	Logger->Log(_("BackupAw Started."),_T("BLUE"));
+	wxLogMessage (_("BackupAw Started."));
 
 	int	x = pConfig->Read(_T("/Fenetre/prinx"), 50),
 		y = pConfig->Read(_T("/Fenetre/priny"), 50),
@@ -217,7 +214,22 @@ CMainFrame::CMainFrame
 
 CMainFrame::~CMainFrame()
 {
-	wxConfigBase::Set(pConfig);
+}
+
+//------------------------------------------------------------------------------
+// Click sur le menu Exit
+
+void CMainFrame::OnExit(wxCommandEvent& WXUNUSED(event))
+{
+    Close();
+}
+
+//------------------------------------------------------------------------------
+// Fermeture de la fenetre
+
+void CMainFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
+{
+	TUpdate->Stop();
 	int x, y, w, h;
 	if (IsMaximized())
 	{
@@ -236,8 +248,7 @@ CMainFrame::~CMainFrame()
 	pConfig->Flush();
 	CtrlAw->Init(false);
 	CCtrlAw::Kill ();
-	Logger->Log(CGVersion + _(" Stopped."), _T("VIOLET RED"), true);
-	CCtrlLog::Kill ();
+	Destroy();
 }
 
 //------------------------------------------------------------------------------
@@ -256,7 +267,7 @@ void CMainFrame::OnAwCon (wxCommandEvent& WXUNUSED(event))
 		if (BoiteOuiNon.ShowModal()==wxID_YES)
 		{
 			Bot->ModeReco=false;
-			Logger->Log(_("Abording Attempts of reconnections"),_T("RED"));
+			wxLogMessage(_("Abording Attempts of reconnections"));
 		}
 	}
 	else if (!Bot->IsOnWorld())
@@ -267,6 +278,7 @@ void CMainFrame::OnAwCon (wxCommandEvent& WXUNUSED(event))
 	else
 	{
 		Bot->Deconnect();
+		BackupCtrl->Reset();
 	}
 }
 
@@ -278,7 +290,6 @@ void CMainFrame::OnAwSetup (wxCommandEvent& WXUNUSED(event))
 	(
 		this,
 		Bot,
-		pConfig,
 		_("Active Worlds Setting"),
 		wxPoint(100,100),
 		wxSize(200,200),
@@ -291,7 +302,7 @@ void CMainFrame::OnAwSetup (wxCommandEvent& WXUNUSED(event))
 
 void CMainFrame::OnScan (wxCommandEvent& WXUNUSED(event))
 {
-	Bot->Scan ();
+	BackupCtrl->Scan ();
 }
 
 //------------------------------------------------------------------------------
@@ -299,16 +310,8 @@ void CMainFrame::OnScan (wxCommandEvent& WXUNUSED(event))
 void CMainFrame::OnSetOri (wxCommandEvent& WXUNUSED(event))
 {
     wxString s = wxGetTextFromUser (_("Please Enter an AW Coord location :"),_("Set Grid Origin"),_T("0N 0W"));
-    AwToCoord (MapCanvas->OrigX, MapCanvas->OrigY,s);
+    AwToCoord (BackupCtrl->OrigX, BackupCtrl->OrigY,s);
     MapCanvas->Refresh();
-}
-
-//------------------------------------------------------------------------------
-// Click sur le menu Exit
-
-void CMainFrame::OnExit(wxCommandEvent& WXUNUSED(event))
-{
-    Close();
 }
 
 //------------------------------------------------------------------------------
@@ -332,7 +335,6 @@ void CMainFrame::OnForum(wxCommandEvent& WXUNUSED(event))
 void CMainFrame::OnAbout (wxCommandEvent& WXUNUSED(event))
 {
     AboutBox aboutDialog	(	this,
-								pConfig,
 								_("About..."),
 								wxPoint(100,100),
 								wxSize(300,300),
@@ -347,30 +349,35 @@ void CMainFrame::OnAbout (wxCommandEvent& WXUNUSED(event))
 void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 {
 	wxString s,t;
+	wxToolBarToolBase* Tool=0;
 	wxMenuBar* Menu = GetMenuBar ();
 	wxMenuItem* ItemScan = Menu->FindItem (MF_MENU_SCAN);
 	wxMenuItem* ItemAwCon = Menu->FindItem (MF_MENU_AWCON);
 	// Mise à jour des icones de connection
 	if ((Bot->IsOnWorld())&&(!AConnect))
 	{
-		ItemAwCon->SetText (_("Disconnect"));
+		ItemAwCon->SetItemLabel (_("Disconnect"));
 		ItemAwCon->SetHelp (_("AW Disconnection"));
-		ToolBar->DeleteTool (MF_MENU_AWCON);
-		ToolBar->InsertTool ( 3, MF_MENU_AWCON, wxBitmap(connect_xpm));
+		if (Tool=ToolBar->FindById(MF_MENU_AWCON))
+		{
+			Tool->SetNormalBitmap (wxBitmap(connect_xpm));
+		}
 		AConnect=true;
 		ToolBar->Realize();
 	}
 	else if ((!Bot->IsOnWorld())&&(AConnect))
 	{
-		ItemAwCon->SetText (_("Connect"));
+		ItemAwCon->SetItemLabel (_("Connect"));
 		ItemAwCon->SetHelp (_("Connecting AW"));
-		ToolBar->DeleteTool (MF_MENU_AWCON);
-		ToolBar->InsertTool ( 3, MF_MENU_AWCON, wxBitmap(deco_xpm));
+		if (Tool=ToolBar->FindById(MF_MENU_AWCON))
+		{
+			Tool->SetNormalBitmap (wxBitmap(deco_xpm));
+		}
 		AConnect=false;
 		ToolBar->Realize();
 	}
 	// Animation de l'icone Earth pendant un scan
-	if (Bot->IsScanning	())
+	if (BackupCtrl->IsScanning	())
 	{
 		Cnt++;
 		if (Cnt>5)
@@ -397,30 +404,32 @@ void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 	}
 	if (ACntEarth!=CntEarth)
 	{
-		ToolBar->DeleteTool (MF_MENU_SCAN);
-		switch (CntEarth)
+		if (Tool=ToolBar->FindById(MF_MENU_SCAN))
 		{
-			case 0 :
-				ToolBar->InsertTool ( 5, MF_MENU_SCAN, wxBitmap(earth1_xpm));
+			switch (CntEarth)
+			{
+				case 0 :
+					Tool->SetNormalBitmap (wxBitmap(earth1_xpm));
 				break;
-			case 1 :
-				ToolBar->InsertTool ( 5, MF_MENU_SCAN, wxBitmap(earth2_xpm));
-				break;
-			case 2 :
-				ToolBar->InsertTool ( 5, MF_MENU_SCAN, wxBitmap(earth3_xpm));
-				break;
-			case 3 :
-				ToolBar->InsertTool ( 5, MF_MENU_SCAN, wxBitmap(earth4_xpm));
-				break;
-			case 4 :
-				ToolBar->InsertTool ( 5, MF_MENU_SCAN, wxBitmap(earth5_xpm));
-				break;
-			default :
-				ToolBar->InsertTool ( 5, MF_MENU_SCAN, wxBitmap(earth_xpm));
+				case 1 :
+					Tool->SetNormalBitmap (wxBitmap(earth2_xpm));
+					break;
+				case 2 :
+					Tool->SetNormalBitmap (wxBitmap(earth3_xpm));
+					break;
+				case 3 :
+					Tool->SetNormalBitmap (wxBitmap(earth4_xpm));
+					break;
+				case 4 :
+					Tool->SetNormalBitmap (wxBitmap(earth5_xpm));
+					break;
+				default :
+					Tool->SetNormalBitmap (wxBitmap(earth_xpm));
+			}
+			ACntEarth=CntEarth;
+			Tool->SetShortHelp(_("Scan World"));
+			ToolBar->Realize ();
 		}
-		ACntEarth=CntEarth;
-		ToolBar->SetToolShortHelp(MF_MENU_SCAN,_("Scan World"));
-		ToolBar->Realize ();
 	}
 	if (Bot->IsOnWorld())
 	{
@@ -437,6 +446,11 @@ void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 	}
 	t.Printf (_("Total Objects : %d"),Cell->GetNbObj());
 	SetStatusText (t,1);
+	if (MapCanvas->MapChange && (!BackupCtrl->IsScanning()))
+	{
+		if (Bot->IsOnWorld() && BackupCtrl->IsSurvey()) BackupCtrl->Scan ();
+		MapCanvas->MapChange=false;
+	}
 }
 
 //------------------------------------------------------------------------------
@@ -528,5 +542,5 @@ void	CMainFrame::OnSetRelative(wxCommandEvent& WXUNUSED(event))
     Cell->RelZ = (int) floor(z * 1000);
     wxString LogMess;
     LogMess << _("Set Relative Coord to ") << Cell->RelX << _T(" / ") << Cell->RelZ;
-    Logger->Log (LogMess);
+    wxLogMessage(LogMess);
 }

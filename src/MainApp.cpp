@@ -70,7 +70,7 @@ bool CMainApp::OnInit ()
     {
         // don't use wxLOCALE_LOAD_DEFAULT flag so that Init() doesn't return
         // false just because it failed to load wxstd catalog
-        if ( !m_locale.Init(langIds[lng],wxLOCALE_CONV_ENCODING) )
+        if ( !m_locale.Init(langIds[lng]) )
         {
             wxLogError(_T("This language is not supported by the system."));
             return false;
@@ -99,7 +99,7 @@ bool CMainApp::OnInit ()
         m_locale.AddCatalog(_T("fileutils"));
     }
 #endif
-	CMainFrame* MainFrame = new CMainFrame (m_locale,pConfig);
+	CMainFrame* MainFrame = new CMainFrame (m_locale);
 	MainFrame->Show (true);
     SetTopWindow(MainFrame);
 	return true;

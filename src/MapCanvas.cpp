@@ -32,7 +32,7 @@
 #include <math.h>
 #include <wx/dcbuffer.h>
 
-BEGIN_EVENT_TABLE(CMapCanvas, wxWindow)
+wxBEGIN_EVENT_TABLE(CMapCanvas, wxWindow)
     EVT_PAINT		(CMapCanvas::OnPaint)
     EVT_SIZE		(CMapCanvas::OnSize)
     EVT_MOTION		(CMapCanvas::OnMouseMove)
@@ -45,7 +45,7 @@ BEGIN_EVENT_TABLE(CMapCanvas, wxWindow)
 	EVT_ENTER_WINDOW(CMapCanvas::OnEnter)
 	EVT_LEAVE_WINDOW(CMapCanvas::OnLeave)
 	EVT_MOUSEWHEEL	(CMapCanvas::OnWheel)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 //-----------------------------------------------------------------------------
 
@@ -59,9 +59,6 @@ CMapCanvas::CMapCanvas(wxFrame* parent): wxWindow
 	)
 {
 	owner = parent;
-	OrigX=0;
-	OrigY=0;
-	Logger = CCtrlLog::Create ();
     Cell = 8;
     NbCellx = 0;
     NbCelly = 0;
@@ -78,11 +75,11 @@ CMapCanvas::CMapCanvas(wxFrame* parent): wxWindow
 	NbObjMax=40;
 	CatchGrid=false;
 	SelectGrid=false;
-	BlockScroll=false;
-	BlockSelect=false;
     GetSize (&Larg, &Haut);
     Filter=0;
     CtrlCell = CCtrlCell::Create();
+	BackupCtrl = CBackupCtrl::Create();
+	BackupCtrl->Map=this;
     //SetHelpText("essai aide");
 	MapChange=false;
 }
@@ -98,16 +95,16 @@ void CMapCanvas::DrawDefault(wxDC& dc)
 	dc.SetPen(wxPen(wxColour (127,127,127),0, wxSOLID ));
 	MCellx = (wxCoord)floor ((double)NbCellx/2);
 	MCelly = (wxCoord)floor ((double)NbCelly/2);
-	xori = OrigX + (Cell/2);
-	yori = OrigY + (Cell/2);
-	xbar = (MCellx - ((((int)floor ((double)xori / Cell)) *Cell)+3-OrigX));
-	ybar = (MCelly - ((((int)floor ((double)yori / Cell)) *Cell)+3-OrigY));
+	xori = BackupCtrl->OrigX + (Cell/2);
+	yori = BackupCtrl->OrigY + (Cell/2);
+	xbar = (MCellx - ((((int)floor ((double)xori / Cell)) *Cell)+3-BackupCtrl->OrigX));
+	ybar = (MCelly - ((((int)floor ((double)yori / Cell)) *Cell)+3-BackupCtrl->OrigY));
 	while ( xbar >= Cell) xbar-=Cell;
 	while ( ybar >= Cell) ybar-=Cell;
 	memset (Tampon, 0, sizeof (Tampon));
 	memset (Sel, false , sizeof (Sel));
-	CtrlCell->Update (&Tampon[0][0],OrigX+MCellx, OrigY+MCelly, NbCellx, NbCelly);
-	CtrlCell->UpdateSel (&Sel[0][0],OrigX+MCellx, OrigY+MCelly, NbCellx, NbCelly);
+	CtrlCell->Update (&Tampon[0][0],BackupCtrl->OrigX+MCellx, BackupCtrl->OrigY+MCelly, NbCellx, NbCelly);
+	CtrlCell->UpdateSel (&Sel[0][0],BackupCtrl->OrigX+MCellx, BackupCtrl->OrigY+MCelly, NbCellx, NbCelly);
 	for (int i=0; i<NbCellx; i++)
 	{
 		for (int j=0; j<NbCelly; j++)
@@ -127,24 +124,27 @@ void CMapCanvas::DrawDefault(wxDC& dc)
 		dc.DrawLine ( 0 , ybar*Cell , NbCellx*Cell , ybar*Cell);
 		ybar +=8;
 	}
-	if (Filter->item43->GetValue())
+	if (Filter)
 	{
-		wxCoord x1,y1,x2,y2;
-		x1=(MCellx-(CtrlCell->RegioW-OrigX))*Cell;
-		y1=(MCelly-(CtrlCell->RegioN-OrigY))*Cell;
-		x2=((MCellx-(CtrlCell->RegioE-OrigX))*Cell)+Cell+1;
-		y2=((MCelly-(CtrlCell->RegioS-OrigY))*Cell)+Cell+1;
-		if (x1<0) x1=0;
-		else if (x1>=Larg) x1=Larg-1;
-		if (x2<0) x2=0;
-		else if (x2>=Larg) x2=Larg-1;
-		if (y1<0) y1=0;
-		else if (y1>=Haut) y1=Haut-1;
-		if (y2<0) y2=0;
-		else if (y2>=Haut) y2=Haut-1;
-		dc.SetPen(wxPen(wxColour (255,0,0),2, wxSOLID ));
-		dc.SetBrush(wxBrush(wxColour(0,0,0),wxTRANSPARENT));
-		dc.DrawRectangle ( x1 , y1 , x2 - x1, y2 - y1);
+		if (Filter->item43->GetValue())
+		{
+			wxCoord x1,y1,x2,y2;
+			x1=(MCellx-(CtrlCell->RegioW-BackupCtrl->OrigX))*Cell;
+			y1=(MCelly-(CtrlCell->RegioN-BackupCtrl->OrigY))*Cell;
+			x2=((MCellx-(CtrlCell->RegioE-BackupCtrl->OrigX))*Cell)+Cell+1;
+			y2=((MCelly-(CtrlCell->RegioS-BackupCtrl->OrigY))*Cell)+Cell+1;
+			if (x1<0) x1=0;
+			else if (x1>=Larg) x1=Larg-1;
+			if (x2<0) x2=0;
+			else if (x2>=Larg) x2=Larg-1;
+			if (y1<0) y1=0;
+			else if (y1>=Haut) y1=Haut-1;
+			if (y2<0) y2=0;
+			else if (y2>=Haut) y2=Haut-1;
+			dc.SetPen(wxPen(wxColour (255,0,0),2, wxSOLID ));
+			dc.SetBrush(wxBrush(wxColour(0,0,0),wxTRANSPARENT));
+			dc.DrawRectangle ( x1 , y1 , x2 - x1, y2 - y1);
+		}
 	}
 }
 
@@ -178,16 +178,16 @@ void CMapCanvas::OnMouseMove(wxMouseEvent &event)
     wxPoint pos = event.GetPosition();
     long x = dc.DeviceToLogicalX( pos.x );
     long y = dc.DeviceToLogicalY( pos.y );
-    if (BlockScroll) CatchGrid=false;
+    if (BackupCtrl->BlockScroll) CatchGrid=false;
     if (CatchGrid)
     {
-		OrigX = AOrigX+((x-MouseX)/Cell);
-		OrigY = AOrigY+((y-MouseY)/Cell);
-		if ((OrigX != A2OrigX) || (OrigY != A2OrigY))
+		BackupCtrl->OrigX = AOrigX+((x-MouseX)/Cell);
+		BackupCtrl->OrigY = AOrigY+((y-MouseY)/Cell);
+		if ((BackupCtrl->OrigX != A2OrigX) || (BackupCtrl->OrigY != A2OrigY))
 		{
 			Refresh ();
-    		A2OrigX = OrigX;
-    		A2OrigY = OrigY;
+    		A2OrigX = BackupCtrl->OrigX;
+    		A2OrigY = BackupCtrl->OrigY;
 		}
 	}
 	if
@@ -196,17 +196,17 @@ void CMapCanvas::OnMouseMove(wxMouseEvent &event)
 		(y >=0 ) && ( y <(NbCelly * Cell))
 	)
 	{
-		CellPtX = (MCellx-(wxCoord) floor ((double)(x / Cell)))+OrigX;
-		CellPtY = (MCelly-(wxCoord) floor ((double)(y / Cell)))+OrigY;
+		CellPtX = (MCellx-(wxCoord) floor ((double)(x / Cell)))+BackupCtrl->OrigX;
+		CellPtY = (MCelly-(wxCoord) floor ((double)(y / Cell)))+BackupCtrl->OrigY;
 	}
 	wxString Position,Numb;
 	Position=CoordToAw(CellPtX*1000,CellPtY*1000);
-	int NbTamp=Tampon [(OrigX+MCellx)-CellPtX][(OrigY+MCelly)-CellPtY];
-	int NbSel=Sel [(OrigX+MCellx)-CellPtX][(OrigY+MCelly)-CellPtY];
+	int NbTamp=Tampon [(BackupCtrl->OrigX+MCellx)-CellPtX][(BackupCtrl->OrigY+MCelly)-CellPtY];
+	int NbSel=Sel [(BackupCtrl->OrigX+MCellx)-CellPtX][(BackupCtrl->OrigY+MCelly)-CellPtY];
 	if (Sel) Numb.Printf (_(":Nb of Obj=%d in project"), NbSel);
 	else Numb.Printf (_(":Nb of Obj=%d"), NbTamp);
 	owner->SetStatusText ( Position + Numb, 2);
-	if (SelectGrid && Filter && (!BlockSelect))
+	if (SelectGrid && Filter && (!BackupCtrl->BlockSelect))
 	{
 		int x1,x2,y1,y2;
 		if (AOrigX < CellPtX)
@@ -246,8 +246,8 @@ void CMapCanvas::OnMClickDown (wxMouseEvent& event)
     wxPoint pos = event.GetPosition();
     MouseX = dc.DeviceToLogicalX( pos.x );
     MouseY = dc.DeviceToLogicalY( pos.y );
-    AOrigX = OrigX;
-    AOrigY = OrigY;
+    AOrigX = BackupCtrl->OrigX;
+    AOrigY = BackupCtrl->OrigY;
 	CatchGrid = true;
 	event.Skip();
 }
@@ -257,7 +257,7 @@ void CMapCanvas::OnMClickDown (wxMouseEvent& event)
 void CMapCanvas::OnLClickDown (wxMouseEvent& event)
 {
     wxClientDC dc(this);
-    if (CatchGrid || BlockSelect) return;
+    if (CatchGrid || BackupCtrl->BlockSelect) return;
     AOrigX = CellPtX;
 	AOrigY = CellPtY;
 	if (Filter)
@@ -386,3 +386,4 @@ void	CMapCanvas::ZoomOut ()
 		Refresh();
 	}
 }
+

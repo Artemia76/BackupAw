@@ -23,8 +23,8 @@
 // *                                                                           *
 // *   CopyRight 2006 Neophile                                                 *
 // *   Creation          : 05/08/2006                                          *
-// *   Last Modification :                                                     *
-// *   Revision          : A                                                   *
+// *   Last Modification : 20/04/2014                                          *
+// *   Revision          : B                                                   *
 // *                                                                           *
 // *****************************************************************************
 
@@ -41,12 +41,12 @@
 
 enum
 {
-	CF_UPDATE = 14250
+	CF_UPDATE = wxID_HIGHEST
 };
 
 class CFilter : public wxPanel , public COutils
 {
-	public:
+public:
 							CFilter (wxWindow* Parent);
 							~CFilter ();
 		wxWindow*			Map;
@@ -107,9 +107,8 @@ class CFilter : public wxPanel , public COutils
 		wxTextCtrl*			item52;
 		wxBoxSizer*			item53;
 		wxButton*			item54;
-
 		void				OnUpdate (wxCommandEvent& event);
-		DECLARE_EVENT_TABLE()
+		wxDECLARE_EVENT_TABLE();
 };
 
 #endif
