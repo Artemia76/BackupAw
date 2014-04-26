@@ -40,7 +40,7 @@
 #include <wx/config.h>
 #include <wx/vector.h>
 
-#include <aw.h>
+#include <Aw.h>
 
 #include "CBot.h"
 
@@ -48,6 +48,8 @@ enum
 {
 	HEARTBEAT=11000
 };
+
+class CCtrlAw;
 
 //-----------------------------------------------------------------------------
 // Abstract Class to get Aw events and callbacks on external

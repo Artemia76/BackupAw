@@ -30,7 +30,7 @@
 
 #include "CBot.h"
 
-#include <aw.h>
+#include <Aw.h>
 
 #if AW_BUILD>41
     #define AwDefaultPort 6670

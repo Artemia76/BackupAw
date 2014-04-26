@@ -37,7 +37,7 @@
 #include <wx/wxprec.h>
 #include <wx/config.h>
 
-#include "CtrlAw.h"
+#include "Ctrlaw.h"
 #include "CtrlCell.h"
 
 enum
@@ -68,7 +68,7 @@ static	void			Kill ();
 
 private:
 static	CBackupCtrl*	PtCBackupCtrl;
-	
+
 						CBackupCtrl();
 						~CBackupCtrl();
 		void			Query_CB	(int rc, CBot* Bot);

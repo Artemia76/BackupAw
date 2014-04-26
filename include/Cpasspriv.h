@@ -51,8 +51,8 @@ static	CPassPriv*	PtCPassPriv;
 	public:
 static	CPassPriv*		Create();
 static	void			Kill();
-		wxString		Code(wxString& MotDePasse);
-		wxString		Decode(wxString& MotDePasse);;
+		wxString		Code(wxString MotDePasse);
+		wxString		Decode(wxString MotDePasse);;
 };
 
 #endif

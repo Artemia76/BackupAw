@@ -39,8 +39,8 @@
 #include <wx/wxprec.h>
 #include <wx/stdpaths.h>
 #include <wx/filename.h>
-#include <wx/version.h> 
-#include <aw.h>
+#include <wx/version.h>
+#include <Aw.h>
 
 static const wxString CGRevision = _T("BackupAw V1.6.0");
 

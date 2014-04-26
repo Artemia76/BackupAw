@@ -79,7 +79,7 @@ CPassPriv::~CPassPriv()
 //------------------------------------------------------------------------------
 // Crypt
 
-wxString CPassPriv::Code(wxString& MotDePasse)
+wxString CPassPriv::Code(wxString MotDePasse)
 {
 	char buff[3];
 	size_t Long=MotDePasse.Len();
@@ -102,7 +102,7 @@ wxString CPassPriv::Code(wxString& MotDePasse)
 //------------------------------------------------------------------------------
 // Uncrypt
 
-wxString CPassPriv::Decode(wxString& MotDePasse)
+wxString CPassPriv::Decode(wxString MotDePasse)
 {
 	char buff[3];
 	int j=0;

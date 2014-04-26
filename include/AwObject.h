@@ -37,7 +37,7 @@
 
 #include <wx/wxprec.h>
 
-#include <aw.h>
+#include <Aw.h>
 
 class CObject
 {
