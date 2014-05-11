@@ -30,13 +30,16 @@
 
 #include "CBot.h"
 
-#include <Aw.h>
-
-#if AW_BUILD>41
-    #define AwDefaultPort 6670
+#ifdef VPBUILD
+	#include <rc.h>
+	#define DefaultPort 57000
 #else
-	#define AwDefaultPort 5670
-#endif
+	#if AW_BUILD>41
+		#define DefaultPort 6670
+	#else
+		#define DefaultPort 5670
+	#endif
+#endif // VPBUILD
 
 // Events
 
@@ -70,6 +73,10 @@ CBot::CBot ()
 	DemDeco=false;
 	ModeReco=false;
 	Visible=false;
+	Instance=0;
+#ifdef VPBUILD
+	NeedEvent=false;
+#endif // VPBUILD
 }
 
 //------------------------------------------------------------------------------
@@ -104,39 +111,58 @@ void CBot::Connection(bool flag)
 // Variables Internes
 	wxString Message, s;
 	int rc;
-	if (flag)
+	if (flag && (!On_Universe))
 	{
-#if AW_BUILD>77
-		if ((rc=aw_create(Univers, Port, &Instance))!=0)
+#ifdef VPBUILD
+        if (!Instance) Instance=vp_create();
+		if ((rc=vp_connect_universe(Instance,Univers.utf8_str(),Port ))!=0)
 #else
+	#if AW_BUILD>77
+		if ((rc=aw_create(Univers, Port, &Instance))!=0)
+	#else
         if ((rc=aw_create(Univers.mb_str(), Port, &Instance))!=0)
-#endif
+	#endif
+#endif // VPBUILD
 		{
 			wxLogMessage (_("Unable to create instance, Reason : ") + GetRCString(rc));
 			DemCon=false;
 			if (ModeReco) Tentative();
+#ifdef VPBUILD
+            vp_destroy(Instance);
+            Instance=0;
+#endif
 		}
 		else
 		{
+
 			wxLogMessage (_("Instance Initialized."));
+			ConEC=true;
+#ifndef VPBUILD
 			aw_int_set (AW_LOGIN_OWNER, Citoyen);
 #if AW_BUILD>77
             aw_string_set (AW_LOGIN_PRIVILEGE_PASSWORD,PassWord);
             aw_string_set (AW_LOGIN_APPLICATION, _T("BackupAw"));
             aw_string_set (AW_LOGIN_NAME,Nom);
 #else
-			aw_string_set (AW_LOGIN_PRIVILEGE_PASSWORD,PassWord.To8BitData());
+			aw_string_set (AW_LOGIN_PRIVILEGE_PASSWORD,PassWord.mb_str());
 			aw_string_set (AW_LOGIN_APPLICATION, "BackupAw");
-			aw_string_set (AW_LOGIN_NAME,Nom.To8BitData());
+			aw_string_set (AW_LOGIN_NAME,Nom.mb_str());
 #endif
 			aw_login();
-			ConEC=true;
+#else
+			Login_CB(vp_login (Instance, UserName.utf8_str(), PassWord.utf8_str(),Nom.utf8_str()));
+#endif
 			CGRecoTimer->Start(15000,wxTIMER_ONE_SHOT);
 		}
 	}
-	else
+	else if ((!flag) && On_Universe)
 	{
+#ifndef VPBUILD
 		aw_destroy();
+#else
+        if (IsOnWorld()) vp_leave(Instance);
+		vp_destroy(Instance);
+#endif
 		Instance=0;
 		wxLogMessage (_("Disconnected from Universe "));
 		On_Universe=false;
@@ -156,13 +182,19 @@ void CBot::Login_CB(int rc)
 	{
 		DemCon=false;
 		wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(rc));
+#ifdef VPBUILD
+		vp_destroy(Instance);
+		Instance=0;
+#else
 		aw_destroy();
+#endif
 		if (ModeReco) Tentative();
 	}
 	else
 	{
 		wxLogMessage (_("Connected on Universe"));
 		On_Universe=true;
+		NeedEvent=true;
 	}
 }
 
@@ -178,7 +210,11 @@ void CBot::Enter_CB(int rc)
 	{
 		DemCon=false;
 		wxLogMessage (_("Unable to connect on world ") + Monde + _(",Reason: ") + GetRCString (rc));
+#ifndef VPBUILD
 		aw_destroy();
+#else
+        vp_destroy(Instance);
+#endif // VPBUILD
 		On_World=false;
 		On_Universe=false;
 		if (ModeReco) Tentative();
@@ -188,10 +224,12 @@ void CBot::Enter_CB(int rc)
 		wxLogMessage (_("Connected on world ")+Monde);
 		On_World=true;
 		ModeReco=false;
+#ifndef VPBUILD
 		if (Visible)
 		{
 			aw_state_change();
 		}
+#endif
 	}
 }
 
@@ -200,13 +238,17 @@ void CBot::Enter_CB(int rc)
 
 void CBot::Enter()
 {
-	aw_bool_set (AW_ENTER_GLOBAL, Global);
-	#if AW_BUILD>77
-        aw_enter(Monde);
-	#else
-        aw_enter(Monde.mb_str());
-    #endif
 	EntEC=true;
+	#ifndef VPBUILD
+	aw_bool_set (AW_ENTER_GLOBAL, Global);
+		#if AW_BUILD>77
+	aw_enter(Monde);
+		#else
+    aw_enter(Monde.mb_str());
+		#endif
+	#else
+	Enter_CB(vp_enter(Instance, Monde.utf8_str()));
+	#endif // VPBUILD
 }
 
 //------------------------------------------------------------------------------
@@ -214,12 +256,17 @@ void CBot::Enter()
 
 void CBot::Charge ()
 {
+	#ifndef VPBUILD
 	Univers=pConfig->Read(_T("Bot/Univers") , _T("auth.activeworlds.com"));
-	Monde=pConfig->Read(_T("Bot/Monde") , _T(""));
 	Citoyen=pConfig->Read(_T("Bot/Citoyen") , 0l);
+	#else
+	Univers=pConfig->Read(_T("Bot/Univers") , _T("universe.virtualparadise.org"));
+	UserName=pConfig->Read(_T("Bot/UserName") , _T(""));
+	#endif // VPBUILD
+	Monde=pConfig->Read(_T("Bot/Monde") , _T(""));
+	Port=pConfig->Read(_T("Bot/Port") , DefaultPort);
 	PassWord=PassPriv->Decode(pConfig->Read(_T("Bot/PassPriv"), _T("")));
-	Nom=pConfig->Read(_T("Bot/Nom") , _T("Bot"));
-	Port=pConfig->Read(_T("Bot/Port") , AwDefaultPort);
+	Nom=pConfig->Read(_T("Bot/Nom") , _T("BackupAw"));
 	pConfig->Read(_T("Bot/AutoConnect"), &CGConAuto, false);
 	CGRecoDelay=pConfig->Read(_T("Bot/Delai") , 15l);
 	CGRecoRetry=pConfig->Read(_T("Bot/Essais") , 3l);
@@ -232,9 +279,14 @@ void CBot::Charge ()
 
 void CBot::Sauve ()
 {
+	#ifndef VPBUILD
 	pConfig->Write(_T("Bot/Univers") ,Univers);
-	pConfig->Write(_T("Bot/Monde") ,Monde);
 	pConfig->Write(_T("Bot/Citoyen") ,Citoyen);
+	#else
+	pConfig->Write(_T("Bot/Univers") ,Univers);
+	pConfig->Write(_T("Bot/UserName") ,UserName);
+	#endif // VPBUILD
+	pConfig->Write(_T("Bot/Monde") ,Monde);
 	pConfig->Write(_T("Bot/PassPriv") ,PassPriv->Code(PassWord));
 	pConfig->Write(_T("Bot/Nom") ,Nom);
 	pConfig->Write(_T("Bot/Port") ,Port);
@@ -298,21 +350,25 @@ bool CBot::IsOnUniverse()
 //------------------------------------------------------------------------------
 // On Règle l'instance sur notre bot actuel
 
+#ifndef VPBUILD
 bool CBot::SetInstance ()
 {
 	if (!Instance) return false;
 	aw_instance_set(Instance);
 	return true;
 }
+#endif // VPBUILD
 
 //------------------------------------------------------------------------------
 // On retourne l'instance du bot
-
+#ifndef VPBUILD
 void* CBot::GetInstance ()
+#else
+VPInstance CBot::GetInstance ()
+#endif
 {
 	return Instance;
 }
-
 
 //------------------------------------------------------------------------------
 // Mises à jours périodiques
@@ -328,7 +384,11 @@ void CBot::Update ()
 		PerteMonde=false;
 		On_Universe=false;
 		On_World=false;
+#ifndef VPBUILD
 		aw_destroy();
+#else
+        vp_destroy(Instance);
+#endif // VPBUILD
 		Instance=0;
 		if (CGRecoEna)
 		{
@@ -353,6 +413,7 @@ wxString CBot::GetRCString (int rc)
 	wxString rcs;
 	switch (rc)
 	{
+#ifndef VPBUILD
 		case 0 :
 			rcs=_T("");
 			break;
@@ -525,7 +586,7 @@ wxString CBot::GetRCString (int rc)
 			rcs=_("Acting Citizen Disabled");
 			break;
 		case 81 :
-			rcs=_("Invalid Uuser Count");
+			rcs=_("Invalid User Count");
 			break;
 		case 91 :
 			rcs=_("Private World");
@@ -824,6 +885,69 @@ wxString CBot::GetRCString (int rc)
 		case 505 :
 			rcs=_("Invalid Argument");
 			break;
+#else
+		case VP_RC_SUCCESS :
+			rcs=_T("");
+			break;
+		case VP_RC_VERSION_MISMATCH :
+			rcs=_("Version Mismatch");
+			break;
+		case VP_RC_NOT_INITIALIZED :
+			rcs=_("Not Initialized");
+			break;
+		case VP_RC_ALREADY_INITIALIZED :
+			rcs=_("Already Initialized");
+			break;
+		case VP_RC_STRING_TOO_LONG :
+			rcs=_("String Too Long");
+			break;
+		case VP_RC_INVALID_LOGIN :
+			rcs=_("Invalid User");
+			break;
+		case VP_RC_WORLD_NOT_FOUND :
+			rcs=_("No Such World");
+			break;
+		case VP_RC_WORLD_LOGIN_ERROR :
+			rcs=_("World login error");
+			break;
+		case VP_RC_NOT_IN_WORLD :
+			rcs=_("Not in world");
+			break;
+		case VP_RC_CONNECTION_ERROR :
+			rcs=_("Connection Error");
+			break;
+		case VP_RC_NO_INSTANCE :
+			rcs=_("No Instance");
+			break;
+		case VP_RC_NOT_IMPLEMENTED :
+			rcs=_("Not implemented");
+			break;
+		case VP_RC_NO_SUCH_ATTRIBUTE :
+			rcs=_("No such attribute");
+			break;
+		case VP_RC_NOT_ALLOWED :
+			rcs=_("Not Allowed");
+			break;
+		case VP_RC_DATABASE_ERROR :
+			rcs=_("Database Error");
+			break;
+		case VP_RC_NO_SUCH_USER :
+			rcs=_("No such user");
+			break;
+		case VP_RC_TIMEOUT :
+			rcs=_("Timeout");
+			break;
+		case VP_RC_NOT_IN_UNIVERSE :
+			rcs=_("Not in universe");
+			break;
+		case VP_RC_INVALID_ARGUMENTS :
+			rcs=_("Invalid arguments");
+			break;
+		case VP_RC_OBJECT_NOT_FOUND :
+			rcs=_("Object not found");
+			break;
+		case VP_RC_UNKNOWN_ERROR :
+#endif // VPBUILD
 		default:
 			rcs=_("Unknow Raison Code");
 			break;

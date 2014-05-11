@@ -31,6 +31,10 @@
 #ifndef CBOT_H
 #define CBOT_H
 
+#ifdef VPBUILD
+	#include <VP.h>
+#endif // VPBUILD
+
 #ifndef  WX_PRECOMP
 	#include <wx/wx.h>
 #endif
@@ -57,7 +61,13 @@ class CBot : public wxEvtHandler, public COutils
 		bool				CGRecoEna;
 		int					CGRecoDelay;	// Temps de Reconnection sur AW
 		int					CGRecoRetry;	// Nombres d'essais sur AW
+#ifdef VPBUILD
+		wxString			UserName;		// Virtual Paradise User Name
+        bool                NeedEvent;
+#else
 		int					Citoyen;		// Numéro du citoyen
+#endif // VPBUILD
+
 		int					Port;			// Port de l'univers
 		int					CGRecoCnt;			// Compteur de tentative de reconnections AW
 		int					CGRetente;
@@ -84,8 +94,12 @@ virtual	void				Update		();
 		bool				IsOnWorld	();
 virtual	void				Sauve		();
 virtual	void				Charge		();
+#ifndef VPBUILD
 		bool				SetInstance			();
 		void*				GetInstance			();
+#else
+		VPInstance			GetInstance			();
+#endif // VPBUILD
 
 static	wxString			GetRCString			(int); // Traduction littérale du reason code
 
@@ -113,7 +127,11 @@ static	wxString			GetRCString			(int); // Traduction littérale du reason code
 		bool				DemDeco;
 		bool				Visible;			// Etat de la visibilité
 		CPassPriv*			PassPriv;
+#ifdef VPBUILD
+		VPInstance			Instance;
+#else
 		void*				Instance;
+#endif // VPBUILD
 };
 
 #endif

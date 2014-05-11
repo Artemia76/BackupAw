@@ -99,7 +99,11 @@ int CCtrlAw::Init (bool flag, size_t NbBot)
 	if (NbBot<1) NbBot=1;
 	if ((flag) && (!AwInit))
 	{
+#ifndef VPBUILD
 		if ((rc=aw_init (AW_BUILD)))
+#else
+        if ((rc=vp_init ()))
+#endif // VPBUILD
 		{
 			wxLogMessage(_("Unable to init the SDK, Reason :")+ CBot::GetRCString(rc));
 			return rc;
@@ -109,6 +113,7 @@ int CCtrlAw::Init (bool flag, size_t NbBot)
 			wxLogMessage(_("SDK Initialized"));
 		}
 		// Install AW Events
+#ifndef VPBUILD
 		aw_event_set (AW_EVENT_WORLD_DISCONNECT, CCtrlAw::On_World_Disconnect);
 		aw_event_set (AW_EVENT_UNIVERSE_DISCONNECT, CCtrlAw::On_Universe_Disconnect);
 		aw_event_set (AW_EVENT_CELL_BEGIN, CCtrlAw::On_Cell_Begin);
@@ -120,6 +125,7 @@ int CCtrlAw::Init (bool flag, size_t NbBot)
 		aw_callback_set (AW_CALLBACK_ENTER, CCtrlAw::On_Enter);
 		aw_callback_set (AW_CALLBACK_QUERY, CCtrlAw::On_Query);
 		aw_callback_set (AW_CALLBACK_OBJECT_RESULT, CCtrlAw::On_Object);
+#endif // VPBUILD
 		AwInit=true;
 		for (size_t i=0 ; i<NbBot ; i++)
 		{
@@ -145,22 +151,29 @@ int CCtrlAw::Init (bool flag, size_t NbBot)
 		Heart->Stop();
 		for (wxVector<CBot*>::iterator i = Bot.begin() ; i < Bot.end(); i++)
 		{
+#ifndef VPBUILD
 			if ( (*i)->SetInstance())
 			{
 				(*i)->Connection(false);
 			}
+#else
+            (*i)->Connection(false);
+#endif // VPBUILD
 			(*i)->Sauve();
 			delete (*i);
 		}
 		Bot.clear();
 		AwInit=false;
+#ifndef VPBUILD
 		aw_term();
+#endif
 		wxLogMessage(_("SDK Stopped."));
 		return 0;
 	}
 	return 1000;
 }
 
+#ifndef VPBUILD
 //------------------------------------------------------------------------------
 // Cell Begin to be downloaded
 
@@ -169,60 +182,113 @@ void CCtrlAw::On_Cell_Begin(void)
 	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	PtCCtrlAw->EventDispatch (AW_EVENT_CELL_BEGIN, Robot);
 }
+#endif // VPBUILD
 
 //------------------------------------------------------------------------------
-
+#ifndef VPBUILD
 void CCtrlAw::On_Cell_End(void)
 {
 	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	PtCCtrlAw->EventDispatch (AW_EVENT_CELL_END, Robot);
 }
+#else
+void CCtrlAw::On_Cell_End(VPInstance Instance)
+{
+	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+	PtCCtrlAw->EventDispatch (VP_EVENT_CELL_END, Robot);
+}
+#endif // VPBUILD
 
 //------------------------------------------------------------------------------
-
+#ifndef VPBUILD
 void CCtrlAw::On_Cell_Object(void)
 {
 	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	PtCCtrlAw->EventDispatch (AW_EVENT_CELL_OBJECT, Robot);
 }
+#endif // VPBUILD
 
 //------------------------------------------------------------------------------
-
+#ifndef VPBUILD
 void CCtrlAw::On_Object_Add(void)
 {
 	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	PtCCtrlAw->EventDispatch (AW_EVENT_OBJECT_ADD, Robot);
 }
+#endif // VPBUILD
 
 //------------------------------------------------------------------------------
+#ifdef VPBUILD
+void CCtrlAw::On_Object(VPInstance Instance)
+{
+	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+	PtCCtrlAw->EventDispatch (VP_EVENT_OBJECT, Robot);
+}
+#endif // VPBUILD
 
+
+//------------------------------------------------------------------------------
+#ifdef VPBUILD
+void CCtrlAw::On_Object_Change(VPInstance Instance)
+{
+	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+	PtCCtrlAw->EventDispatch (VP_EVENT_OBJECT_CHANGE, Robot);
+}
+#endif // VPBUILD
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+#ifndef VPBUILD
 void CCtrlAw::On_Object_Delete(void)
 {
 	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	PtCCtrlAw->EventDispatch (AW_EVENT_OBJECT_DELETE, Robot);
 }
+#else
+void CCtrlAw::On_Object_Delete(VPInstance Instance)
+{
+	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+	PtCCtrlAw->EventDispatch (VP_EVENT_OBJECT_DELETE, Robot);
+}
+#endif // VPBUILD
 
 //------------------------------------------------------------------------------
-
+#ifndef VPBUILD
 void CCtrlAw::On_World_Disconnect(void)
 {
 	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	Robot->PerteMonde=true;
 	PtCCtrlAw->EventDispatch (AW_EVENT_WORLD_DISCONNECT, Robot);
 }
+#else
+void CCtrlAw::On_World_Disconnect(VPInstance Instance)
+{
+	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+	Robot->PerteMonde=true;
+	PtCCtrlAw->EventDispatch (VP_EVENT_WORLD_DISCONNECT, Robot);
+}
+#endif // VPBUILD
 
 //------------------------------------------------------------------------------
-
+#ifndef VPBUILD
 void CCtrlAw::On_Universe_Disconnect(void)
 {
 	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
 	Robot->PerteUniv=true;
 	PtCCtrlAw->EventDispatch (AW_EVENT_UNIVERSE_DISCONNECT, Robot);
 }
+#else
 
+void CCtrlAw::On_Universe_Disconnect(VPInstance Instance)
+{
+	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+	Robot->PerteUniv=true;
+	PtCCtrlAw->EventDispatch (VP_EVENT_UNIVERSE_DISCONNECT, Robot);
+}
+#endif // VPBUILD
 //------------------------------------------------------------------------------
 // Callbacks Events
-
+#ifndef VPBUILD
 void CCtrlAw::On_Login (int rc)
 {
 	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
@@ -252,6 +318,27 @@ void CCtrlAw::On_Object (int rc)
 {
 	PtCCtrlAw->CallBackDispatch (AW_CALLBACK_OBJECT_RESULT, rc, PtCCtrlAw->GetBotInst(aw_instance()));
 }
+#else
+
+//------------------------------------------------------------------------------
+
+void CCtrlAw::On_Object_Add_CB (VPInstance Instance,int rc , int ID)
+{
+    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_OBJECT_ADD,rc,Robot);
+}
+
+//------------------------------------------------------------------------------
+
+void CCtrlAw::On_Object_Delete_CB (VPInstance Instance,int rc , int ID)
+{
+    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_OBJECT_DELETE,rc,Robot);
+}
+
+
+#endif
+
 
 
 //------------------------------------------------------------------------------
@@ -263,8 +350,11 @@ CBot* CCtrlAw::GetBot (unsigned int num)
 }
 
 //------------------------------------------------------------------------------
-
+#ifndef VPBUILD
 CBot* CCtrlAw::GetBotInst(void* Instance)
+#else
+CBot* CCtrlAw::GetBotInst(VPInstance Instance)
+#endif
 {
 	for (wxVector<CBot*>::iterator i = Bot.begin(); i< Bot.end(); i++)
 	{
@@ -281,10 +371,31 @@ CBot* CCtrlAw::GetBotInst(void* Instance)
 
 void CCtrlAw::On_HeartBeat (wxTimerEvent& WXUNUSED(event))
 {
+#ifndef VPBUILD
 	aw_wait(0);
+#endif
 	for (wxVector<CBot*>::iterator i = Bot.begin(); i< Bot.end(); i++)
 	{
+#ifndef VPBUILD
 		(*i)->SetInstance();
+#else
+        VPInstance Instance = (*i)->GetInstance();
+        if ((*i)->NeedEvent)
+        {
+            vp_event_set(Instance, VP_EVENT_WORLD_DISCONNECT, CCtrlAw::On_World_Disconnect);
+            vp_event_set(Instance, VP_EVENT_UNIVERSE_DISCONNECT, CCtrlAw::On_Universe_Disconnect);
+            vp_event_set(Instance, VP_EVENT_CELL_END, CCtrlAw::On_Cell_End);
+            vp_event_set(Instance, VP_EVENT_OBJECT, CCtrlAw::On_Object);
+            vp_event_set(Instance, VP_EVENT_OBJECT_CHANGE, CCtrlAw::On_Object_Change);
+            vp_event_set(Instance, VP_EVENT_OBJECT_DELETE, CCtrlAw::On_Object_Delete);
+
+            vp_callback_set(Instance, VP_CALLBACK_OBJECT_ADD, CCtrlAw::On_Object_Add_CB);
+            vp_callback_set(Instance, VP_CALLBACK_OBJECT_DELETE, CCtrlAw::On_Object_Delete_CB);
+
+            (*i)->NeedEvent=false;
+        }
+        if ((*i)->GetInstance()) vp_wait((*i)->GetInstance(),0);
+#endif // VPBUILD
 		(*i)->Update();
 	}
 }
@@ -321,7 +432,11 @@ void CCtrlAw::DelListenner (CAwListenner* pListenner)
 
 //------------------------------------------------------------------------------
 // Dispatch Event to suscribers
+#ifndef VPBUILD
 void CCtrlAw::EventDispatch (AW_EVENT_ATTRIBUTE id, CBot* Bot)
+#else
+void CCtrlAw::EventDispatch (vp_event_t id, CBot* Bot)
+#endif // VPBUILD
 {
 	for (wxVector<CAwListenner*>::iterator i = Listenners.begin(); i != Listenners.end();i++)
 	{
@@ -331,7 +446,11 @@ void CCtrlAw::EventDispatch (AW_EVENT_ATTRIBUTE id, CBot* Bot)
 
 //------------------------------------------------------------------------------
 // Dispatch CallBacks to suscribers
+#ifndef VPBUILD
 void CCtrlAw::CallBackDispatch (AW_CALLBACK id, int rc, CBot* Bot)
+#else
+void CCtrlAw::CallBackDispatch (vp_callback_t id, int rc, CBot* Bot)
+#endif
 {
 	for (wxVector<CAwListenner*>::iterator i = Listenners.begin(); i != Listenners.end();i++)
 	{

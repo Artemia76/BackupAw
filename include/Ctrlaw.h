@@ -40,7 +40,11 @@
 #include <wx/config.h>
 #include <wx/vector.h>
 
-#include <Aw.h>
+#ifndef VPBUILD
+    #include <Aw.h>
+#else
+    #include <VP.h>
+#endif // VPBUILD
 
 #include "CBot.h"
 
@@ -62,8 +66,13 @@ public:
 									~CAwListenner ();
 protected:
 			CCtrlAw*				CtrlAw;
+#ifndef VPBUILD
 	virtual bool					Event (AW_EVENT_ATTRIBUTE id, CBot* Bot)=0;
 	virtual bool					CallBack (AW_CALLBACK id, int rc, CBot* Bot)=0;
+#else
+    virtual bool					Event (vp_event_t id, CBot* Bot)=0;
+	virtual bool					CallBack (vp_callback_t id, int rc, CBot* Bot)=0;
+#endif // VPBUILD
 };
 
 //-----------------------------------------------------------------------------
@@ -75,7 +84,12 @@ class CCtrlAw : public wxEvtHandler
 static		CCtrlAw*				Create ();
 			CBot*					GetBot (unsigned int num=0);
 			int						Init(bool flag, size_t NbBot=1); // initialize AW DLL
+#ifndef VPBUILD
 			CBot*					GetBotInst(void* Instance);
+#else
+            CBot*                   GetBotInst(VPInstance Instance);
+#endif // VPBUILD
+
 static		void					Kill();
 
 	private:
@@ -89,29 +103,13 @@ static		CCtrlAw*				PtCCtrlAw; //SingleTon Pointer
 			wxConfigBase*			pConfig;
 			bool					AwInit;
 			wxTimer*				Heart;
-
+#ifndef VPBUILD
 // AW Events
-static		void	    			On_Admin_Worlds_Delete	();
-static		void	    			On_Admin_Worlds_Info	();
-static		void	    			On_Avatar_Add			();
-static		void	    			On_Avatar_Change		();
-static		void	    			On_Avatar_Delete		();
-static		void	    			On_Avatar_Click			();
 static		void	    			On_Cell_Begin			();
-static		void	    			On_Cell_End				();
 static		void	    			On_Cell_Object			();
-static		void	    			On_Chat					();
-static		void	    			On_Console_Message		();
 static		void	    			On_Object_Add			();
-static		void	    			On_Object_Click			();
 static		void	    			On_Object_Delete		();
-static		void	    			On_Object_select		();
-static		void	    			On_Teleport				();
-static		void	    			On_Universe_Attributes	();
-static		void	    			On_Url					();
-static		void	    			On_World_Attributes		();
 static		void	    			On_World_Disconnect		();
-static		void	    			On_World_Info			();
 static		void	    			On_Terrain_Begin		();
 static		void	    			On_Terrain_Changed		();
 static		void					On_Terrain_Data			();
@@ -124,8 +122,32 @@ static		void					On_Login				(int rc);
 static		void					On_Enter				(int rc);
 static		void					On_Query				(int rc);
 static		void					On_Object				(int rc);
+
+#else
+// VP Events
+
+static      void                    On_World_Disconnect (VPInstance Instance);
+static      void                    On_Universe_Disconnect (VPInstance Instance);
+static      void                    On_Cell_End (VPInstance Instance);
+static      void                    On_Object (VPInstance Instance);
+static      void                    On_Object_Change (VPInstance Instance);
+static      void                    On_Object_Delete (VPInstance Instance);
+
+// VP Callback
+
+static      void                    On_Object_Add_CB        (VPInstance Instance, int rc, int ID);
+static      void                    On_Object_Delete_CB   (VPInstance Instance, int rc, int ID);
+
+#endif // VPBUILD
+
+#ifndef VPBUILD
 			void					EventDispatch			(AW_EVENT_ATTRIBUTE id, CBot* Bot);
 			void					CallBackDispatch		(AW_CALLBACK id, int rc, CBot* Bot);
+#else
+			void					EventDispatch			(vp_event_t id, CBot* Bot);
+			void					CallBackDispatch		(vp_callback_t id, int rc, CBot* Bot);
+#endif // VPBUILD
+
 friend class CAwListenner;
 	protected:
 			void					AddListenner			(CAwListenner* pListenner);

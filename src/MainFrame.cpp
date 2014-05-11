@@ -60,9 +60,9 @@ wxBEGIN_EVENT_TABLE(CMainFrame, wxFrame)
 	EVT_MENU	(MF_MENU_HELP,		CMainFrame::OnHelp)
 	EVT_MENU	(MF_MENU_FORUM,		CMainFrame::OnForum)
 	EVT_MENU	(MF_MENU_ABOUT,		CMainFrame::OnAbout)
-	EVT_MENU	(MF_MENU_AWCON,		CMainFrame::OnAwCon)
+	EVT_MENU	(MF_MENU_AWCON,		CMainFrame::OnUniverseCon)
 	EVT_MENU	(MF_MENU_SCAN,		CMainFrame::OnScan)
-	EVT_MENU	(MF_MENU_AWSETUP,	CMainFrame::OnAwSetup)
+	EVT_MENU	(MF_MENU_AWSETUP,	CMainFrame::OnUniverseSetup)
 	EVT_MENU	(MF_MENU_SETORI,	CMainFrame::OnSetOri)
 	EVT_MENU	(MF_MENU_ZOOM_OUT,	CMainFrame::OnZoomOut)
 	EVT_MENU	(MF_MENU_ZOOM_IN,	CMainFrame::OnZoomIn)
@@ -103,8 +103,8 @@ CMainFrame::CMainFrame
     MenuFile->Append(MF_MENU_EXIT, _("E&xit"),_("Exiting BackupAw"));
 
 	wxMenu* MenuAw = new wxMenu;
-    MenuAw->Append(MF_MENU_AWCON, _("Connect"),_("Connecting AW"));
-    MenuAw->Append(MF_MENU_AWSETUP, _("&Setup"),_("AW Setup"));
+    MenuAw->Append(MF_MENU_AWCON, _("Connect"),_("Connecting Universe"));
+    MenuAw->Append(MF_MENU_AWSETUP, _("&Setup"),_("Connection Setup"));
 
     wxMenu* MenuGrid = new wxMenu;
     MenuGrid->Append(MF_MENU_SETORI, _("Set Origin"),_("Set the origin of the grid"));
@@ -124,7 +124,7 @@ CMainFrame::CMainFrame
 
 	wxMenuBar* Menu = new wxMenuBar;
 	Menu->Append(MenuFile, _("&Project"));
-	Menu->Append(MenuAw, _("&Aw"));
+	Menu->Append(MenuAw, _("&Universe"));
     Menu->Append(MenuGrid, _("&Grid"));
 	Menu->Append(MenuTools, _("&World"));
 	Menu->Append(MenuHelp, _("&Help"));
@@ -137,7 +137,7 @@ CMainFrame::CMainFrame
 	ToolBar->AddTool ( MF_MENU_SAVE, _("Save"), wxBitmap(filesave_xpm), _("Save Project"));
 	ToolBar->AddTool ( MF_MENU_SAVE_AS, _("Save As"), wxBitmap(filesaveas_xpm), _("Save Project"));
 	ToolBar->AddTool ( MF_MENU_AWCON, _("deco"), wxBitmap(deco_xpm), _("Connect"));
-	ToolBar->AddTool ( MF_MENU_AWSETUP, _("Aw Setup"), wxBitmap(outils_xpm), _("Aw Setup"));
+	ToolBar->AddTool ( MF_MENU_AWSETUP, _("Connection Setup"), wxBitmap(outils_xpm), _("Connection Setup"));
 	ToolBar->AddTool ( MF_MENU_SCAN, _("Scan World"), wxBitmap(earth_xpm), _("Scan World"));
 	ToolBar->AddTool ( MF_MENU_SETORI, _("Set Origin"),wxBitmap(target_xpm), _("Set Grid Origin"));
 	ToolBar->AddTool ( MF_MENU_ZOOM_IN, _("Zoom In"),wxBitmap(loupe_p_xpm), _("Make the grid cells bigger"));
@@ -253,7 +253,7 @@ void CMainFrame::OnCloseWindow(wxCloseEvent& WXUNUSED(event))
 
 //------------------------------------------------------------------------------
 
-void CMainFrame::OnAwCon (wxCommandEvent& WXUNUSED(event))
+void CMainFrame::OnUniverseCon (wxCommandEvent& WXUNUSED(event))
 {
 	if (Bot->ModeReco)
 	{
@@ -284,13 +284,13 @@ void CMainFrame::OnAwCon (wxCommandEvent& WXUNUSED(event))
 
 //------------------------------------------------------------------------------
 
-void CMainFrame::OnAwSetup (wxCommandEvent& WXUNUSED(event))
+void CMainFrame::OnUniverseSetup (wxCommandEvent& WXUNUSED(event))
 {
 	COptDial Option
 	(
 		this,
 		Bot,
-		_("Active Worlds Setting"),
+		_("Universe Setting"),
 		wxPoint(100,100),
 		wxSize(200,200),
 		wxDEFAULT_DIALOG_STYLE
@@ -337,7 +337,7 @@ void CMainFrame::OnAbout (wxCommandEvent& WXUNUSED(event))
     AboutBox aboutDialog	(	this,
 								_("About..."),
 								wxPoint(100,100),
-								wxSize(300,300),
+								wxSize(400,300),
 								wxDEFAULT_DIALOG_STYLE
 							);
 	aboutDialog.ShowModal();
@@ -348,7 +348,7 @@ void CMainFrame::OnAbout (wxCommandEvent& WXUNUSED(event))
 
 void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 {
-	wxString s,t;
+	wxString s;
 	wxToolBarToolBase* Tool=0;
 	wxMenuBar* Menu = GetMenuBar ();
 	wxMenuItem* ItemScan = Menu->FindItem (MF_MENU_SCAN);
@@ -357,7 +357,7 @@ void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 	if ((Bot->IsOnWorld())&&(!AConnect))
 	{
 		ItemAwCon->SetItemLabel (_("Disconnect"));
-		ItemAwCon->SetHelp (_("AW Disconnection"));
+		ItemAwCon->SetHelp (_("Universe Disconnection"));
 		if (Tool=ToolBar->FindById(MF_MENU_AWCON))
 		{
 			Tool->SetNormalBitmap (wxBitmap(connect_xpm));
@@ -368,7 +368,7 @@ void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 	else if ((!Bot->IsOnWorld())&&(AConnect))
 	{
 		ItemAwCon->SetItemLabel (_("Connect"));
-		ItemAwCon->SetHelp (_("Connecting AW"));
+		ItemAwCon->SetHelp (_("Universe Connecting"));
 		if (Tool=ToolBar->FindById(MF_MENU_AWCON))
 		{
 			Tool->SetNormalBitmap (wxBitmap(deco_xpm));
@@ -444,8 +444,7 @@ void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 		if (ItemScan->IsEnabled ()) ItemScan->Enable(false);
 		ToolBar->EnableTool(MF_MENU_SCAN,false);
 	}
-	t.Printf (_("Total Objects : %d"),Cell->GetNbObj());
-	SetStatusText (t,1);
+	SetStatusText (wxString::Format(_("Total Objects : %i"), Cell->GetNbObj()),1);
 	if (MapCanvas->MapChange && (!BackupCtrl->IsScanning()))
 	{
 		if (Bot->IsOnWorld() && BackupCtrl->IsSurvey()) BackupCtrl->Scan ();
@@ -470,8 +469,8 @@ void	CMainFrame::OnLoad (wxCommandEvent& WXUNUSED(event))
 	(
 		this,
 		_("Open Project"),
-		_T(""),
 		Cell->FileName,
+		_T("*.bap"),
 		_("BackupAw Project (*.bap)|*.bap|All Files (*.*)|*.*"),
 		wxFD_OPEN,
 		wxDefaultPosition
@@ -503,8 +502,8 @@ void	CMainFrame::OnSaveAs (wxCommandEvent& WXUNUSED(event))
 	(
 		this,
 		_("Save Project"),
-		_T(""),
 		Cell->FileName,
+		_T("*.bap"),
 		_("BackupAw Project (*.bap)|*.bap|All Files (*.*)|*.*"),
 		wxFD_SAVE|wxFD_OVERWRITE_PROMPT,
 		wxDefaultPosition

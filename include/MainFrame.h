@@ -42,7 +42,12 @@
 #include <wx/config.h>
 #include <wx/toolbar.h>
 
+#ifndef VPBUILD
 #include "CBackupCtrl.h"
+#else
+#include "CBackupVP.h"
+#endif // VPBUILD
+
 #include "MapCanvas.h"
 #include "ToolBook.h"
 #include "Ctrlaw.h"
@@ -103,8 +108,8 @@ class CMainFrame : public wxFrame, public COutils
 		void				OnLoad (wxCommandEvent& event);
 		void				OnSave (wxCommandEvent& event);
 		void				OnSaveAs (wxCommandEvent& event);
-		void				OnAwCon (wxCommandEvent& event);
-		void				OnAwSetup (wxCommandEvent& event);
+		void				OnUniverseCon (wxCommandEvent& event);
+		void				OnUniverseSetup (wxCommandEvent& event);
 		void				OnScan (wxCommandEvent& event);
 		void				OnSetOri (wxCommandEvent& event);
 		void				OnExit (wxCommandEvent& event);

@@ -27,7 +27,7 @@
 // *   Revision          : A                                                   *
 // *                                                                           *
 // *****************************************************************************
-
+#ifndef VPBUILD
 #include "CBackupCtrl.h"
 
 wxBEGIN_EVENT_TABLE(CBackupCtrl, wxEvtHandler)
@@ -133,7 +133,6 @@ bool CBackupCtrl::CallBack (AW_CALLBACK id, int rc, CBot* Bot)
 	}
 	return false;
 }
-
 //------------------------------------------------------------------------------
 // Retour Callback d'un query
 
@@ -158,6 +157,7 @@ void CBackupCtrl::Query_CB(int rc, CBot* Bot)
 }
 
 //------------------------------------------------------------------------------
+// Object Callback
 
 void CBackupCtrl::Object_CB (int rc, CBot* Bot)
 {
@@ -394,3 +394,4 @@ void CBackupCtrl::Reset()
 	DelEC=0;
 	if (Map) Map->Refresh ();
 }
+#endif

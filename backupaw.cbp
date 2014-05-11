@@ -277,6 +277,59 @@
 					<Mode after="always" />
 				</ExtraCommands>
 			</Target>
+			<Target title="LinuxVP">
+				<Option platforms="Unix;" />
+				<Option output="./linuxVP/backupaw" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="./linuxVP" />
+				<Option object_output="./linuxVP/objs" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O" />
+					<Add option="-w" />
+					<Add option="`wx-config --cflags --unicode=yes --debug=no`" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add option="-DVPBUILD" />
+					<Add option="-DLINUX" />
+					<Add directory="/usr/local/include/VPSDK" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="`wx-config --libs --unicode=yes --debug=no`" />
+					<Add library="vpsdk" />
+					<Add directory="/usr/local/lib" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="upx -9 ./linuxVP/backupaw" />
+					<Add after="cp -rf ./lng ./linuxVP" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="LinuxDVP">
+				<Option platforms="Unix;" />
+				<Option output="./linuxDVP/backupaw" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="./linuxDVP" />
+				<Option object_output="./linuxDVP/objs" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-w" />
+					<Add option="-g" />
+					<Add option="`wx-config --cflags --unicode=yes --debug=yes`" />
+					<Add option="-DAUTRE_UNIV" />
+					<Add option="-DVPBUILD" />
+					<Add directory="/usr/local/include/VPSDK" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --libs --unicode=yes --debug=yes`" />
+					<Add library="vpsdk" />
+					<Add directory="/usr/local/lib" />
+				</Linker>
+				<ExtraCommands>
+					<Add after="cp -rf ./lng ./linuxDVP" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add directory="include" />
@@ -287,7 +340,22 @@
 		</ResourceCompiler>
 		<Unit filename="include/AboutBox.h" />
 		<Unit filename="include/AwObject.h" />
-		<Unit filename="include/CBackupCtrl.h" />
+		<Unit filename="include/CBackupCtrl.h">
+			<Option target="Win36" />
+			<Option target="Win41" />
+			<Option target="Linux36" />
+			<Option target="Linux41" />
+			<Option target="LinuxD-41" />
+			<Option target="LinuxD-36" />
+			<Option target="Win42" />
+			<Option target="Win51" />
+			<Option target="Linux51" />
+			<Option target="Linux100" />
+		</Unit>
+		<Unit filename="include/CBackupVP.h">
+			<Option target="LinuxVP" />
+			<Option target="LinuxDVP" />
+		</Unit>
 		<Unit filename="include/CBot.h" />
 		<Unit filename="include/CBuild.h" />
 		<Unit filename="include/CDelete.h" />
@@ -305,7 +373,22 @@
 		<Unit filename="include/ToolBook.h" />
 		<Unit filename="src/AboutBox.cpp" />
 		<Unit filename="src/AwObject.cpp" />
-		<Unit filename="src/CBackupCtrl.cpp" />
+		<Unit filename="src/CBackupCtrl.cpp">
+			<Option target="Win36" />
+			<Option target="Win41" />
+			<Option target="Linux36" />
+			<Option target="Linux41" />
+			<Option target="LinuxD-41" />
+			<Option target="LinuxD-36" />
+			<Option target="Win42" />
+			<Option target="Win51" />
+			<Option target="Linux51" />
+			<Option target="Linux100" />
+		</Unit>
+		<Unit filename="src/CBackupVP.cpp">
+			<Option target="LinuxVP" />
+			<Option target="LinuxDVP" />
+		</Unit>
 		<Unit filename="src/CBot.cpp" />
 		<Unit filename="src/CBuild.cpp" />
 		<Unit filename="src/CDelete.cpp" />

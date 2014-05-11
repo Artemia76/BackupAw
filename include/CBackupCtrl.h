@@ -28,8 +28,12 @@
 // *                                                                           *
 // *****************************************************************************
 
+#ifndef VPBUILD
+
 #ifndef BACKUPCTRL_H
 #define BACKUPCTRL_H
+
+#ifndef VPBUILD
 
 #ifndef WX_PRECOMP
     #include "wx/wx.h"
@@ -98,3 +102,6 @@ protected:
 };
 
 #endif
+#endif
+#endif
+

@@ -40,9 +40,11 @@
 #include <wx/stdpaths.h>
 #include <wx/filename.h>
 #include <wx/version.h>
-#include <Aw.h>
 
 static const wxString CGRevision = _T("BackupAw V1.6.0");
+
+#ifndef VPBUILD
+#include <Aw.h>
 
 #if AW_BUILD<77
 static const wxString CGVersion = CGRevision + _T(" For AW 3.6");
@@ -61,6 +63,9 @@ static const wxString CGVersion = CGRevision + _T(" For AW 3.6");
         #endif
 	#endif
 #endif
+#else
+    static const wxString CGVersion = CGRevision + _T(" For Virtual Paradise");
+#endif // VPBUILD
 
 static const long LongFileMax = 500000;
 

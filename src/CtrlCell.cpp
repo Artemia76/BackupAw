@@ -77,6 +77,7 @@ CCtrlCell::CCtrlCell ()
 	FileName=_T("");
 	RelX=0;
 	RelZ=0;
+	RelY=0;
 }
 
 //------------------------------------------------------------------------------
@@ -105,7 +106,15 @@ CellRes CCtrlCell::AddObj (CObject Obj)
 {
 	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
+#ifndef VPBUILD
 		if ((Obj.Number==i->Number)&&(Obj.X==i->X)&&(Obj.Y==i->Y)) return CELL_OBJ_ALREADY_EXIST;
+#else
+        if (Obj.Number==i->Number)
+        {
+            UpdateObj(Obj,i - Cell.begin());
+            return CELL_OK;
+        }
+#endif // VPBUILD
 	}
 	Cell.push_back(Obj);
 	return CELL_OK;
@@ -143,9 +152,9 @@ CellRes	CCtrlCell::GetObjSel (CObject& Obj, size_t index)
 
 //------------------------------------------------------------------------------
 
-size_t CCtrlCell::GetNbObj (int x, int y)
+unsigned int CCtrlCell::GetNbObj (int x, int y)
 {
-	size_t cnt=0;
+	unsigned int cnt=0;
 	double X,Y;
 	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
@@ -158,7 +167,7 @@ size_t CCtrlCell::GetNbObj (int x, int y)
 
 //------------------------------------------------------------------------------
 
-size_t CCtrlCell::GetNbObj ()
+unsigned int CCtrlCell::GetNbObj ()
 {
 	return (Cell.end()-Cell.begin());
 }
@@ -348,25 +357,31 @@ CellRes CCtrlCell::LoadSel ()
 
 	for (int i=0; i < NbObj; i++)
 	{
-		s.Printf (_T("Objet%d/"),i);
+		s=wxString::Format(_T("Objet%i/"),i);
 		pConfig->Read(s+_T("Number"),&Obj.Number,0);
 		pConfig->Read(s+_T("Owner"),&Obj.Owner,0);
 		pConfig->Read(s+_T("BTime"),&Obj.BuildTime,0);
-		pConfig->Read(s+_T("X"),&Obj.X,0);
-		pConfig->Read(s+_T("Y"),&Obj.Y,0);
-		pConfig->Read(s+_T("Z"),&Obj.Z,0);
-		pConfig->Read(s+_T("Yaw"),&Obj.Yaw,0);
-		pConfig->Read(s+_T("Tilt"),&Obj.Tilt,0);
-		pConfig->Read(s+_T("Roll"),&Obj.Roll,0);
+		pConfig->Read(s+_T("X"),&Obj.X,0.0);
+		pConfig->Read(s+_T("Y"),&Obj.Y,0.0);
+		pConfig->Read(s+_T("Z"),&Obj.Z,0.0);
+		pConfig->Read(s+_T("Yaw"),&Obj.Yaw,0.0);
+		pConfig->Read(s+_T("Tilt"),&Obj.Tilt,0.0);
+		pConfig->Read(s+_T("Roll"),&Obj.Roll,0.0);
+		pConfig->Read(s+_T("RotX"),&Obj.RotX,0.0);
+		pConfig->Read(s+_T("RotY"),&Obj.RotY,0.0);
+		pConfig->Read(s+_T("RotZ"),&Obj.RotZ,0.0);
+		pConfig->Read(s+_T("RotR"),&Obj.RotR,0.0);
 		pConfig->Read(s+_T("Model"),&Obj.Model,_T(""));
 		pConfig->Read(s+_T("Descr"),&Obj.Description,_T(""));
 		pConfig->Read(s+_T("Action"),&Obj.Action,_T(""));
-#if AW_BUILD>41
+#if AW_BUILD>41 || VPBUILD
+#ifdef AW_BUILD
         pConfig->Read(s+_T("ID"),&Obj.ID,0);
+#endif
 		pConfig->Read(s+_T("Type"),&Obj.Type,0);
 		if (Obj.Type>1)
 		{
-			pConfig->Read(s+_T("Data"),&Obj.DataV4,_T(""));
+			pConfig->Read(s+_T("Data"),&Obj.Data,_T(""));
 		}
 #endif
 		Selection.push_back (Obj);
@@ -387,25 +402,31 @@ CellRes CCtrlCell::LoadGrid ()
 	pConfig->Read(_T("General/NbObj"), &NbObj, 0);
 	for (int i=0; i < NbObj; i++)
 	{
-		s.Printf (_T("Objet%d/"),i);
+		s=wxString::Format(_T("Objet%i/"),i);
 		pConfig->Read(s+_T("Number"),&Obj.Number,0);
 		pConfig->Read(s+_T("Owner"),&Obj.Owner,0);
 		pConfig->Read(s+_T("BTime"),&Obj.BuildTime,0);
-		pConfig->Read(s+_T("X"),&Obj.X,0);
-		pConfig->Read(s+_T("Y"),&Obj.Y,0);
-		pConfig->Read(s+_T("Z"),&Obj.Z,0);
-		pConfig->Read(s+_T("Yaw"),&Obj.Yaw,0);
-		pConfig->Read(s+_T("Tilt"),&Obj.Tilt,0);
-		pConfig->Read(s+_T("Roll"),&Obj.Roll,0);
+		pConfig->Read(s+_T("X"),&Obj.X,0.0);
+		pConfig->Read(s+_T("Y"),&Obj.Y,0.0);
+		pConfig->Read(s+_T("Z"),&Obj.Z,0.0);
+		pConfig->Read(s+_T("Yaw"),&Obj.Yaw,0.0);
+		pConfig->Read(s+_T("Tilt"),&Obj.Tilt,0.0);
+		pConfig->Read(s+_T("Roll"),&Obj.Roll,0.0);
+		pConfig->Read(s+_T("RotX"),&Obj.RotX,0.0);
+		pConfig->Read(s+_T("RotY"),&Obj.RotY,0.0);
+		pConfig->Read(s+_T("RotZ"),&Obj.RotZ,0.0);
+		pConfig->Read(s+_T("RotR"),&Obj.RotR,0.0);
 		pConfig->Read(s+_T("Model"),&Obj.Model,_T(""));
 		pConfig->Read(s+_T("Descr"),&Obj.Description,_T(""));
 		pConfig->Read(s+_T("Action"),&Obj.Action,_T(""));
-#if AW_BUILD>41
+#if AW_BUILD>41 || VPBUILD
+#ifdef AW_BUILD
         pConfig->Read(s+_T("ID"),&Obj.ID,0);
+#endif
 		pConfig->Read(s+_T("Type"),&Obj.Type,0);
 		if (Obj.Type>1)
 		{
-			pConfig->Read(s+_T("Data"),&Obj.DataV4,_T(""));
+			pConfig->Read(s+_T("Data"),&Obj.Data,_T(""));
 		}
 #endif
 		Cell.push_back(Obj);
@@ -432,7 +453,7 @@ CellRes CCtrlCell::SaveSel ()
 	pConfig->Write(_T("General/RelYAW"), RelYaw);
 	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
-		s.Printf (_T("Objet%d/"),i-Selection.begin());
+		s=wxString::Format(_T("Objet%i/"),(unsigned int)(i-Selection.begin()));
 		pConfig->Write(s+_T("Number"),i->Number);
 		pConfig->Write(s+_T("Owner"),i->Owner);
 		pConfig->Write(s+_T("BTime"),i->BuildTime);
@@ -442,15 +463,21 @@ CellRes CCtrlCell::SaveSel ()
 		pConfig->Write(s+_T("Yaw"),i->Yaw);
 		pConfig->Write(s+_T("Tilt"),i->Tilt);
 		pConfig->Write(s+_T("Roll"),i->Roll);
+		pConfig->Write(s+_T("RotX"),i->RotX);
+		pConfig->Write(s+_T("RotY"),i->RotY);
+		pConfig->Write(s+_T("RotZ"),i->RotZ);
+		pConfig->Write(s+_T("RotR"),i->RotR);
 		pConfig->Write(s+_T("Model"),i->Model);
 		pConfig->Write(s+_T("Descr"),i->Description);
 		pConfig->Write(s+_T("Action"),i->Action);
-#if AW_BUILD>41
+#if AW_BUILD>41 || VPBUILD
+#ifdef AW_BUILD
         pConfig->Write(s+_T("ID"),i->ID);
+#endif // AW_BUILD
 		if (i->Type>1)
 		{
 			pConfig->Write(s+_T("Type"),i->Type);
-			pConfig->Write(s+_T("Data"),i->DataV4);
+			pConfig->Write(s+_T("Data"),i->Data);
 		}
 #endif
 	}
@@ -475,7 +502,7 @@ CellRes CCtrlCell::SaveGrid ()
 	pConfig->Write(_T("General/RelYAW"), RelYaw);
 	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
-		s.Printf (_T("Objet%d/"),i-Cell.begin());
+		s=wxString::Format(_T("Objet%i/"),(unsigned int)(i-Cell.begin()));
 		pConfig->Write(s+_T("Number"),i->Number);
 		pConfig->Write(s+_T("Owner"),i->Owner);
 		pConfig->Write(s+_T("BTime"),i->BuildTime);
@@ -485,15 +512,21 @@ CellRes CCtrlCell::SaveGrid ()
 		pConfig->Write(s+_T("Yaw"),i->Yaw);
 		pConfig->Write(s+_T("Tilt"),i->Tilt);
 		pConfig->Write(s+_T("Roll"),i->Roll);
+		pConfig->Write(s+_T("RotX"),i->RotX);
+		pConfig->Write(s+_T("RotY"),i->RotY);
+		pConfig->Write(s+_T("RotZ"),i->RotZ);
+		pConfig->Write(s+_T("RotR"),i->RotR);
 		pConfig->Write(s+_T("Model"),i->Model);
 		pConfig->Write(s+_T("Descr"),i->Description);
 		pConfig->Write(s+_T("Action"),i->Action);
-#if AW_BUILD>41
+#if AW_BUILD>41 || VPBUILD
+#ifdef AW_BUILD
         pConfig->Write(s+_T("ID"),i->ID);
+#endif // AW_BUILD
 		if (i->Type>1)
 		{
 			pConfig->Write(s+_T("Type"),i->Type);
-			pConfig->Write(s+_T("Data"),i->DataV4);
+			pConfig->Write(s+_T("Data"),i->Data);
 		}
 #endif
 	}
@@ -589,11 +622,6 @@ CellRes CCtrlCell::RotateSel (int x, int y, int alpha)
 		YA=(double)i->X;
 		R=sqrt( pow((XA-XO),2)+pow((YA-YO),2));
 		BETA= atan2 ((YA-YO),(XA-XO));
-		/*if (i==0)
-		{
-		    s.Printf("Valeur du rayon : %f, XO=%f, Y0=%f,XA=%f,YA=%f,BETA=%f",R,XO,YO,XA,YA,BETA);
-		    Logger->Log( s ,"BLACK");
-		}*/
 		i->Yaw-=(alpha*10);
 		i->Z = (int)(XO+(R * cos(BETA-ALPHA)));
 		i->X = (int)(YO+(R * sin(BETA-ALPHA)));

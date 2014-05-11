@@ -36,7 +36,12 @@
 #endif
 #include <wx/wxprec.h>
 
-#include "CBackupCtrl.h"
+#ifndef VPBUILD
+    #include "CBackupCtrl.h"
+#else
+    #include "CBackupVP.h"
+#endif // VPBUILD
+
 #include "CtrlCell.h"
 #include "CFilter.h"
 #include "COutils.h"

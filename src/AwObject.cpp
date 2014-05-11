@@ -34,16 +34,20 @@ CObject::CObject
 		int Obj_Numb,
 		int Obj_Owner,
 		int Obj_Build_Time,
-		int Obj_X,
-		int Obj_Y,
-		int Obj_Z,
-		int Obj_Yaw,
-		int Obj_Tilt,
-		int	Obj_Roll,
+		double Obj_X,
+		double Obj_Y,
+		double Obj_Z,
+		double Obj_Yaw,
+		double Obj_Tilt,
+		double Obj_Roll,
+		double Obj_RotX,
+		double Obj_RotY,
+		double Obj_RotZ,
+        double Obj_RotR,
 		wxString Obj_Model,
 		wxString Obj_Descr,
 		wxString Obj_Action
-#if AW_BUILD>76
+#if AW_BUILD>76 || VPBUILD
 		,int Type,
 		wxString Dat,
 		int id
@@ -59,13 +63,19 @@ CObject::CObject
 	Yaw=Obj_Yaw;
 	Tilt=Obj_Tilt;
 	Roll=Obj_Roll;
+	RotX=Obj_RotX;
+	RotY=Obj_RotY;
+	RotZ=Obj_RotZ;
+	RotR=Obj_RotR;
 	Model=Obj_Model;
 	Description=Obj_Descr;
 	Action=Obj_Action;
-#if AW_BUILD>76
+#if AW_BUILD>76 || VPBUILD
 	Type=Type;
-	DataV4=Dat;
+	Data=Dat;
+#if AW_BUILD>76
 	ID=id;
+#endif // AW_BUILD
 #endif
 }
 
@@ -80,13 +90,19 @@ CObject::CObject (const CObject& Obj)
 	Yaw=Obj.Yaw;
 	Tilt=Obj.Tilt;
 	Roll=Obj.Roll;
+	RotX=Obj.RotX;
+	RotY=Obj.RotY;
+	RotZ=Obj.RotZ;
+	RotR=Obj.RotR;
 	Model=Obj.Model;
 	Description=Obj.Description;
 	Action=Obj.Action;
-#if AW_BUILD>76
+#if AW_BUILD>76 || VPBUILD
 	Type=Obj.Type;
-	DataV4=Obj.DataV4;
+	Data=Obj.Data;
+#if AW_BUILD>76
 	ID=Obj.ID;
+#endif
 #endif
 }
 

@@ -76,8 +76,8 @@ static	void				Kill ();
 		CellRes				UpdateObj (CObject Obj, size_t index=0);
 		CellRes				GetObjSel (CObject& Obj, size_t index=0);
 		CellRes				UpdateObjSel (CObject Obj, size_t index=0);
-		size_t				GetNbObj (int x, int y);
-		size_t				GetNbObj ();
+		unsigned int		GetNbObj (int x, int y);
+		unsigned int		GetNbObj ();
 		size_t				GetNbSel ();
 		CellRes				Update (int* Buffer, int XMax,int YMax,int w, int h);
 		CellRes				UpdateSel (int* Buffer, int XMax,int YMax,int w, int h);
@@ -115,10 +115,10 @@ static	void				Kill ();
 		int					RegioS;
 		int					RegioE;
 		wxString			FileName;
-		int					RelX;
-		int					RelZ;
-		int					RelY;
-		int					RelYaw;
+		double				RelX;
+		double				RelZ;
+		double				RelY;
+		double				RelYaw;
 
 	private:
 

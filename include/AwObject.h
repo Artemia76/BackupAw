@@ -37,7 +37,11 @@
 
 #include <wx/wxprec.h>
 
+#ifndef VPBUILD
 #include <Aw.h>
+#else
+#include <VP.h>
+#endif // VPBUILD
 
 class CObject
 {
@@ -47,16 +51,20 @@ class CObject
 						int Obj_Numb=0,
 						int Obj_Owner=0,
 						int Obj_Build_Time=0,
-						int Obj_X=0,
-						int Obj_Y=0,
-						int Obj_Z=0,
-						int Obj_Yaw=0,
-						int Obj_Tilt=0,
-						int	Obj_Roll=0,
+						double Obj_X=0,
+						double Obj_Y=0,
+						double Obj_Z=0,
+						double Obj_Yaw=0,
+						double Obj_Tilt=0,
+						double Obj_Roll=0,
+						double Obj_RotX=0,
+						double Obj_RotY=0,
+						double Obj_RotZ=0,
+						double Obj_RotR=0,
 						wxString Obj_Model=_T(""),
 						wxString Obj_Descr=_T(""),
 						wxString Obj_Action=_T("")
-#if AW_BUILD>76
+#if AW_BUILD>76 || VPBUILD
 						,int Type=0,
 						wxString Dat=_T(""),
 						int id=0
@@ -68,16 +76,22 @@ class CObject
 		int			Number;
 		int			Owner;
 		int			BuildTime;
-		int			X;
-		int			Y;
-		int			Z;
-		int			Yaw;
-		int			Tilt;
-		int			Roll;
-#if AW_BUILD>76
+		double		X;
+		double  	Y;
+		double  	Z;
+		double		Yaw;
+		double		Tilt;
+		double		Roll;
+		double      RotX;
+		double      RotY;
+		double      RotZ;
+		double      RotR;
+#if AW_BUILD>76 || VPBUILD
 		int			Type;
-		wxString	DataV4;
+		wxString	Data;
+#if AW_BUILD>76
         int			ID;
+#endif
 #endif
 		wxString	Model;
 		wxString	Description;

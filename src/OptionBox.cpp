@@ -60,9 +60,14 @@ COptDial::COptDial
 // Création des Items
 	item0 = new wxBoxSizer( wxVERTICAL );
 	item1 = new wxBoxSizer( wxHORIZONTAL );
-	s.Printf(_T("%d"),Bot->Citoyen);
+
+#ifndef VPBUILD
 	item2 = new wxStaticText( this, -1, _("Citizen :"), wxDefaultPosition, wxSize(100,-1), wxALIGN_RIGHT );
-	item3 = new wxTextCtrl( this, -1, s , wxDefaultPosition, wxSize(80,-1), 0 );
+	item3 = new wxTextCtrl( this, -1, wxString::Format(_T("%i"),Bot->Citoyen)) , wxDefaultPosition, wxSize(80,-1), 0 );
+#else
+    item2 = new wxStaticText( this, -1, _("User Name :"), wxDefaultPosition, wxSize(100,-1), wxALIGN_RIGHT );
+    item3 = new wxTextCtrl( this, -1, Bot->UserName , wxDefaultPosition, wxSize(80,-1), 0 );
+#endif
 	item4 = new wxStaticText( this, -1, _("PassWord :"), wxDefaultPosition, wxSize(100,-1), wxALIGN_RIGHT );
 	item5 = new wxTextCtrl( this, -1, Bot->PassWord, wxDefaultPosition, wxSize(80,-1),wxTE_PASSWORD );
 	item6 = new wxBoxSizer( wxHORIZONTAL );
@@ -70,7 +75,7 @@ COptDial::COptDial
 	item8 = new wxTextCtrl( this, -1, Bot->Univers, wxDefaultPosition, wxSize(120,-1), 0 );
 	item9 = new wxStaticText( this, -1, _("Port :"), wxDefaultPosition, wxSize(60,-1), wxALIGN_RIGHT );
 	s.Printf(_T("%d"),Bot->Port);
-	item10 = new wxSpinCtrl( this, -1, s , wxDefaultPosition, wxSize(60,-1), wxSP_ARROW_KEYS, 0 ,65535, Bot->Port ); //wxTE_READONLY
+	item10 = new wxSpinCtrl( this, -1, s , wxDefaultPosition, wxSize(120,-1), wxSP_ARROW_KEYS, 0 ,65535, Bot->Port ); //wxTE_READONLY
 	item11 = new wxBoxSizer( wxHORIZONTAL );
 	item12 = new wxStaticText( this, -1, _("Bot Name :"), wxDefaultPosition, wxSize(100,-1), wxALIGN_RIGHT );
 	item13 = new wxTextCtrl( this, -1, Bot->Nom, wxDefaultPosition, wxSize(80,-1), 0 );
@@ -142,11 +147,14 @@ COptDial::~COptDial ()
 
 void COptDial::OnOk(wxCommandEvent& WXUNUSED(event))
 {
+#ifndef VPBUILD
 	wxString s;
-	long Valeur;
 	s=item3->GetValue();
 	s.ToLong(&Valeur);
 	Bot->Citoyen=(int)Valeur;
+#else
+    Bot->UserName=item3->GetValue();
+#endif
 	Bot->Sauve();
 	Bot->PassWord=item5->GetValue();
 	Bot->Univers=item8->GetValue();
