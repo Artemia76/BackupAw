@@ -63,7 +63,7 @@ COptDial::COptDial
 
 #ifndef VPBUILD
 	item2 = new wxStaticText( this, -1, _("Citizen :"), wxDefaultPosition, wxSize(100,-1), wxALIGN_RIGHT );
-	item3 = new wxTextCtrl( this, -1, wxString::Format(_T("%i"),Bot->Citoyen)) , wxDefaultPosition, wxSize(80,-1), 0 );
+	item3 = new wxTextCtrl( this, -1, wxString::Format(_T("%i"),Bot->Citoyen) , wxDefaultPosition, wxSize(80,-1), 0 );
 #else
     item2 = new wxStaticText( this, -1, _("User Name :"), wxDefaultPosition, wxSize(100,-1), wxALIGN_RIGHT );
     item3 = new wxTextCtrl( this, -1, Bot->UserName , wxDefaultPosition, wxSize(80,-1), 0 );
@@ -148,9 +148,8 @@ COptDial::~COptDial ()
 void COptDial::OnOk(wxCommandEvent& WXUNUSED(event))
 {
 #ifndef VPBUILD
-	wxString s;
-	s=item3->GetValue();
-	s.ToLong(&Valeur);
+	long Valeur;
+	item3->GetValue().ToLong(&Valeur);
 	Bot->Citoyen=(int)Valeur;
 #else
     Bot->UserName=item3->GetValue();

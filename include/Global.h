@@ -41,11 +41,9 @@
 #include <wx/filename.h>
 #include <wx/version.h>
 
-static const wxString CGRevision = _T("BackupAw V1.6.0");
-
 #ifndef VPBUILD
 #include <Aw.h>
-
+static const wxString CGRevision = _T("BackupAw V1.6.0");
 #if AW_BUILD<77
 static const wxString CGVersion = CGRevision + _T(" For AW 3.6");
 #else
@@ -64,6 +62,7 @@ static const wxString CGVersion = CGRevision + _T(" For AW 3.6");
 	#endif
 #endif
 #else
+	static const wxString CGRevision = _T("BackupVP V1.6.0");
     static const wxString CGVersion = CGRevision + _T(" For Virtual Paradise");
 #endif // VPBUILD
 
@@ -75,7 +74,11 @@ static const  wxString CGLicence = CGVersion
 +   _T("\nThis software is under GPL v2")
 +	_T("\nBuild with ") + wxVERSION_STRING
 +	_T("\n\nThird Part License Terms:\n")
+#ifndef VPBUILD
 +	_T("BACKUPAW use the (c)Activeworlds SDK published for devellopers, then this software depend of the AW terms in the \"AW_SDK_License_(aw.dll).rtf\" file.")
+#else
++	_T("BACKUPVP use the Virtual Paradise SDK published by is owner.")
+#endif
 ;
 
 static wxString BackupAW_Website = _T("https://sourceforge.net/projects/backupaw/");

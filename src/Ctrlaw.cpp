@@ -185,13 +185,7 @@ void CCtrlAw::On_Cell_Begin(void)
 #endif // VPBUILD
 
 //------------------------------------------------------------------------------
-#ifndef VPBUILD
-void CCtrlAw::On_Cell_End(void)
-{
-	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
-	PtCCtrlAw->EventDispatch (AW_EVENT_CELL_END, Robot);
-}
-#else
+#ifdef VPBUILD
 void CCtrlAw::On_Cell_End(VPInstance Instance)
 {
 	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);

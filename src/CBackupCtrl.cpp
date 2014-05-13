@@ -236,7 +236,7 @@ void CBackupCtrl::Cell_Object (CBot* Bot)
 	if (NObj.Type>1)
 	{
 		DatPtr = (unsigned char*) aw_data (AW_OBJECT_DATA, &DatLen);
-		NObj.DataV4 = BinToHex (DatPtr,DatLen);
+		NObj.Data = BinToHex (DatPtr,DatLen);
 	}
 	#endif
 	Cell->AddObj (NObj);
@@ -272,7 +272,7 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
 	size_t NbObj=10;
 	#if AW_BUILD>41
     size_t LenDat=0;
-	unsigned char* DataV4=0;
+	unsigned char* Data=0;
 	#endif
 	CObject Obj;
 	if (!CtrlAw->GetBot()->IsOnWorld()) return;
@@ -326,11 +326,11 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
 			aw_int_set (AW_OBJECT_TYPE, Obj.Type);
 			if (Obj.Type>1)
 			{
-				LenDat = Obj.DataV4.Len()/2;
-				DataV4= new unsigned char[LenDat];
-				HexToBin(Obj.DataV4,DataV4);
-				aw_data_set (AW_OBJECT_DATA, (char*)DataV4,LenDat);
-				delete DataV4;
+				LenDat = Obj.Data.Len()/2;
+				Data= new unsigned char[LenDat];
+				HexToBin(Obj.Data,Data);
+				aw_data_set (AW_OBJECT_DATA, (char*)Data,LenDat);
+				delete Data;
 			}
 			#endif
 			if (CTBuild)	aw_object_load ();

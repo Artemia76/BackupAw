@@ -5,6 +5,7 @@
     <AW_PATH>F:\devel\activeworlds\</AW_PATH>
     <WX_BASE>30</WX_BASE>
     <UPX_PATH>F:\devel\upx\</UPX_PATH>
+    <VP_PATH>F:\devel\activeworlds\</VP_PATH>
   </PropertyGroup>
   <PropertyGroup>
     <IntDir>$(Platform)\$(Configuration)\obj\</IntDir>
@@ -26,6 +27,10 @@
     </BuildMacro>
     <BuildMacro Include="UPX_PATH">
       <Value>$(UPX_PATH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="VP_PATH">
+      <Value>$(VP_PATH)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
 </Project>

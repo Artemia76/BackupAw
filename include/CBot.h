@@ -33,6 +33,8 @@
 
 #ifdef VPBUILD
 	#include <VP.h>
+#else
+	#include <Aw.h>
 #endif // VPBUILD
 
 #ifndef  WX_PRECOMP

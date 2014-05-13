@@ -194,7 +194,9 @@ void CBot::Login_CB(int rc)
 	{
 		wxLogMessage (_("Connected on Universe"));
 		On_Universe=true;
+#ifdef VPBUILD
 		NeedEvent=true;
+#endif
 	}
 }
 

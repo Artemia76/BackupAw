@@ -264,8 +264,8 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
 		for (size_t i=0; i < NbObj; i++)
 		{
 			Cell->GetObjSel(Obj,0);
-			vp_int_set(Instance,VP_OBJECT_ID, Obj.Number);
-			vp_object_delete (Instance);
+			//vp_int_set(Instance,VP_OBJECT_ID, Obj.Number);
+			vp_object_delete (Instance, Obj.Number);
 			Cell->DelObjSel(0);
 			DelEC++;
 		}

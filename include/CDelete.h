@@ -40,7 +40,7 @@
 #ifndef VPBUILD
     #include "CBackupCtrl.h"
 #else
-    #include "CBackupVP.h""
+    #include "CBackupVP.h"
 #endif // VPBUILD
 
 enum

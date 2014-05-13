@@ -44,11 +44,20 @@ bool CMainApp::OnInit ()
 {
 	long lng=-1;
 	ConfPath = wxStandardPaths::Get().GetUserLocalDataDir() + wxFileName::GetPathSeparator();
-	wxFileName ConfFile = ConfPath + _T("backupaw.ini");
+	wxFileName ConfFile = ConfPath +
+#ifndef VPBUILD
+	_T("backupaw.ini");
+#else
+	_T("backupvp.ini");
+#endif
 	if (!ConfFile.DirExists()) ConfFile.Mkdir(0777, wxPATH_MKDIR_FULL);
 	pConfig = new wxFileConfig
 		(
+#ifndef VPBUILD
 			_T("BackupAw"),
+#else
+			_T("BackupVP"),
+#endif
 			wxEmptyString,
 			ConfFile.GetLongPath (),
 			wxEmptyString,
