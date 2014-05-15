@@ -108,7 +108,7 @@ wxString CPassPriv::Decode(wxString MotDePasse)
 	int j=0;
 	unsigned int temp;
 	wxString Resultat;
-	int Long=MotDePasse.Len();
+	size_t Long=MotDePasse.Len();
 	for (size_t i=0; i<(Long/2); i++)
 	{
 		buff[0]=MotDePasse[i*2];

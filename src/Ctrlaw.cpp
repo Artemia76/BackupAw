@@ -143,7 +143,7 @@ int CCtrlAw::Init (bool flag, size_t NbBot)
 				Bot.back()->Connect();
 			}
 		}
-		Heart->Start(200);
+		Heart->Start(50);
 		return 0;
 	}
 	else if((!flag) && (AwInit))

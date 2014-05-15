@@ -51,7 +51,7 @@ wxString COutils::CoordToAw (int x, int z)
 // Convert AW precise coordinates to String like 0.000N 0.000W
 // ToDo : Add alt and YAW support
 
-wxString COutils::CoordToAwF (int x, int z)
+wxString COutils::CoordToAwF (double x, double z)
 {
 	wxString Coord,S;
 	if (z>=0) S.Printf (_T("%.3fN "), ((double)z/1000));

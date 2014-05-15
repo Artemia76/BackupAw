@@ -148,7 +148,11 @@ void CBot::Connection(bool flag)
 			aw_string_set (AW_LOGIN_APPLICATION, "BackupAw");
 			aw_string_set (AW_LOGIN_NAME,Nom.mb_str());
 #endif
-			aw_login();
+			if (rc=aw_login())
+			{
+				wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(rc));
+				ConEC=false;
+			}
 #else
 			Login_CB(vp_login (Instance, UserName.utf8_str(), PassWord.utf8_str(),Nom.utf8_str()));
 #endif

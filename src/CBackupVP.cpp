@@ -165,20 +165,26 @@ void CBackupCtrl::CB_Object_Delete (int rc, CBot* Bot)
 
 void CBackupCtrl::Scan ()
 {
-    int rc;
 	if ((!Scanning)&&CtrlAw->GetBot()->IsOnWorld())
 	{
-		//memset (sequence, 0, sizeof (sequence));
-		if (rc=vp_query_cell(CtrlAw->GetBot()->GetInstance() , OrigX, OrigY))
+		memset (SequenceX, 0, sizeof (SequenceX));
+		memset (SequenceZ, 0, sizeof (SequenceZ));
+		// Init query5x5 Array
+		int i,j;
+		for (i=0 ; i < 15 ; i++)
 		{
-            wxLogMessage(_("Unable to query cell. Reason : ") + CtrlAw->GetBot()->GetRCString(rc));
-        }
-        else
-        {
-            wxLogMessage(_("Scanning..."));
-            Scanning=true;
-            BlockScroll=true;
-        }
+			SequenceX [i] = (OrigX - 7) +i;
+			for (j=0; j < 15 ; j++)
+			{
+				SequenceZ [j] = (OrigY - 7) + j; 
+			}
+		}
+		PtrX = PtrZ = 0 ;
+        wxLogMessage(_("Scanning..."));
+        Scanning=true;
+        BlockScroll=true;
+		AskCell(CtrlAw->GetBot());
+        
 	}
 }
 
@@ -192,8 +198,8 @@ void CBackupCtrl::Event_Object (CBot* Bot)
 	unsigned int DatLen=0;
 	NObj.Number = vp_int(Instance,VP_OBJECT_ID);
 	NObj.X=vp_float(Instance,VP_OBJECT_X) * 1000.0 ;
-	NObj.Y=vp_float(Instance,VP_OBJECT_Y) * 1000.0 ;
 	NObj.Z=vp_float(Instance,VP_OBJECT_Z) * 1000.0 ;
+	NObj.Y=vp_float(Instance,VP_OBJECT_Y) * 1000.0 ;
 	NObj.RotX=vp_float(Instance,VP_OBJECT_ROTATION_X);
 	NObj.RotY=vp_float(Instance,VP_OBJECT_ROTATION_Y);
 	NObj.RotZ=vp_float(Instance,VP_OBJECT_ROTATION_Z);
@@ -218,12 +224,41 @@ void CBackupCtrl::Event_Object (CBot* Bot)
 
 void CBackupCtrl::Event_Cell_End (CBot* Bot)
 {
-    wxLogMessage(_("End of scan."));
-	Scanning=false;
-	BlockScroll=false;
-    Survey=true;
+	VPInstance Instance = Bot->GetInstance();
+	wxString CellStr = CoordToAw (vp_int(Instance, VP_CELL_X )*1000, vp_int(Instance, VP_CELL_Z )*1000);
+	CellMap[CellStr]=true;
+	if (Scanning) AskCell(Bot);
 }
 
+void CBackupCtrl::AskCell(CBot* Bot)
+{
+	VPInstance Instance = Bot->GetInstance();
+	int rc;
+	wxString CellStr;
+	if (rc=vp_query_cell(CtrlAw->GetBot()->GetInstance() , SequenceX [PtrX], SequenceZ [PtrZ]))
+	{
+            wxLogMessage(_("Unable to query cell. Reason : ") + CtrlAw->GetBot()->GetRCString(rc));
+    }
+	do
+	{
+		if ((PtrX == 14) && (PtrZ == 14))
+		{
+			wxLogMessage(_("End of scan. " + CellStr ));
+			Scanning=false;
+			BlockScroll=false;
+			Survey=true;
+			return;
+		}
+		if (PtrX ==14)
+		{
+			PtrX = 0;
+			PtrZ ++;
+		}
+		else PtrX++;
+		CellStr = CoordToAw (SequenceX [PtrX]*1000, SequenceZ [PtrZ]*1000);
+	}
+	while ( CellMap.find(CellStr) != CellMap.end());
+}
 //------------------------------------------------------------------------------
 
 bool CBackupCtrl::IsScanning	()
@@ -365,5 +400,6 @@ void CBackupCtrl::Reset()
 	BuildEC=0;
 	DelEC=0;
 	if (Map) Map->Refresh ();
+	CellMap.clear();
 }
 #endif

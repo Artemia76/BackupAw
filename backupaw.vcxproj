@@ -139,7 +139,6 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_VP|x64'">$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_sdk100|x64'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_sdk101|Win32'">true</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_VP|Win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_sdk41|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_sdk101|x64'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_VP|x64'">false</LinkIncremental>
@@ -156,6 +155,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_VP|Win32'">
     <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>backupvp</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_sdk41|Win32'">
     <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>

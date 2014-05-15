@@ -41,7 +41,7 @@ class COutils
 {
     public:
         wxString		CoordToAw	(int x=0, int z=0);
-        wxString		CoordToAwF	(int x=0, int z=0);
+        wxString		CoordToAwF	(double x=0, double z=0);
         void			AwToCoord	(int& x, int& y,wxString Coord=_T(""));
 		void			AwToCoord	(double& x, double& y,double& a, wxString Coord=_T(""));
 		wxString		BinToHex	(unsigned char* dat_ptr=0, size_t Longueur=0);

@@ -38,6 +38,7 @@
 #endif
 #include <wx/wxprec.h>
 #include <wx/config.h>
+#include <wx/hashmap.h>
 
 #include "Ctrlaw.h"
 #include "CtrlCell.h"
@@ -46,6 +47,8 @@ enum
 {
 	OBJ_TIME = wxID_HIGHEST
 };
+
+WX_DECLARE_STRING_HASH_MAP(bool, hmCellMap);
 
 class CBackupCtrl: public wxEvtHandler, public COutils, public CAwListenner
 {
@@ -78,10 +81,16 @@ static	CBackupCtrl*	PtCBackupCtrl;
 		void			Event_Object (CBot* Bot);
 		void			Event_Object_Delete (CBot* Bot);
 		void            Event_Cell_End (CBot* Bot);
+		void			AskCell (CBot* Bot);
 
 		wxTimer*		ObjectTimer;
 		wxConfigBase*	pConfig;
 		CCtrlCell*		Cell;
+		hmCellMap		CellMap;	
+		int				SequenceX[15];
+		int				SequenceZ[15];
+		int				PtrX;
+		int				PtrZ;
 		int			    CellX;
 		int			    CellZ;
 
@@ -90,7 +99,6 @@ protected:
 		bool			Survey;
 		size_t			DelEC;
 		size_t			BuildEC;
-//		int				sequence[5][5];
         bool			Event (vp_event_t id, CBot* Bot);
 		bool			CallBack (vp_callback_t id, int rc, CBot* Bot);
 
