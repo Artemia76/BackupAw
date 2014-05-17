@@ -36,11 +36,11 @@
 #endif
 #include <wx/wxprec.h>
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
     #include "CBackupCtrl.h"
 #else
     #include "CBackupVP.h"
-#endif // VPBUILD
+#endif // VP_BUILD
 
 #include "CtrlCell.h"
 #include "CFilter.h"

@@ -28,7 +28,7 @@
 // *                                                                           *
 // *****************************************************************************
 
-#ifdef VPBUILD
+#ifdef VP_BUILD
 
 #ifndef BACKUPCTRL_H
 #define BACKUPCTRL_H
@@ -49,6 +49,7 @@ enum
 };
 
 WX_DECLARE_STRING_HASH_MAP(bool, hmCellMap);
+WX_DECLARE_HASH_MAP(int,CObject, wxIntegerHash, wxIntegerEqual, hmObjectCB);
 
 class CBackupCtrl: public wxEvtHandler, public COutils, public CAwListenner
 {
@@ -76,8 +77,8 @@ static	CBackupCtrl*	PtCBackupCtrl;
 
 						CBackupCtrl();
 						~CBackupCtrl();
-		void			CB_Object_Add (int rc, CBot* Bot);
-        void			CB_Object_Delete (int rc, CBot* Bot);
+		void			CB_Object_Add (int rc, int Handle, CBot* Bot);
+        void			CB_Object_Delete (int rc, int Handle, CBot* Bot);
 		void			Event_Object (CBot* Bot);
 		void			Event_Object_Delete (CBot* Bot);
 		void            Event_Cell_End (CBot* Bot);
@@ -86,9 +87,11 @@ static	CBackupCtrl*	PtCBackupCtrl;
 		wxTimer*		ObjectTimer;
 		wxConfigBase*	pConfig;
 		CCtrlCell*		Cell;
-		hmCellMap		CellMap;	
+		hmCellMap		CellMap;
+		hmObjectCB		ObjectMap;
 		int				SequenceX[15];
 		int				SequenceZ[15];
+		int				CellQueryCnt;
 		int				PtrX;
 		int				PtrZ;
 		int			    CellX;
@@ -100,7 +103,7 @@ protected:
 		size_t			DelEC;
 		size_t			BuildEC;
         bool			Event (vp_event_t id, CBot* Bot);
-		bool			CallBack (vp_callback_t id, int rc, CBot* Bot);
+		bool			CallBack (vp_callback_t id, int rc, int Handle, CBot* Bot);
 
 		void			OnObjTimer		(wxTimerEvent  & event);
 		wxDECLARE_EVENT_TABLE();

@@ -61,7 +61,7 @@ COptDial::COptDial
 	item0 = new wxBoxSizer( wxVERTICAL );
 	item1 = new wxBoxSizer( wxHORIZONTAL );
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
 	item2 = new wxStaticText( this, -1, _("Citizen :"), wxDefaultPosition, wxSize(100,-1), wxALIGN_RIGHT );
 	item3 = new wxTextCtrl( this, -1, wxString::Format(_T("%i"),Bot->Citoyen) , wxDefaultPosition, wxSize(80,-1), 0 );
 #else
@@ -147,7 +147,7 @@ COptDial::~COptDial ()
 
 void COptDial::OnOk(wxCommandEvent& WXUNUSED(event))
 {
-#ifndef VPBUILD
+#ifndef VP_BUILD
 	long Valeur;
 	item3->GetValue().ToLong(&Valeur);
 	Bot->Citoyen=(int)Valeur;

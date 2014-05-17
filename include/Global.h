@@ -41,40 +41,42 @@
 #include <wx/filename.h>
 #include <wx/version.h>
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
 #include <Aw.h>
-static const wxString CGRevision = _T("BackupAw V1.6.0");
+static const wxString AppName = _T("BackupAW");
+static const wxString AppRevision = AppName + _T(" V1.6.0");
 #if AW_BUILD<77
-static const wxString CGVersion = CGRevision + _T(" For AW 3.6");
+static const wxString AppVersion = AppRevision + _T(" For AW 3.6");
 #else
 	#if AW_BUILD<85
-		static const wxString CGVersion = CGRevision + _T(" For AW 4.1");
+		static const wxString AppVersion = AppRevision + _T(" For AW 4.1");
 	#else
         #if AW_BUILD<93
-            static const wxString CGVersion = CGRevision + _T(" For AW 4.2");
+            static const wxString AppVersion = AppRevision + _T(" For AW 4.2");
         #else
 			#if AW_BUILD<100
-				static const wxString CGVersion = CGRevision + _T(" For AW 5.1");
+				static const wxString AppVersion = AppRevision + _T(" For AW 5.1");
 			#else
-				static const wxString CGVersion = CGRevision + _T(" For AW 5.2 or 6.0");
+				static const wxString AppVersion = AppRevision + _T(" For AW 5.2 or 6.0");
 			#endif
         #endif
 	#endif
 #endif
 #else
-	static const wxString CGRevision = _T("BackupVP V1.6.0");
-    static const wxString CGVersion = CGRevision + _T(" For Virtual Paradise");
-#endif // VPBUILD
+	static const wxString AppName = _T("BackupVP");
+	static const wxString AppRevision = AppName + _T(" V1.6.0");
+    static const wxString AppVersion = AppRevision + _T(" For Virtual Paradise");
+#endif // VP_BUILD
 
 static const long LongFileMax = 500000;
 
 static const  int NbLigneMax = 150;
 
-static const  wxString CGLicence = CGVersion
+static const  wxString AppLicence = AppVersion
 +   _T("\nThis software is under GPL v2")
 +	_T("\nBuild with ") + wxVERSION_STRING
 +	_T("\n\nThird Part License Terms:\n")
-#ifndef VPBUILD
+#ifndef VP_BUILD
 +	_T("BACKUPAW use the (c)Activeworlds SDK published for devellopers, then this software depend of the AW terms in the \"AW_SDK_License_(aw.dll).rtf\" file.")
 #else
 +	_T("BACKUPVP use the Virtual Paradise SDK published by is owner.")

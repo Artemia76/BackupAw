@@ -28,12 +28,12 @@
 // *                                                                           *
 // *****************************************************************************
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
 
 #ifndef BACKUPCTRL_H
 #define BACKUPCTRL_H
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
 
 #ifndef WX_PRECOMP
     #include "wx/wx.h"

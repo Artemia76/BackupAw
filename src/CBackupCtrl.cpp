@@ -27,7 +27,7 @@
 // *   Revision          : A                                                   *
 // *                                                                           *
 // *****************************************************************************
-#ifndef VPBUILD
+#ifndef VP_BUILD
 #include "CBackupCtrl.h"
 
 wxBEGIN_EVENT_TABLE(CBackupCtrl, wxEvtHandler)

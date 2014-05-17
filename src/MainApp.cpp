@@ -44,20 +44,11 @@ bool CMainApp::OnInit ()
 {
 	long lng=-1;
 	ConfPath = wxStandardPaths::Get().GetUserLocalDataDir() + wxFileName::GetPathSeparator();
-	wxFileName ConfFile = ConfPath +
-#ifndef VPBUILD
-	_T("backupaw.ini");
-#else
-	_T("backupvp.ini");
-#endif
+	wxFileName ConfFile = ConfPath + AppName.Lower() + _T(".ini");
 	if (!ConfFile.DirExists()) ConfFile.Mkdir(0777, wxPATH_MKDIR_FULL);
 	pConfig = new wxFileConfig
 		(
-#ifndef VPBUILD
-			_T("BackupAw"),
-#else
-			_T("BackupVP"),
-#endif
+			AppName,
 			wxEmptyString,
 			ConfFile.GetLongPath (),
 			wxEmptyString,
@@ -96,7 +87,7 @@ bool CMainApp::OnInit ()
     wxLocale::AddCatalogLookupPathPrefix(_T("./lng/"));
 
     // Initialize the catalogs we'll be using
-    m_locale.AddCatalog(_T("backupaw"));
+    m_locale.AddCatalog(_T("backup"));
 
     // this catalog is installed in standard location on Linux systems and
     // shows that you may make use of the standard message catalogs as well

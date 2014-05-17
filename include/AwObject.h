@@ -37,11 +37,11 @@
 
 #include <wx/wxprec.h>
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
 #include <Aw.h>
 #else
 #include <VP.h>
-#endif // VPBUILD
+#endif // VP_BUILD
 
 class CObject
 {
@@ -64,7 +64,7 @@ class CObject
 						wxString Obj_Model=_T(""),
 						wxString Obj_Descr=_T(""),
 						wxString Obj_Action=_T("")
-#if AW_BUILD>76 || VPBUILD
+#if AW_BUILD>76 || VP_BUILD
 						,int Type=0,
 						wxString Dat=_T(""),
 						int id=0
@@ -86,7 +86,7 @@ class CObject
 		double      RotY;
 		double      RotZ;
 		double      RotR;
-#if AW_BUILD>76 || VPBUILD
+#if AW_BUILD>76 || VP_BUILD
 		int			Type;
 		wxString	Data;
 #if AW_BUILD>76

@@ -42,11 +42,11 @@
 #include <wx/config.h>
 #include <wx/toolbar.h>
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
 #include "CBackupCtrl.h"
 #else
 #include "CBackupVP.h"
-#endif // VPBUILD
+#endif // VP_BUILD
 
 #include "MapCanvas.h"
 #include "ToolBook.h"

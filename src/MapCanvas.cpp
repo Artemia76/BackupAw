@@ -203,7 +203,7 @@ void CMapCanvas::OnMouseMove(wxMouseEvent &event)
 	Position=CoordToAw(CellPtX*1000,CellPtY*1000);
 	int NbTamp=Tampon [(BackupCtrl->OrigX+MCellx)-CellPtX][(BackupCtrl->OrigY+MCelly)-CellPtY];
 	int NbSel=Sel [(BackupCtrl->OrigX+MCellx)-CellPtX][(BackupCtrl->OrigY+MCelly)-CellPtY];
-	if (Sel) Numb.Printf (_(":Nb of Obj=%d in project"), NbSel);
+	if (Sel) Numb.Printf (_(":Nb of Obj=%d in cell"), NbSel);
 	else Numb.Printf (_(":Nb of Obj=%d"), NbTamp);
 	owner->SetStatusText ( Position + Numb, 2);
 	if (SelectGrid && Filter && (!BackupCtrl->BlockSelect))

@@ -82,7 +82,8 @@ CMainFrame::CMainFrame
 	(
 		(wxWindow*)NULL,
 		wxID_ANY,
-		_T("BackupAw"),
+
+		AppName,
 		wxDefaultPosition,
 		wxDefaultSize,
 		wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU |
@@ -187,7 +188,7 @@ CMainFrame::CMainFrame
 	SizerPrin->Add(SizerSec, 3, wxEXPAND);
 	SizerPrin->Add(LogZone, 1, wxEXPAND);
 	SetSizer(SizerPrin);
-	wxLogMessage (_("BackupAw Started."));
+	wxLogMessage (AppName + _(" Started."));
 
 	int	x = pConfig->Read(_T("/Fenetre/prinx"), 50),
 		y = pConfig->Read(_T("/Fenetre/priny"), 50),
@@ -198,6 +199,7 @@ CMainFrame::CMainFrame
         x=50;
         y=50;
     }
+    Cell->FileName=pConfig->Read(_T("/Project/LastFileName"), _T("default.bap"));
 	SetSize(wxSize(w,h));
 	SetPosition (wxPoint(x,y));
 	SetSizeHints (665,660);
@@ -349,7 +351,6 @@ void CMainFrame::OnAbout (wxCommandEvent& WXUNUSED(event))
 void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 {
 	wxString s;
-	wxToolBarToolBase* Tool=0;
 	wxMenuBar* Menu = GetMenuBar ();
 	wxMenuItem* ItemScan = Menu->FindItem (MF_MENU_SCAN);
 	wxMenuItem* ItemAwCon = Menu->FindItem (MF_MENU_AWCON);
@@ -358,10 +359,8 @@ void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 	{
 		ItemAwCon->SetItemLabel (_("Disconnect"));
 		ItemAwCon->SetHelp (_("Universe Disconnection"));
-		if (Tool=ToolBar->FindById(MF_MENU_AWCON))
-		{
-			Tool->SetNormalBitmap (wxBitmap(connect_xpm));
-		}
+		ToolBar->DeleteTool (MF_MENU_AWCON);
+		ToolBar->InsertTool ( 3,MF_MENU_AWCON,_("Disconnect"), wxBitmap(connect_xpm), wxNullBitmap, wxITEM_NORMAL,_("Universe Disconnection") );
 		AConnect=true;
 		ToolBar->Realize();
 	}
@@ -369,10 +368,8 @@ void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 	{
 		ItemAwCon->SetItemLabel (_("Connect"));
 		ItemAwCon->SetHelp (_("Universe Connecting"));
-		if (Tool=ToolBar->FindById(MF_MENU_AWCON))
-		{
-			Tool->SetNormalBitmap (wxBitmap(deco_xpm));
-		}
+        ToolBar->DeleteTool (MF_MENU_AWCON);
+		ToolBar->InsertTool ( 3,MF_MENU_AWCON,_("Connect"), wxBitmap(deco_xpm), wxNullBitmap, wxITEM_NORMAL,_("Universe Connecting") );
 		AConnect=false;
 		ToolBar->Realize();
 	}
@@ -404,47 +401,44 @@ void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 	}
 	if (ACntEarth!=CntEarth)
 	{
-		if (Tool=ToolBar->FindById(MF_MENU_SCAN))
+        ToolBar->DeleteTool (MF_MENU_SCAN);
+		switch (CntEarth)
 		{
-			switch (CntEarth)
-			{
-				case 0 :
-					Tool->SetNormalBitmap (wxBitmap(earth1_xpm));
+			case 0 :
+				ToolBar->InsertTool ( 5,MF_MENU_SCAN,_("Scan World"), wxBitmap(earth1_xpm),wxNullBitmap, wxITEM_NORMAL, _("Scan World"));
+                break;
+			case 1 :
+				ToolBar->InsertTool ( 5,MF_MENU_SCAN,_("Scan World"), wxBitmap(earth2_xpm),wxNullBitmap, wxITEM_NORMAL, _("Scan World"));
 				break;
-				case 1 :
-					Tool->SetNormalBitmap (wxBitmap(earth2_xpm));
-					break;
-				case 2 :
-					Tool->SetNormalBitmap (wxBitmap(earth3_xpm));
-					break;
-				case 3 :
-					Tool->SetNormalBitmap (wxBitmap(earth4_xpm));
-					break;
-				case 4 :
-					Tool->SetNormalBitmap (wxBitmap(earth5_xpm));
-					break;
-				default :
-					Tool->SetNormalBitmap (wxBitmap(earth_xpm));
-			}
-			ACntEarth=CntEarth;
-			Tool->SetShortHelp(_("Scan World"));
-			ToolBar->Realize ();
+			case 2 :
+				ToolBar->InsertTool ( 5,MF_MENU_SCAN,_("Scan World"), wxBitmap(earth3_xpm),wxNullBitmap, wxITEM_NORMAL, _("Scan World"));
+				break;
+			case 3 :
+				ToolBar->InsertTool ( 5,MF_MENU_SCAN,_("Scan World"), wxBitmap(earth4_xpm),wxNullBitmap, wxITEM_NORMAL, _("Scan World"));
+				break;
+			case 4 :
+				ToolBar->InsertTool ( 5,MF_MENU_SCAN,_("Scan World"), wxBitmap(earth5_xpm),wxNullBitmap, wxITEM_NORMAL, _("Scan World"));
+				break;
+			default :
+				ToolBar->InsertTool ( 5,MF_MENU_SCAN,_("Scan World"), wxBitmap(earth_xpm),wxNullBitmap, wxITEM_NORMAL, _("Scan World"));
 		}
+		ACntEarth=CntEarth;
+		ToolBar->Realize ();
 	}
 	if (Bot->IsOnWorld())
 	{
-		SetTitle (_("BackupAw : On ")+Bot->Monde);
+		SetTitle ( AppName + _(" : On ")+Bot->Monde);
 		if (!ItemScan->IsEnabled ()) ItemScan->Enable(true);
 		ToolBar->EnableTool(MF_MENU_SCAN,true);
 
 	}
 	else
 	{
-		SetTitle (_("BackupAw : Disconnected"));
+		SetTitle ( AppName + _(" : Disconnected"));
 		if (ItemScan->IsEnabled ()) ItemScan->Enable(false);
 		ToolBar->EnableTool(MF_MENU_SCAN,false);
 	}
-	SetStatusText (wxString::Format(_("Total Objects : %i"), Cell->GetNbObj()),1);
+	SetStatusText (wxString::Format(_("Objects in project = %i , Total = %i"), Cell->GetNbSel(), Cell->GetNbObj()),1);
 	if (MapCanvas->MapChange && (!BackupCtrl->IsScanning()))
 	{
 		if (Bot->IsOnWorld() && BackupCtrl->IsSurvey()) BackupCtrl->Scan ();
@@ -469,10 +463,10 @@ void	CMainFrame::OnLoad (wxCommandEvent& WXUNUSED(event))
 	(
 		this,
 		_("Open Project"),
-		Cell->FileName,
+		Cell->FileName.GetPath(),
 		_T("*.bap"),
 		_("BackupAw Project (*.bap)|*.bap|All Files (*.*)|*.*"),
-		wxFD_OPEN,
+		wxFD_OPEN | wxFD_CHANGE_DIR,
 		wxDefaultPosition
 	);
 	if (ProjectFile.ShowModal() == wxID_OK)
@@ -502,15 +496,17 @@ void	CMainFrame::OnSaveAs (wxCommandEvent& WXUNUSED(event))
 	(
 		this,
 		_("Save Project"),
-		Cell->FileName,
+		Cell->FileName.GetPath(),
 		_T("*.bap"),
 		_("BackupAw Project (*.bap)|*.bap|All Files (*.*)|*.*"),
-		wxFD_SAVE|wxFD_OVERWRITE_PROMPT,
+		wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR,
 		wxDefaultPosition
 	);
 	if (ProjectFile.ShowModal() == wxID_OK)
 	{
 		Cell->FileName=ProjectFile.GetPath();
+		pConfig->Write(_T("/Project/LastFileName"),Cell->FileName.GetFullPath());
+		pConfig->Flush();
 		Cell->SaveSel();
 	}
 }

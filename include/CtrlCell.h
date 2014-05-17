@@ -37,7 +37,7 @@
 
 #include <wx/wxprec.h>
 #include <wx/vector.h>
-
+#include <wx/filename.h>
 #include "AwObject.h"
 
 typedef enum
@@ -78,7 +78,7 @@ static	void				Kill ();
 		CellRes				UpdateObjSel (CObject Obj, size_t index=0);
 		unsigned int		GetNbObj (int x, int y);
 		unsigned int		GetNbObj ();
-		size_t				GetNbSel ();
+		unsigned int		GetNbSel ();
 		CellRes				Update (int* Buffer, int XMax,int YMax,int w, int h);
 		CellRes				UpdateSel (int* Buffer, int XMax,int YMax,int w, int h);
 		CellRes				DelObj (size_t index=0);
@@ -114,7 +114,7 @@ static	void				Kill ();
 		int					RegioW;
 		int					RegioS;
 		int					RegioE;
-		wxString			FileName;
+		wxFileName			FileName;
 		double				RelX;
 		double				RelZ;
 		double				RelY;

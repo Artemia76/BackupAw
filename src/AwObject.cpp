@@ -47,7 +47,7 @@ CObject::CObject
 		wxString Obj_Model,
 		wxString Obj_Descr,
 		wxString Obj_Action
-#if AW_BUILD>76 || VPBUILD
+#if AW_BUILD>76 || VP_BUILD
 		,int Type,
 		wxString Dat,
 		int id
@@ -70,7 +70,7 @@ CObject::CObject
 	Model=Obj_Model;
 	Description=Obj_Descr;
 	Action=Obj_Action;
-#if AW_BUILD>76 || VPBUILD
+#if AW_BUILD>76 || VP_BUILD
 	Type=Type;
 	Data=Dat;
 #if AW_BUILD>76
@@ -97,7 +97,7 @@ CObject::CObject (const CObject& Obj)
 	Model=Obj.Model;
 	Description=Obj.Description;
 	Action=Obj.Action;
-#if AW_BUILD>76 || VPBUILD
+#if AW_BUILD>76 || VP_BUILD
 	Type=Obj.Type;
 	Data=Obj.Data;
 #if AW_BUILD>76

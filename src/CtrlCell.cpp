@@ -30,6 +30,7 @@
 
 #include "CtrlCell.h"
 #include <wx/fileconf.h>
+#include "CQuaternion.h"
 
 //------------------------------------------------------------------------------
 // Class CCtrlCell
@@ -106,7 +107,7 @@ CellRes CCtrlCell::AddObj (CObject Obj)
 {
 	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
-#ifndef VPBUILD
+#ifndef VP_BUILD
 		if ((Obj.Number==i->Number)&&(Obj.X==i->X)&&(Obj.Y==i->Y)) return CELL_OBJ_ALREADY_EXIST;
 #else
         if (Obj.Number==i->Number)
@@ -114,7 +115,7 @@ CellRes CCtrlCell::AddObj (CObject Obj)
             UpdateObj(Obj,i - Cell.begin());
             return CELL_OK;
         }
-#endif // VPBUILD
+#endif // VP_BUILD
 	}
 	Cell.push_back(Obj);
 	return CELL_OK;
@@ -174,7 +175,7 @@ unsigned int CCtrlCell::GetNbObj ()
 
 //------------------------------------------------------------------------------
 
-size_t CCtrlCell::GetNbSel ()
+unsigned int CCtrlCell::GetNbSel ()
 {
 	return (Selection.end()-Selection.begin());
 }
@@ -347,7 +348,7 @@ CellRes CCtrlCell::LoadSel ()
 	int NbObj;
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
-	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T(""), FileName);
+	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T(""), FileName.GetFullPath());
 	Selection.clear ();
 	pConfig->Read(_T("General/NbObj"), &NbObj, 0);
 	pConfig->Read(_T("General/RelX"), &RelX, 0);
@@ -374,7 +375,7 @@ CellRes CCtrlCell::LoadSel ()
 		pConfig->Read(s+_T("Model"),&Obj.Model,_T(""));
 		pConfig->Read(s+_T("Descr"),&Obj.Description,_T(""));
 		pConfig->Read(s+_T("Action"),&Obj.Action,_T(""));
-#if AW_BUILD>41 || VPBUILD
+#if AW_BUILD>41 || VP_BUILD
 #ifdef AW_BUILD
         pConfig->Read(s+_T("ID"),&Obj.ID,0);
 #endif
@@ -397,7 +398,7 @@ CellRes CCtrlCell::LoadGrid ()
 	int NbObj;
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
-	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T(""), FileName);
+	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T(""), FileName.GetFullPath());
 	Cell.clear ();
 	pConfig->Read(_T("General/NbObj"), &NbObj, 0);
 	for (int i=0; i < NbObj; i++)
@@ -419,7 +420,7 @@ CellRes CCtrlCell::LoadGrid ()
 		pConfig->Read(s+_T("Model"),&Obj.Model,_T(""));
 		pConfig->Read(s+_T("Descr"),&Obj.Description,_T(""));
 		pConfig->Read(s+_T("Action"),&Obj.Action,_T(""));
-#if AW_BUILD>41 || VPBUILD
+#if AW_BUILD>41 || VP_BUILD
 #ifdef AW_BUILD
         pConfig->Read(s+_T("ID"),&Obj.ID,0);
 #endif
@@ -443,7 +444,7 @@ CellRes CCtrlCell::SaveSel ()
 	int NbObj=0;
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
-	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T("") , FileName);
+	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T("") , FileName.GetFullPath());
 	NbObj=GetNbSel();
 	pConfig->DeleteAll ();
 	pConfig->Write(_T("General/NbObj"), NbObj);
@@ -470,10 +471,10 @@ CellRes CCtrlCell::SaveSel ()
 		pConfig->Write(s+_T("Model"),i->Model);
 		pConfig->Write(s+_T("Descr"),i->Description);
 		pConfig->Write(s+_T("Action"),i->Action);
-#if AW_BUILD>41 || VPBUILD
-#ifdef AW_BUILD
+#if AW_BUILD>41 || VP_BUILD
+#ifndef VP_BUILD
         pConfig->Write(s+_T("ID"),i->ID);
-#endif // AW_BUILD
+#endif // VP_BUILD
 		if (i->Type>1)
 		{
 			pConfig->Write(s+_T("Type"),i->Type);
@@ -493,7 +494,7 @@ CellRes CCtrlCell::SaveGrid ()
 	int NbObj=0;
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
-	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T("") , FileName);
+	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T("") , FileName.GetFullPath());
 	pConfig->DeleteAll ();
 	pConfig->Write(_T("General/NbObj"), GetNbObj());
 	pConfig->Write(_T("General/RelX"), RelX);
@@ -519,7 +520,7 @@ CellRes CCtrlCell::SaveGrid ()
 		pConfig->Write(s+_T("Model"),i->Model);
 		pConfig->Write(s+_T("Descr"),i->Description);
 		pConfig->Write(s+_T("Action"),i->Action);
-#if AW_BUILD>41 || VPBUILD
+#if AW_BUILD>41 || VP_BUILD
 #ifdef AW_BUILD
         pConfig->Write(s+_T("ID"),i->ID);
 #endif // AW_BUILD

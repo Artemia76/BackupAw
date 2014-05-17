@@ -40,11 +40,11 @@
 #include <wx/config.h>
 #include <wx/vector.h>
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
     #include <Aw.h>
 #else
     #include <VP.h>
-#endif // VPBUILD
+#endif // VP_BUILD
 
 #include "CBot.h"
 
@@ -66,13 +66,13 @@ public:
 									~CAwListenner ();
 protected:
 			CCtrlAw*				CtrlAw;
-#ifndef VPBUILD
+#ifndef VP_BUILD
 	virtual bool					Event (AW_EVENT_ATTRIBUTE id, CBot* Bot)=0;
 	virtual bool					CallBack (AW_CALLBACK id, int rc, CBot* Bot)=0;
 #else
     virtual bool					Event (vp_event_t id, CBot* Bot)=0;
-	virtual bool					CallBack (vp_callback_t id, int rc, CBot* Bot)=0;
-#endif // VPBUILD
+	virtual bool					CallBack (vp_callback_t id, int rc, int Handle, CBot* Bot)=0;
+#endif // VP_BUILD
 };
 
 //-----------------------------------------------------------------------------
@@ -84,11 +84,11 @@ class CCtrlAw : public wxEvtHandler
 static		CCtrlAw*				Create ();
 			CBot*					GetBot (unsigned int num=0);
 			int						Init(bool flag, size_t NbBot=1); // initialize AW DLL
-#ifndef VPBUILD
+#ifndef VP_BUILD
 			CBot*					GetBotInst(void* Instance);
 #else
             CBot*                   GetBotInst(VPInstance Instance);
-#endif // VPBUILD
+#endif // VP_BUILD
 
 static		void					Kill();
 
@@ -103,7 +103,7 @@ static		CCtrlAw*				PtCCtrlAw; //SingleTon Pointer
 			wxConfigBase*			pConfig;
 			bool					AwInit;
 			wxTimer*				Heart;
-#ifndef VPBUILD
+#ifndef VP_BUILD
 // AW Events
 static		void	    			On_Cell_Begin			();
 static		void	    			On_Cell_Object			();
@@ -138,15 +138,15 @@ static      void                    On_Object_Delete (VPInstance Instance);
 static      void                    On_Object_Add_CB        (VPInstance Instance, int rc, int ID);
 static      void                    On_Object_Delete_CB   (VPInstance Instance, int rc, int ID);
 
-#endif // VPBUILD
+#endif // VP_BUILD
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
 			void					EventDispatch			(AW_EVENT_ATTRIBUTE id, CBot* Bot);
 			void					CallBackDispatch		(AW_CALLBACK id, int rc, CBot* Bot);
 #else
 			void					EventDispatch			(vp_event_t id, CBot* Bot);
-			void					CallBackDispatch		(vp_callback_t id, int rc, CBot* Bot);
-#endif // VPBUILD
+			void					CallBackDispatch		(vp_callback_t id, int rc, int Handle, CBot* Bot);
+#endif // VP_BUILD
 
 friend class CAwListenner;
 	protected:

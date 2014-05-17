@@ -65,8 +65,6 @@ AboutBox::AboutBox
 	)
 {
 	pConfig = wxConfigBase::Get();
-	wxString text;
-	text.append(CGVersion);
 
 	wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
@@ -75,7 +73,7 @@ AboutBox::AboutBox
 	(
 		this,
 		-1,
-		CGVersion,
+		AppVersion,
 		wxDefaultPosition,
 		wxDefaultSize,
 		wxALIGN_CENTRE
@@ -89,7 +87,7 @@ AboutBox::AboutBox
 	(
 		this,
 		-1,
-		CGLicence,
+		AppLicence,
 		wxDefaultPosition,
 		wxDefaultSize,
 		wxTE_LEFT|wxTE_MULTILINE|wxTE_READONLY

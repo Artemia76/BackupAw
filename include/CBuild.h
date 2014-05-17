@@ -37,11 +37,11 @@
 
 #include <wx/wxprec.h>
 #include "CtrlCell.h"
-#ifndef VPBUILD
+#ifndef VP_BUILD
     #include "CBackupCtrl.h"
 #else
     #include "CBackupVP.h"
-#endif // VPBUILD
+#endif // VP_BUILD
 
 enum
 {

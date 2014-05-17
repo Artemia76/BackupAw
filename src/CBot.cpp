@@ -30,7 +30,7 @@
 
 #include "CBot.h"
 
-#ifdef VPBUILD
+#ifdef VP_BUILD
 	#include <rc.h>
 	#define DefaultPort 57000
 #else
@@ -39,7 +39,7 @@
 	#else
 		#define DefaultPort 5670
 	#endif
-#endif // VPBUILD
+#endif // VP_BUILD
 
 // Events
 
@@ -74,9 +74,9 @@ CBot::CBot ()
 	ModeReco=false;
 	Visible=false;
 	Instance=0;
-#ifdef VPBUILD
+#ifdef VP_BUILD
 	NeedEvent=false;
-#endif // VPBUILD
+#endif // VP_BUILD
 }
 
 //------------------------------------------------------------------------------
@@ -113,7 +113,7 @@ void CBot::Connection(bool flag)
 	int rc;
 	if (flag && (!On_Universe))
 	{
-#ifdef VPBUILD
+#ifdef VP_BUILD
         if (!Instance) Instance=vp_create();
 		if ((rc=vp_connect_universe(Instance,Univers.utf8_str(),Port ))!=0)
 #else
@@ -122,12 +122,12 @@ void CBot::Connection(bool flag)
 	#else
         if ((rc=aw_create(Univers.mb_str(), Port, &Instance))!=0)
 	#endif
-#endif // VPBUILD
+#endif // VP_BUILD
 		{
 			wxLogMessage (_("Unable to create instance, Reason : ") + GetRCString(rc));
 			DemCon=false;
 			if (ModeReco) Tentative();
-#ifdef VPBUILD
+#ifdef VP_BUILD
             vp_destroy(Instance);
             Instance=0;
 #endif
@@ -137,7 +137,7 @@ void CBot::Connection(bool flag)
 
 			wxLogMessage (_("Instance Initialized."));
 			ConEC=true;
-#ifndef VPBUILD
+#ifndef VP_BUILD
 			aw_int_set (AW_LOGIN_OWNER, Citoyen);
 #if AW_BUILD>77
             aw_string_set (AW_LOGIN_PRIVILEGE_PASSWORD,PassWord);
@@ -161,7 +161,7 @@ void CBot::Connection(bool flag)
 	}
 	else if ((!flag) && On_Universe)
 	{
-#ifndef VPBUILD
+#ifndef VP_BUILD
 		aw_destroy();
 #else
         if (IsOnWorld()) vp_leave(Instance);
@@ -186,7 +186,7 @@ void CBot::Login_CB(int rc)
 	{
 		DemCon=false;
 		wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(rc));
-#ifdef VPBUILD
+#ifdef VP_BUILD
 		vp_destroy(Instance);
 		Instance=0;
 #else
@@ -198,7 +198,7 @@ void CBot::Login_CB(int rc)
 	{
 		wxLogMessage (_("Connected on Universe"));
 		On_Universe=true;
-#ifdef VPBUILD
+#ifdef VP_BUILD
 		NeedEvent=true;
 #endif
 	}
@@ -216,11 +216,11 @@ void CBot::Enter_CB(int rc)
 	{
 		DemCon=false;
 		wxLogMessage (_("Unable to connect on world ") + Monde + _(",Reason: ") + GetRCString (rc));
-#ifndef VPBUILD
+#ifndef VP_BUILD
 		aw_destroy();
 #else
         vp_destroy(Instance);
-#endif // VPBUILD
+#endif // VP_BUILD
 		On_World=false;
 		On_Universe=false;
 		if (ModeReco) Tentative();
@@ -230,7 +230,7 @@ void CBot::Enter_CB(int rc)
 		wxLogMessage (_("Connected on world ")+Monde);
 		On_World=true;
 		ModeReco=false;
-#ifndef VPBUILD
+#ifndef VP_BUILD
 		if (Visible)
 		{
 			aw_state_change();
@@ -245,7 +245,7 @@ void CBot::Enter_CB(int rc)
 void CBot::Enter()
 {
 	EntEC=true;
-	#ifndef VPBUILD
+	#ifndef VP_BUILD
 	aw_bool_set (AW_ENTER_GLOBAL, Global);
 		#if AW_BUILD>77
 	aw_enter(Monde);
@@ -254,7 +254,7 @@ void CBot::Enter()
 		#endif
 	#else
 	Enter_CB(vp_enter(Instance, Monde.utf8_str()));
-	#endif // VPBUILD
+	#endif // VP_BUILD
 }
 
 //------------------------------------------------------------------------------
@@ -262,13 +262,13 @@ void CBot::Enter()
 
 void CBot::Charge ()
 {
-	#ifndef VPBUILD
+	#ifndef VP_BUILD
 	Univers=pConfig->Read(_T("Bot/Univers") , _T("auth.activeworlds.com"));
 	Citoyen=pConfig->Read(_T("Bot/Citoyen") , 0l);
 	#else
 	Univers=pConfig->Read(_T("Bot/Univers") , _T("universe.virtualparadise.org"));
 	UserName=pConfig->Read(_T("Bot/UserName") , _T(""));
-	#endif // VPBUILD
+	#endif // VP_BUILD
 	Monde=pConfig->Read(_T("Bot/Monde") , _T(""));
 	Port=pConfig->Read(_T("Bot/Port") , DefaultPort);
 	PassWord=PassPriv->Decode(pConfig->Read(_T("Bot/PassPriv"), _T("")));
@@ -285,13 +285,13 @@ void CBot::Charge ()
 
 void CBot::Sauve ()
 {
-	#ifndef VPBUILD
+	#ifndef VP_BUILD
 	pConfig->Write(_T("Bot/Univers") ,Univers);
 	pConfig->Write(_T("Bot/Citoyen") ,Citoyen);
 	#else
 	pConfig->Write(_T("Bot/Univers") ,Univers);
 	pConfig->Write(_T("Bot/UserName") ,UserName);
-	#endif // VPBUILD
+	#endif // VP_BUILD
 	pConfig->Write(_T("Bot/Monde") ,Monde);
 	pConfig->Write(_T("Bot/PassPriv") ,PassPriv->Code(PassWord));
 	pConfig->Write(_T("Bot/Nom") ,Nom);
@@ -356,18 +356,18 @@ bool CBot::IsOnUniverse()
 //------------------------------------------------------------------------------
 // On Règle l'instance sur notre bot actuel
 
-#ifndef VPBUILD
+#ifndef VP_BUILD
 bool CBot::SetInstance ()
 {
 	if (!Instance) return false;
 	aw_instance_set(Instance);
 	return true;
 }
-#endif // VPBUILD
+#endif // VP_BUILD
 
 //------------------------------------------------------------------------------
 // On retourne l'instance du bot
-#ifndef VPBUILD
+#ifndef VP_BUILD
 void* CBot::GetInstance ()
 #else
 VPInstance CBot::GetInstance ()
@@ -390,11 +390,11 @@ void CBot::Update ()
 		PerteMonde=false;
 		On_Universe=false;
 		On_World=false;
-#ifndef VPBUILD
+#ifndef VP_BUILD
 		aw_destroy();
 #else
         vp_destroy(Instance);
-#endif // VPBUILD
+#endif // VP_BUILD
 		Instance=0;
 		if (CGRecoEna)
 		{
@@ -419,7 +419,7 @@ wxString CBot::GetRCString (int rc)
 	wxString rcs;
 	switch (rc)
 	{
-#ifndef VPBUILD
+#ifndef VP_BUILD
 		case 0 :
 			rcs=_T("");
 			break;
@@ -953,7 +953,7 @@ wxString CBot::GetRCString (int rc)
 			rcs=_("Object not found");
 			break;
 		case VP_RC_UNKNOWN_ERROR :
-#endif // VPBUILD
+#endif // VP_BUILD
 		default:
 			rcs=_("Unknow Raison Code");
 			break;
