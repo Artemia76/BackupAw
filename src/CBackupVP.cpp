@@ -31,7 +31,7 @@
 #ifdef VP_BUILD
 
 #include "CBackupVP.h"
-#include "CQuaternion.h"
+#include "CGeometry.h"
 
 wxBEGIN_EVENT_TABLE(CBackupCtrl, wxEvtHandler)
 EVT_TIMER  (OBJ_TIME,	CBackupCtrl::OnObjTimer)
@@ -226,11 +226,11 @@ void CBackupCtrl::Event_Object (CBot* Bot)
     Obj.RotY=vp_float(Instance,VP_OBJECT_ROTATION_Y);
     Obj.RotZ=vp_float(Instance,VP_OBJECT_ROTATION_Z);
     Obj.RotR=vp_float(Instance,VP_OBJECT_ROTATION_ANGLE);
-    CQuaternion q1(Obj.RotR, Obj.RotX, Obj.RotZ, Obj.RotY);
-    vector3f Euler = q1.euler_angles();
-	Obj.Yaw = Euler.x;
-	Obj.Tilt = Euler.y;
-	Obj.Roll = Euler.z;
+    CAxisAngle  Rotation (Obj.RotZ, Obj.RotY,Obj.RotX,Obj.RotR);
+    CEuler Euler = Rotation.GetEuler();
+	Obj.Yaw = Euler.yaw * (1800.0 / M_PI);
+	Obj.Tilt = Euler.tilt * (1800.0 / M_PI);
+	Obj.Roll = Euler.roll * (1800.0 / M_PI);
     Obj.Owner=vp_int (Instance, VP_OBJECT_USER_ID);
     Obj.BuildTime=vp_int(Instance, VP_OBJECT_TIME);
     Obj.Model=wxString::FromUTF8 (vp_string(Instance, VP_OBJECT_MODEL));
@@ -359,11 +359,24 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
             vp_float_set (Instance, VP_OBJECT_X, Obj.X / 1000);
             vp_float_set (Instance,VP_OBJECT_Y, Obj.Y / 1000);
             vp_float_set (Instance,VP_OBJECT_Z, Obj.Z / 1000);
-            vp_float_set (Instance,VP_OBJECT_ROTATION_X, Obj.RotX);
-            vp_float_set (Instance,VP_OBJECT_ROTATION_Y, Obj.RotY);
-            vp_float_set (Instance,VP_OBJECT_ROTATION_Z, Obj.RotZ);
-            vp_float_set (Instance,VP_OBJECT_ROTATION_ANGLE, Obj.RotR);
-            vp_string_set (Instance,VP_OBJECT_MODEL, Obj.Model.utf8_str());
+			//If Axis Angle is null, convert from Euler
+			if ((Obj.RotX==0) && (Obj.RotY==0) && (Obj.RotZ==0) && (Obj.RotR == 0))
+			{ 
+				CEuler Euler (Obj.Yaw / (1800.0/M_PI),Obj.Tilt / (1800.0/M_PI), Obj.Roll / (1800.0/M_PI));
+				CAxisAngle AxisAngle  = Euler.GetAxisAngle();
+				vp_float_set (Instance,VP_OBJECT_ROTATION_X, AxisAngle.z);
+				vp_float_set (Instance,VP_OBJECT_ROTATION_Y, AxisAngle.y);
+				vp_float_set (Instance,VP_OBJECT_ROTATION_Z, AxisAngle.x);
+				vp_float_set (Instance,VP_OBJECT_ROTATION_ANGLE, AxisAngle.r);
+			}
+			else
+			{
+				vp_float_set (Instance,VP_OBJECT_ROTATION_X, Obj.RotX);
+				vp_float_set (Instance,VP_OBJECT_ROTATION_Y, Obj.RotY);
+				vp_float_set (Instance,VP_OBJECT_ROTATION_Z, Obj.RotZ);
+				vp_float_set (Instance,VP_OBJECT_ROTATION_ANGLE, Obj.RotR);
+			}
+			vp_string_set (Instance,VP_OBJECT_MODEL, Obj.Model.utf8_str());
             vp_string_set (Instance,VP_OBJECT_DESCRIPTION, Obj.Description.utf8_str());
             vp_string_set (Instance,VP_OBJECT_ACTION, Obj.Action.utf8_str());
             vp_int_set (Instance,VP_OBJECT_TYPE, Obj.Type);

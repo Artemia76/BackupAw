@@ -55,6 +55,9 @@
     <ClCompile Include="src\CBackupCtrl.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\CGeometry.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AboutBox.h">
@@ -112,6 +115,9 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="include\CBackupCtrl.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CGeometry.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>

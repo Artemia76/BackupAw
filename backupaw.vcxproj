@@ -234,7 +234,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <Optimization>MinSpace</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;$(VP_PATH)$(VP_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;VPBUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;VP_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -441,6 +441,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     <ClInclude Include="include\CBuild.h" />
     <ClInclude Include="include\CDelete.h" />
     <ClInclude Include="include\CFilter.h" />
+    <ClInclude Include="include\CGeometry.h" />
     <ClInclude Include="include\CModify.h" />
     <ClInclude Include="include\COutils.h" />
     <ClInclude Include="include\Cpasspriv.h" />
@@ -462,6 +463,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     <ClCompile Include="src\CBuild.cpp" />
     <ClCompile Include="src\CDelete.cpp" />
     <ClCompile Include="src\CFilter.cpp" />
+    <ClCompile Include="src\CGeometry.cpp" />
     <ClCompile Include="src\CModify.cpp" />
     <ClCompile Include="src\COutils.cpp" />
     <ClCompile Include="src\Cpasspriv.cpp" />

@@ -11,7 +11,12 @@ Features
     Compatible with v4 objects (Active Worlds >= 4)
     Translations for English, French and Italian
 
+BackupAW Works with ActiveWorlds Inc SDK (see AW_SDK_License_(aw.dll).txt)
+	
+BackupVP Works with Virtual Paradise SDK provided by is author as it , and use it is at your own risk. 
+The VirtualParadise SDK is copyrighted (c) 2014 Edwin Rijkee
+	
 External links
 
-    BackupAW documentation
+    BackupAW/VP documentation
     https://sourceforge.net/p/backupaw/wiki/Home/.fr/backupaw/

@@ -30,7 +30,6 @@
 
 #include "CtrlCell.h"
 #include <wx/fileconf.h>
-#include "CQuaternion.h"
 
 //------------------------------------------------------------------------------
 // Class CCtrlCell
@@ -612,11 +611,11 @@ CellRes CCtrlCell::MoveSel (int x, int y, int a)
 
 CellRes CCtrlCell::RotateSel (int x, int y, int alpha)
 {
-     double XO,YO,XA,YA,ALPHA,BETA,R;
+	double XO,YO,XA,YA,ALPHA,BETA,R;
     XO=(double)y;
     YO=(double)x;
     wxString s;
-    ALPHA=(double)(alpha*(3.1415/180));
+    ALPHA=(double)(alpha*(M_PI/180.0));
 	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
 		XA=(double)i->Z;
@@ -626,6 +625,10 @@ CellRes CCtrlCell::RotateSel (int x, int y, int alpha)
 		i->Yaw-=(alpha*10);
 		i->Z = (int)(XO+(R * cos(BETA-ALPHA)));
 		i->X = (int)(YO+(R * sin(BETA-ALPHA)));
+		i->RotR=0;
+		i->RotX=0;
+		i->RotY=0;
+		i->RotZ=0;
 	}
 	return CELL_OK;
 }
