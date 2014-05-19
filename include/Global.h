@@ -79,7 +79,7 @@ static const  wxString AppLicence = AppVersion
 #ifndef VP_BUILD
 +	_T("BACKUPAW use the (c)Activeworlds SDK published for devellopers, then this software depend of the AW terms in the \"AW_SDK_License_(aw.dll).rtf\" file.")
 #else
-+	_T("BACKUPVP use the Virtual Paradise SDK published by is owner.")
++	_T("BACKUPVP use the Virtual Paradise SDK (c) 2014 Edwin Rijkee. It published at your own risk.")
 #endif
 ;
 

@@ -88,4 +88,5 @@ CEuler CAxisAngle::GetEuler ()
 	Euler.yaw = atan2(y * s- x * z * t , 1 - (y*y+ z*z ) * t);
 	Euler.tilt = asin(x * y * t + z * s) ;
 	Euler.roll = atan2(x * s - y * z * t , 1 - (x*x + z*z) * t);
+	return Euler;
 }
