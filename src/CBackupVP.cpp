@@ -78,6 +78,7 @@ CBackupCtrl::CBackupCtrl ()
     BlockScroll=false;
     BlockSelect=false;
     Map=0;
+	ScanSize=15;
     pConfig=wxConfigBase::Get();
     pConfig->Read(_T("Bot/BuildMode"), &CTBuild, true);
     ObjectTimer = new wxTimer(this, OBJ_TIME);
@@ -188,16 +189,17 @@ void CBackupCtrl::Scan ()
 {
     if ((!Scanning)&&CtrlAw->GetBot()->IsOnWorld())
     {
-        memset (SequenceX, 0, sizeof (SequenceX));
-        memset (SequenceZ, 0, sizeof (SequenceZ));
-        // Init query5x5 Array
-        int i,j;
-        for (i=0 ; i < 15 ; i++)
+		SequenceX.resize(ScanSize, 0 );
+		SequenceZ.resize(ScanSize, 0 );
+
+        int i,j,DemiScan;
+		DemiScan=(int)floor ((double)ScanSize/2);
+        for (i=0 ; i < ScanSize ; i++)
         {
-            SequenceX [i] = (OrigX - 7) +i;
-            for (j=0; j < 15 ; j++)
+            SequenceX [i] = (OrigX - DemiScan) +i;
+            for (j=0; j < ScanSize ; j++)
             {
-                SequenceZ [j] = (OrigY - 7) + j;
+                SequenceZ [j] = (OrigY - DemiScan) + j;
             }
         }
         PtrX = PtrZ = 0 ;
@@ -277,7 +279,7 @@ void CBackupCtrl::AskCell(CBot* Bot)
 			}
 			CellQueryCnt ++;
 		}
-        if ((PtrX == 14) && (PtrZ == 14))
+        if ((PtrX == ( ScanSize-1)) && (PtrZ == (ScanSize-1)))
         {
 			wxLogMessage(_("End of scan. "));
 			Scanning=false;
@@ -285,7 +287,7 @@ void CBackupCtrl::AskCell(CBot* Bot)
 			Survey=true;
 			break;
         }
-        if (PtrX ==14)
+        if (PtrX ==(ScanSize -1))
         {
             PtrX = 0;
             PtrZ ++;
@@ -456,4 +458,18 @@ void CBackupCtrl::Reset()
     if (Map) Map->Refresh ();
     CellMap.clear();
 }
+
+int	CBackupCtrl::GetScanSize()
+{
+	return ScanSize;
+}
+
+void CBackupCtrl::SetScanSize(int Size)
+{
+	if (((Size >5) || (Size < 200)) && (!Scanning))
+	{
+		ScanSize = Size;
+	}
+}
+
 #endif

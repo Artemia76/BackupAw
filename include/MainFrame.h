@@ -73,6 +73,7 @@ enum MF_COMMANDS
 	MF_MENU_ZOOM_OUT,
 	MF_MENU_ZOOM_IN,
 	MF_MENU_SET_REL,
+	MF_MENU_SET_SCAN_SIZE,
 	MF_UPDATE
 };
 
@@ -120,6 +121,7 @@ class CMainFrame : public wxFrame, public COutils
 		void				OnZoomOut (wxCommandEvent& event);
 		void				OnZoomIn (wxCommandEvent& event);
 		void				OnSetRelative (wxCommandEvent& event);
+		void				OnSetScanSize (wxCommandEvent& event);
 		void				OnCloseWindow (wxCloseEvent& event);
 		wxDECLARE_EVENT_TABLE();
 };

@@ -38,7 +38,10 @@
 #include <wx/wxprec.h>
 #include <wx/vector.h>
 #include <wx/filename.h>
+#include <vector>
 #include "AwObject.h"
+
+using namespace std;
 
 typedef enum
 {
@@ -58,7 +61,8 @@ typedef enum
 	CELL_INDEX_TOO_BIG,
 	CELL_BAD_OBJ_NUM,
 	CELL_BAD_FILENAME,
-	CELL_BAD_POINTER
+	CELL_BAD_POINTER,
+	CELL_MEMORY_FULL
 } CellRes;
 
 typedef unsigned int uint;
@@ -126,8 +130,10 @@ static	CCtrlCell*			PtCCtrlCell;
 
 							CCtrlCell ();
 							~CCtrlCell ();
-		wxVector<CObject>	Cell;
-		wxVector<CObject>	Selection;
+		//wxVector<CObject>	Cell;
+		vector<CObject>		Cell;
+		//wxVector<CObject>	Selection;
+		vector<CObject>		Selection;
 };
 
 #endif

@@ -78,6 +78,8 @@ CCtrlCell::CCtrlCell ()
 	RelX=0;
 	RelZ=0;
 	RelY=0;
+	//Selection.reserve (100000);
+	//Cell.reserve (100000);
 }
 
 //------------------------------------------------------------------------------
@@ -104,7 +106,7 @@ void CCtrlCell::DelSel ()
 
 CellRes CCtrlCell::AddObj (CObject Obj)
 {
-	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
 #ifndef VP_BUILD
 		if ((Obj.Number==i->Number)&&(Obj.X==i->X)&&(Obj.Y==i->Y)) return CELL_OBJ_ALREADY_EXIST;
@@ -118,17 +120,15 @@ CellRes CCtrlCell::AddObj (CObject Obj)
 	}
 	Cell.push_back(Obj);
 	return CELL_OK;
+
 }
 
 //------------------------------------------------------------------------------
 
 CellRes	CCtrlCell::GetObj (CObject& Obj, size_t index)
 {
-	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
-	{
-		if ((Obj.Number==i->Number)&&(Obj.X==i->X)&&(Obj.Y==i->Y)) return CELL_OBJ_ALREADY_EXIST;
-	}
-	Selection.push_back(Obj);
+	if (index >= GetNbSel()) return CELL_INDEX_TOO_BIG;
+	Obj = Cell [index];
 	return CELL_OK;
 }
 
@@ -156,7 +156,7 @@ unsigned int CCtrlCell::GetNbObj (int x, int y)
 {
 	unsigned int cnt=0;
 	double X,Y;
-	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
 		X=i->X/1000;
 		Y=i->Z/1000;
@@ -210,7 +210,7 @@ CellRes CCtrlCell::ChangeObj (const CObject& Obj,size_t index)
 
 CellRes CCtrlCell::FindObjNum (size_t& index, int ObjNum)
 {
-	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
 		if (i->Number==ObjNum)
 		{
@@ -230,7 +230,7 @@ CellRes CCtrlCell::SortObj ()
 	double x,y;
 	int X,Z;
 	wxString s;
-	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
 		FC=false;
 		FM=false;
@@ -302,7 +302,7 @@ CellRes	CCtrlCell::Update (int* Buffer, int XMax,int YMax,int w, int h)
 	int X,Z;
 	int* Pt=0;
 	double x,y;
-	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
 		x=i->X;
 		y=i->Z;
@@ -324,7 +324,7 @@ CellRes	CCtrlCell::UpdateSel (int* Buffer, int XMax,int YMax,int w, int h)
 	int X,Z;
 	int* Pt=0;
 	double x,y;
-	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
 		x=i->X;
 		y=i->Z;
@@ -451,7 +451,7 @@ CellRes CCtrlCell::SaveSel ()
 	pConfig->Write(_T("General/RelZ"), RelZ);
 	pConfig->Write(_T("General/RelY"), RelY);
 	pConfig->Write(_T("General/RelYAW"), RelYaw);
-	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
 		s=wxString::Format(_T("Objet%i/"),(unsigned int)(i-Selection.begin()));
 		pConfig->Write(s+_T("Number"),i->Number);
@@ -500,7 +500,7 @@ CellRes CCtrlCell::SaveGrid ()
 	pConfig->Write(_T("General/RelZ"), RelZ);
 	pConfig->Write(_T("General/RelY"), RelY);
 	pConfig->Write(_T("General/RelYAW"), RelYaw);
-	for (wxVector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
 	{
 		s=wxString::Format(_T("Objet%i/"),(unsigned int)(i-Cell.begin()));
 		pConfig->Write(s+_T("Number"),i->Number);
@@ -541,7 +541,7 @@ CellRes CCtrlCell::SaveGrid ()
 CellRes CCtrlCell::ChgeCitSel (int CitSrc, int CitDest)
 {
 	CellRes Result=CELL_CIT_NOT_FOUND;
-	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
 		if ((i->Owner == CitSrc) || (CitSrc<0))
 		{
@@ -563,7 +563,7 @@ CellRes CCtrlCell::GetCitSel (wxTextCtrl* TxtZone)
 	int rc;
 	long Lon;
 	int Nombre;
-	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
 		s.Printf(_T("%d"), i->Owner);
 		rc=Liste.Index (s, false);
@@ -579,7 +579,7 @@ CellRes CCtrlCell::GetCitSel (wxTextCtrl* TxtZone)
 			Nombre=0;
 			Liste[i].ToLong(&Lon);
 			rc=(int)Lon;
-			for (wxVector<CObject>::iterator j = Selection.begin(); j < Selection.end (); j++)
+			for (vector<CObject>::iterator j = Selection.begin(); j < Selection.end (); j++)
 			{
 				if (j->Owner==rc) Nombre ++;
 			}
@@ -598,7 +598,7 @@ CellRes CCtrlCell::GetCitSel (wxTextCtrl* TxtZone)
 
 CellRes CCtrlCell::MoveSel (int x, int y, int a)
 {
-	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
 		i->X+=x;
 		i->Z+=y;
@@ -616,7 +616,7 @@ CellRes CCtrlCell::RotateSel (int x, int y, int alpha)
     YO=(double)x;
     wxString s;
     ALPHA=(double)(alpha*(M_PI/180.0));
-	for (wxVector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
 	{
 		XA=(double)i->Z;
 		YA=(double)i->X;

@@ -146,6 +146,28 @@ void CMapCanvas::DrawDefault(wxDC& dc)
 			dc.DrawRectangle ( x1 , y1 , x2 - x1, y2 - y1);
 		}
 	}
+	//If Grid Catched by mouse, draw the scan zone
+	if (CatchGrid || BackupCtrl->IsScanning())
+	{
+		wxCoord x1,y1,x2,y2,DemiScanUp,DemiScanDn;
+		DemiScanDn=(wxCoord)floor ((double)BackupCtrl->GetScanSize()/2);
+		DemiScanUp=BackupCtrl->GetScanSize() - DemiScanDn;
+		x1=(MCellx-DemiScanUp+1)*Cell;
+		y1=(MCelly-DemiScanUp+1)*Cell;
+		x2=(MCellx+DemiScanDn+1)*Cell;
+		y2=(MCelly+DemiScanDn+1)*Cell;
+		if (x1<0) x1=0;
+		else if (x1>=Larg) x1=Larg-1;
+		if (x2<0) x2=0;
+		else if (x2>=Larg) x2=Larg-1;
+		if (y1<0) y1=0;
+		else if (y1>=Haut) y1=Haut-1;
+		if (y2<0) y2=0;
+		else if (y2>=Haut) y2=Haut-1;
+		dc.SetPen(wxPen(wxColour (0,255,0),2, wxSOLID ));
+		dc.SetBrush(wxBrush(wxColour(0,0,0),wxTRANSPARENT));
+		dc.DrawRectangle ( x1 , y1 , x2 - x1, y2 - y1);
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -243,6 +265,7 @@ void CMapCanvas::OnMClickDown (wxMouseEvent& event)
 {
     wxClientDC dc(this);
     if (SelectGrid) return;
+	if (BackupCtrl->BlockScroll) return;
     wxPoint pos = event.GetPosition();
     MouseX = dc.DeviceToLogicalX( pos.x );
     MouseY = dc.DeviceToLogicalY( pos.y );

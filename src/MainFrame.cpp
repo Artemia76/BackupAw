@@ -31,6 +31,7 @@
 #include "MainFrame.h"
 #include "Global.h"
 #include "AboutBox.h"
+#include <wx/numdlg.h> 
 
 // Chargement des icones
 #include "backupaw.xpm"
@@ -67,6 +68,7 @@ wxBEGIN_EVENT_TABLE(CMainFrame, wxFrame)
 	EVT_MENU	(MF_MENU_ZOOM_OUT,	CMainFrame::OnZoomOut)
 	EVT_MENU	(MF_MENU_ZOOM_IN,	CMainFrame::OnZoomIn)
 	EVT_MENU	(MF_MENU_SET_REL,	CMainFrame::OnSetRelative)
+	EVT_MENU	(MF_MENU_SET_SCAN_SIZE, CMainFrame::OnSetScanSize)
 	EVT_TIMER	(MF_UPDATE,			CMainFrame::OnTUpdate)
 	EVT_CLOSE	(					CMainFrame::OnCloseWindow)
 
@@ -112,6 +114,7 @@ CMainFrame::CMainFrame
     MenuGrid->Append(MF_MENU_SET_REL, _("Set Relative"), _("Set the relative origin for project save"));
     MenuGrid->Append(MF_MENU_ZOOM_IN, _("Zoom In"),_("Make the grid cells bigger"));
     MenuGrid->Append(MF_MENU_ZOOM_OUT, _("Zoom Out"),_("Make the grid cells smaller"));
+	MenuGrid->Append(MF_MENU_SET_SCAN_SIZE, _("Set Scan Size"),_("Set the size of each scan (square of cells)"));
 
     wxMenu* MenuTools = new wxMenu;
     MenuTools->Append(MF_MENU_SCAN, _("S&can"),_("Scan World"));
@@ -448,7 +451,7 @@ void CMainFrame::OnTUpdate (wxTimerEvent& WXUNUSED(event))
 
 //------------------------------------------------------------------------------
 
-void	CMainFrame::OnNew (wxCommandEvent& WXUNUSED(event))
+void CMainFrame::OnNew (wxCommandEvent& WXUNUSED(event))
 {
 	Cell->DelSel ();
 	Cell->FileName=_T("");
@@ -457,7 +460,7 @@ void	CMainFrame::OnNew (wxCommandEvent& WXUNUSED(event))
 
 //------------------------------------------------------------------------------
 
-void	CMainFrame::OnLoad (wxCommandEvent& WXUNUSED(event))
+void CMainFrame::OnLoad (wxCommandEvent& WXUNUSED(event))
 {
 	wxFileDialog ProjectFile
 	(
@@ -479,7 +482,7 @@ void	CMainFrame::OnLoad (wxCommandEvent& WXUNUSED(event))
 
 //------------------------------------------------------------------------------
 
-void	CMainFrame::OnSave (wxCommandEvent& event)
+void CMainFrame::OnSave (wxCommandEvent& event)
 {
 	if (Cell->FileName==_T("")) OnSaveAs (event);
 	else
@@ -490,7 +493,7 @@ void	CMainFrame::OnSave (wxCommandEvent& event)
 
 //------------------------------------------------------------------------------
 
-void	CMainFrame::OnSaveAs (wxCommandEvent& WXUNUSED(event))
+void CMainFrame::OnSaveAs (wxCommandEvent& WXUNUSED(event))
 {
 	wxFileDialog ProjectFile
 	(
@@ -513,21 +516,21 @@ void	CMainFrame::OnSaveAs (wxCommandEvent& WXUNUSED(event))
 
 //------------------------------------------------------------------------------
 
-void	CMainFrame::OnZoomIn (wxCommandEvent& WXUNUSED(event))
+void CMainFrame::OnZoomIn (wxCommandEvent& WXUNUSED(event))
 {
 	MapCanvas->ZoomIn();
 }
 
 //------------------------------------------------------------------------------
 
-void	CMainFrame::OnZoomOut (wxCommandEvent& WXUNUSED(event))
+void CMainFrame::OnZoomOut (wxCommandEvent& WXUNUSED(event))
 {
 	MapCanvas->ZoomOut();
 }
 
 //------------------------------------------------------------------------------
 
-void	CMainFrame::OnSetRelative(wxCommandEvent& WXUNUSED(event))
+void CMainFrame::OnSetRelative(wxCommandEvent& WXUNUSED(event))
 {
 	wxString Depart = CoordToAwF(Cell->RelX, Cell->RelZ);
     wxString s = wxGetTextFromUser (_("Please Enter an AW Coord Relative :"),_("Set Relative Object Coord"),Depart);
@@ -537,5 +540,16 @@ void	CMainFrame::OnSetRelative(wxCommandEvent& WXUNUSED(event))
     Cell->RelZ = (int) floor(z * 1000);
     wxString LogMess;
     LogMess << _("Set Relative Coord to ") << Cell->RelX << _T(" / ") << Cell->RelZ;
+    wxLogMessage(LogMess);
+}
+
+//------------------------------------------------------------------------------
+
+void CMainFrame::OnSetScanSize(wxCommandEvent& WXUNUSED(event))
+{
+	long i = wxGetNumberFromUser(_("Please Enter a value between 5 and 200"),_("Scan size:"), _("Set scan size"), BackupCtrl->GetScanSize(), 5,200);
+	BackupCtrl->SetScanSize((int)i);
+	wxString LogMess;
+	LogMess << _("Set ScanSize to ") << BackupCtrl->GetScanSize();
     wxLogMessage(LogMess);
 }

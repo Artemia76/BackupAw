@@ -7,6 +7,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_sdk101|Win32 = Debug_sdk101|Win32
 		Debug_sdk101|x64 = Debug_sdk101|x64
+		Debug_VP|Win32 = Debug_VP|Win32
+		Debug_VP|x64 = Debug_VP|x64
 		Release_sdk101|Win32 = Release_sdk101|Win32
 		Release_sdk101|x64 = Release_sdk101|x64
 		Release_sdk41|Win32 = Release_sdk41|Win32
@@ -18,6 +20,9 @@ Global
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_sdk101|Win32.ActiveCfg = Debug_sdk101|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_sdk101|Win32.Build.0 = Debug_sdk101|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_sdk101|x64.ActiveCfg = Debug_sdk101|Win32
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_VP|Win32.ActiveCfg = Debug_VP|Win32
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_VP|Win32.Build.0 = Debug_VP|Win32
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_VP|x64.ActiveCfg = Debug_VP|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|Win32.ActiveCfg = Release_sdk101|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|Win32.Build.0 = Release_sdk101|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|x64.ActiveCfg = Release_sdk101|Win32

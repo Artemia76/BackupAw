@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "BackupVP"
-!define PRODUCT_VERSION "1.6"
+!define PRODUCT_VERSION "1.6 Beta"
 !define PRODUCT_PUBLISHER "Neophile"
 !define PRODUCT_WEB_SITE "http://sourceforge.net/projects/backupaw/"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\backupvp.exe"
@@ -11,7 +11,7 @@
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
 
 ; MUI 1.67 compatible ------
-!include "MUI.nsh"
+!include "MUI2.nsh"
 
 ; MUI Settings
 !define MUI_ABORTWARNING
@@ -47,7 +47,7 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "BackupVP_1_6.exe"
+OutFile "BackupVP_1_6_Beta.exe"
 InstallDir "$PROGRAMFILES\BackupVP"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show

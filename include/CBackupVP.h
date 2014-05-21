@@ -39,9 +39,12 @@
 #include <wx/wxprec.h>
 #include <wx/config.h>
 #include <wx/hashmap.h>
+#include <vector>
 
 #include "Ctrlaw.h"
 #include "CtrlCell.h"
+
+using namespace std;
 
 enum
 {
@@ -70,6 +73,8 @@ static	void			Kill ();
 		bool			BlockSelect;
 		int				OrigX;
 		int				OrigY;
+		int				GetScanSize();
+		void			SetScanSize(int Size);
 		wxWindow*		Map;
 
 private:
@@ -89,8 +94,9 @@ static	CBackupCtrl*	PtCBackupCtrl;
 		CCtrlCell*		Cell;
 		hmCellMap		CellMap;
 		hmObjectCB		ObjectMap;
-		int				SequenceX[15];
-		int				SequenceZ[15];
+		int				ScanSize;
+		vector<int>		SequenceX;
+		vector<int>		SequenceZ;
 		int				CellQueryCnt;
 		int				PtrX;
 		int				PtrZ;
