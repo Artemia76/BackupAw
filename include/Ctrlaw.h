@@ -103,6 +103,9 @@ static		CCtrlAw*				PtCCtrlAw; //SingleTon Pointer
 			wxConfigBase*			pConfig;
 			bool					AwInit;
 			wxTimer*				Heart;
+	protected:
+friend class CAwListenner;
+friend class CBot;
 #ifndef VP_BUILD
 // AW Events
 static		void	    			On_Cell_Begin			();
@@ -135,9 +138,11 @@ static      void                    On_Object_Delete (VPInstance Instance);
 
 // VP Callback
 
-static      void                    On_Object_Add_CB        (VPInstance Instance, int rc, int ID);
-static      void                    On_Object_Delete_CB   (VPInstance Instance, int rc, int ID);
-
+static      void                    On_Object_Add_CB		(VPInstance Instance, int rc, int ID);
+static      void                    On_Object_Load_CB		(VPInstance Instance, int rc, int ID);
+static      void                    On_Object_Delete_CB		(VPInstance Instance, int rc, int ID);
+static		void					On_Login_CB				(VPInstance Instance, int rc, int ID);
+static		void					On_Enter_CB				(VPInstance Instance, int rc, int ID); 
 #endif // VP_BUILD
 
 #ifndef VP_BUILD
@@ -148,8 +153,6 @@ static      void                    On_Object_Delete_CB   (VPInstance Instance, 
 			void					CallBackDispatch		(vp_callback_t id, int rc, int Handle, CBot* Bot);
 #endif // VP_BUILD
 
-friend class CAwListenner;
-	protected:
 			void					AddListenner			(CAwListenner* pListenner);
 			void					DelListenner			(CAwListenner* pListenner);
 // Controller HeartBea

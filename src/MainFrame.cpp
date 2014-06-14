@@ -34,7 +34,11 @@
 #include <wx/numdlg.h> 
 
 // Chargement des icones
-#include "backupaw.xpm"
+#ifndef VP_BUILD
+	#include "backupaw.xpm"
+#else
+	#include "backupvp.xpm"
+#endif
 #include "deco.xpm"
 #include "connect.xpm"
 #include "outils.xpm"
@@ -147,8 +151,11 @@ CMainFrame::CMainFrame
 	ToolBar->AddTool ( MF_MENU_ZOOM_IN, _("Zoom In"),wxBitmap(loupe_p_xpm), _("Make the grid cells bigger"));
 	ToolBar->AddTool ( MF_MENU_ZOOM_OUT, _("Zoom Out"),wxBitmap(loupe_m_xpm), _("Make the grid cells smaller"));
 	ToolBar->Realize ();
-
+#ifndef VP_BUILD
     SetIcon (wxIcon(backupaw_xpm));
+#else
+	SetIcon (wxIcon(backupvp_xpm));
+#endif
     CreateStatusBar(3);
 	LogZone = new wxTextCtrl
 		(

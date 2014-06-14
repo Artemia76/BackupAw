@@ -324,12 +324,37 @@ void CCtrlAw::On_Object_Add_CB (VPInstance Instance,int rc , int Handle)
 
 //------------------------------------------------------------------------------
 
+void CCtrlAw::On_Object_Load_CB (VPInstance Instance,int rc , int Handle)
+{
+    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_OBJECT_LOAD,rc,Handle,Robot);
+}
+
+//------------------------------------------------------------------------------
+
 void CCtrlAw::On_Object_Delete_CB (VPInstance Instance,int rc , int Handle)
 {
     CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
     PtCCtrlAw->CallBackDispatch (VP_CALLBACK_OBJECT_DELETE,rc,Handle,Robot);
 }
 
+//------------------------------------------------------------------------------
+
+void CCtrlAw::On_Login_CB (VPInstance Instance,int rc , int Handle)
+{
+    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+	Robot->Login_CB(rc);
+    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_LOGIN,rc,Handle,Robot);
+}
+
+//------------------------------------------------------------------------------
+
+void CCtrlAw::On_Enter_CB (VPInstance Instance,int rc , int Handle)
+{
+    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
+	Robot->Enter_CB(rc);
+    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_LOGIN,rc,Handle,Robot);
+}
 
 #endif
 
@@ -374,20 +399,6 @@ void CCtrlAw::On_HeartBeat (wxTimerEvent& WXUNUSED(event))
 		(*i)->SetInstance();
 #else
         VPInstance Instance = (*i)->GetInstance();
-        if ((*i)->NeedEvent)
-        {
-            vp_event_set(Instance, VP_EVENT_WORLD_DISCONNECT, CCtrlAw::On_World_Disconnect);
-            vp_event_set(Instance, VP_EVENT_UNIVERSE_DISCONNECT, CCtrlAw::On_Universe_Disconnect);
-            vp_event_set(Instance, VP_EVENT_CELL_END, CCtrlAw::On_Cell_End);
-            vp_event_set(Instance, VP_EVENT_OBJECT, CCtrlAw::On_Object);
-            vp_event_set(Instance, VP_EVENT_OBJECT_CHANGE, CCtrlAw::On_Object_Change);
-            vp_event_set(Instance, VP_EVENT_OBJECT_DELETE, CCtrlAw::On_Object_Delete);
-
-            vp_callback_set(Instance, VP_CALLBACK_OBJECT_ADD, CCtrlAw::On_Object_Add_CB);
-            vp_callback_set(Instance, VP_CALLBACK_OBJECT_DELETE, CCtrlAw::On_Object_Delete_CB);
-
-            (*i)->NeedEvent=false;
-        }
         if ((*i)->GetInstance()) vp_wait((*i)->GetInstance(),0);
 #endif // VP_BUILD
 		(*i)->Update();

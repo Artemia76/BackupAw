@@ -40,6 +40,7 @@
 #endif
 #include <wx/wxprec.h>
 #include <wx/config.h>
+#include <wx/hashmap.h>
 
 #include "Ctrlaw.h"
 #include "CtrlCell.h"
@@ -48,6 +49,9 @@ enum
 {
 	OBJ_TIME = wxID_HIGHEST
 };
+
+WX_DECLARE_STRING_HASH_MAP(bool, hmCellMap);
+WX_DECLARE_HASH_MAP(int,CObject, wxIntegerHash, wxIntegerEqual, hmObjectCB);
 
 class CBackupCtrl: public wxEvtHandler, public COutils, public CAwListenner
 {
@@ -68,6 +72,8 @@ static	void			Kill ();
 		bool			BlockSelect;
 		int				OrigX;
 		int				OrigY;
+		int				GetScanSize();
+		void			SetScanSize(int Size);
 		wxWindow*		Map;
 
 private:
@@ -80,12 +86,14 @@ static	CBackupCtrl*	PtCBackupCtrl;
 		void			Cell_Begin	(CBot* Bot);
 		void			Cell_Object (CBot* Bot);
 		void			Object_Delete (CBot* Bot);
-
+		int				ScanSize;
 		wxTimer*		ObjectTimer;
 		wxConfigBase*	pConfig;
 		CCtrlCell*		Cell;
-		int			CellX;
-		int			CellZ;
+		hmCellMap		CellMap;
+		hmObjectCB		ObjectMap;
+		int				CellX;
+		int				CellZ;
 
 protected:
 		bool			Scanning;

@@ -15,8 +15,8 @@
 
 ; MUI Settings
 !define MUI_ABORTWARNING
-!define MUI_ICON ".\Icones\Backupaw.ico"
-!define MUI_UNICON ".\Icones\Backupaw.ico"
+!define MUI_ICON ".\Icones\Backupvp.ico"
+!define MUI_UNICON ".\Icones\Backupvp.ico"
 
 ; Language Selection Dialog Settings
 !define MUI_LANGDLL_REGISTRY_ROOT "${PRODUCT_UNINST_ROOT_KEY}"
@@ -62,7 +62,7 @@ Section "SectionPrincipale" SEC01
   SetOverwrite on
   File ".\Win32\Release_VP\backupvp.exe"
   CreateDirectory "$SMPROGRAMS\BackupVP"
-  CreateShortCut "$SMPROGRAMS\BackupVP\BackupAw.lnk" "$INSTDIR\backupvp.exe"
+  CreateShortCut "$SMPROGRAMS\BackupVP\BackupVP.lnk" "$INSTDIR\backupvp.exe"
   CreateShortCut "$DESKTOP\BackupVP.lnk" "$INSTDIR\backupvp.exe"
   CreateShortCut "$SMPROGRAMS\BackupVP\Help.lnk" "$INSTDIR\hlp\Backupaw.chm"
   File ".\Win32\Release_VP\vpsdk.dll"
@@ -108,6 +108,7 @@ Function un.onInit
 FunctionEnd
 
 Section Uninstall
+  Delete "$DESKTOP\BackupVP.lnk"
   RMDir /r "$SMPROGRAMS\BackupVP"
   RMDir /r "$INSTDIR"
 

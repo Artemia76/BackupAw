@@ -284,6 +284,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>.\icones;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>VP_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>wxmsw$(WX_BASE)u_adv.lib;wxmsw$(WX_BASE)u_core.lib;wxbase$(WX_BASE)u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;odbc32.lib;vpsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>

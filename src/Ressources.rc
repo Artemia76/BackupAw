@@ -1,1 +1,5 @@
+#ifdef VP_BUILD
+1 ICON "Backupvp.ico"
+#else
 1 ICON "Backupaw.ico"
+#endif

@@ -128,6 +128,7 @@ bool CBackupCtrl::CallBack (vp_callback_t id, int rc, int Handle, CBot* Bot)
 
     switch (id)
     {
+	case VP_CALLBACK_OBJECT_LOAD:
     case VP_CALLBACK_OBJECT_ADD:
         CB_Object_Add (rc, Handle, Bot);
         return true;
@@ -381,6 +382,7 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
 			vp_string_set (Instance,VP_OBJECT_MODEL, Obj.Model.utf8_str());
             vp_string_set (Instance,VP_OBJECT_DESCRIPTION, Obj.Description.utf8_str());
             vp_string_set (Instance,VP_OBJECT_ACTION, Obj.Action.utf8_str());
+			vp_int_set (Instance,VP_OBJECT_USER_ID, Obj.Owner);
             vp_int_set (Instance,VP_OBJECT_TYPE, Obj.Type);
             if (Obj.Type>1)
             {
@@ -393,7 +395,8 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
 			BuildEC++;
             ObjectMap[BuildEC]=Obj;
             vp_int_set(Instance, VP_REFERENCE_NUMBER,BuildEC );
-            vp_object_add (Instance);
+			if (CTBuild) vp_object_load (Instance);
+			else vp_object_add (Instance);
             Cell->DelObjSel(0);
         }
         if (Cell->GetNbSel() >0) ObjectTimer->Start (1000,true);

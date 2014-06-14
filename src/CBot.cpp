@@ -29,6 +29,7 @@
 // *****************************************************************************
 
 #include "CBot.h"
+#include "Ctrlaw.h"
 
 #ifdef VP_BUILD
 	#include <rc.h>
@@ -74,9 +75,6 @@ CBot::CBot ()
 	ModeReco=false;
 	Visible=false;
 	Instance=0;
-#ifdef VP_BUILD
-	NeedEvent=false;
-#endif // VP_BUILD
 }
 
 //------------------------------------------------------------------------------
@@ -149,13 +147,14 @@ void CBot::Connection(bool flag)
 			aw_string_set (AW_LOGIN_NAME,Nom.mb_str());
 #endif
 			if (rc=aw_login())
+#else
+			vp_callback_set(Instance, VP_CALLBACK_LOGIN, CCtrlAw::On_Login_CB);
+			if (rc=vp_login (Instance, UserName.utf8_str(), PassWord.utf8_str(),Nom.utf8_str()))
+#endif
 			{
 				wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(rc));
 				ConEC=false;
 			}
-#else
-			Login_CB(vp_login (Instance, UserName.utf8_str(), PassWord.utf8_str(),Nom.utf8_str()));
-#endif
 			CGRecoTimer->Start(15000,wxTIMER_ONE_SHOT);
 		}
 	}
@@ -199,7 +198,16 @@ void CBot::Login_CB(int rc)
 		wxLogMessage (_("Connected on Universe"));
 		On_Universe=true;
 #ifdef VP_BUILD
-		NeedEvent=true;
+		vp_event_set(Instance, VP_EVENT_WORLD_DISCONNECT, CCtrlAw::On_World_Disconnect);
+		vp_event_set(Instance, VP_EVENT_UNIVERSE_DISCONNECT, CCtrlAw::On_Universe_Disconnect);
+		vp_event_set(Instance, VP_EVENT_CELL_END, CCtrlAw::On_Cell_End);
+		vp_event_set(Instance, VP_EVENT_OBJECT, CCtrlAw::On_Object);
+		vp_event_set(Instance, VP_EVENT_OBJECT_CHANGE, CCtrlAw::On_Object_Change);
+		vp_event_set(Instance, VP_EVENT_OBJECT_DELETE, CCtrlAw::On_Object_Delete);
+
+		vp_callback_set(Instance, VP_CALLBACK_OBJECT_ADD, CCtrlAw::On_Object_Add_CB);
+		vp_callback_set(Instance, VP_CALLBACK_OBJECT_LOAD, CCtrlAw::On_Object_Load_CB);
+		vp_callback_set(Instance, VP_CALLBACK_OBJECT_DELETE, CCtrlAw::On_Object_Delete_CB);
 #endif
 	}
 }
@@ -209,6 +217,7 @@ void CBot::Login_CB(int rc)
 
 void CBot::Enter_CB(int rc)
 {
+	wxLogMessage (_T("Callback call"));
 	wxString Message;
 	EntEC=false;
 	DemCon=false;
@@ -253,7 +262,8 @@ void CBot::Enter()
     aw_enter(Monde.mb_str());
 		#endif
 	#else
-	Enter_CB(vp_enter(Instance, Monde.utf8_str()));
+	vp_callback_set (Instance, VP_CALLBACK_ENTER,CCtrlAw::On_Enter_CB);
+	vp_enter(Instance, Monde.utf8_str());
 	#endif // VP_BUILD
 }
 
@@ -263,19 +273,21 @@ void CBot::Enter()
 void CBot::Charge ()
 {
 	#ifndef VP_BUILD
-	Univers=pConfig->Read(_T("Bot/Univers") , _T("auth.activeworlds.com"));
-	Citoyen=pConfig->Read(_T("Bot/Citoyen") , 0l);
+	wxString BAPVersion = wxString::Format(_T("AW%i"),AW_BUILD);
+	Univers=pConfig->Read(BAPVersion + _T("/Univers") , _T("auth.activeworlds.com"));
+	Citoyen=pConfig->Read(BAPVersion + _T("/Citoyen") , 0l);
 	#else
-	Univers=pConfig->Read(_T("Bot/Univers") , _T("universe.virtualparadise.org"));
-	UserName=pConfig->Read(_T("Bot/UserName") , _T(""));
+	wxString BAPVersion = _T("VP");
+	Univers=pConfig->Read(BAPVersion + _T("/Univers") , _T("universe.virtualparadise.org"));
+	UserName=pConfig->Read(BAPVersion + _T("/UserName") , _T(""));
 	#endif // VP_BUILD
-	Monde=pConfig->Read(_T("Bot/Monde") , _T(""));
-	Port=pConfig->Read(_T("Bot/Port") , DefaultPort);
-	PassWord=PassPriv->Decode(pConfig->Read(_T("Bot/PassPriv"), _T("")));
-	Nom=pConfig->Read(_T("Bot/Nom") , _T("BackupAw"));
-	pConfig->Read(_T("Bot/AutoConnect"), &CGConAuto, false);
-	CGRecoDelay=pConfig->Read(_T("Bot/Delai") , 15l);
-	CGRecoRetry=pConfig->Read(_T("Bot/Essais") , 3l);
+	Monde=pConfig->Read(BAPVersion + _T("/Monde") , _T(""));
+	Port=pConfig->Read(BAPVersion + _T("/Port") , DefaultPort);
+	PassWord=PassPriv->Decode(pConfig->Read(BAPVersion + _T("/PassPriv"), _T("")));
+	Nom=pConfig->Read(BAPVersion + _T("/Nom") , _T("BackupAw"));
+	pConfig->Read(BAPVersion + _T("/AutoConnect"), &CGConAuto, false);
+	CGRecoDelay=pConfig->Read(BAPVersion + _T("/Delai") , 15l);
+	CGRecoRetry=pConfig->Read(BAPVersion + _T("/Essais") , 3l);
 	if (CGRecoRetry != 0) CGRecoEna=true;
 	else CGRecoEna=false;
 }
@@ -286,19 +298,21 @@ void CBot::Charge ()
 void CBot::Sauve ()
 {
 	#ifndef VP_BUILD
-	pConfig->Write(_T("Bot/Univers") ,Univers);
-	pConfig->Write(_T("Bot/Citoyen") ,Citoyen);
+	wxString BAPVersion = wxString::Format(_T("AW%i"),AW_BUILD);
+	pConfig->Write(BAPVersion + _T("/Univers") ,Univers);
+	pConfig->Write(BAPVersion + _T("/Citoyen") ,Citoyen);
 	#else
-	pConfig->Write(_T("Bot/Univers") ,Univers);
-	pConfig->Write(_T("Bot/UserName") ,UserName);
+	wxString BAPVersion = _T("vp");
+	pConfig->Write(BAPVersion + _T("/Univers") ,Univers);
+	pConfig->Write(BAPVersion + _T("/UserName") ,UserName);
 	#endif // VP_BUILD
-	pConfig->Write(_T("Bot/Monde") ,Monde);
-	pConfig->Write(_T("Bot/PassPriv") ,PassPriv->Code(PassWord));
-	pConfig->Write(_T("Bot/Nom") ,Nom);
-	pConfig->Write(_T("Bot/Port") ,Port);
-	pConfig->Write(_T("Bot/AutoConnect") , CGConAuto);
-	pConfig->Write(_T("Bot/Delai")  , CGRecoDelay);
-	pConfig->Write(_T("Bot/Essais") , CGRecoRetry);
+	pConfig->Write(BAPVersion + _T("/Monde") ,Monde);
+	pConfig->Write(BAPVersion + _T("/PassPriv") ,PassPriv->Code(PassWord));
+	pConfig->Write(BAPVersion + _T("/Nom") ,Nom);
+	pConfig->Write(BAPVersion + _T("/Port") ,Port);
+	pConfig->Write(BAPVersion + _T("/AutoConnect") , CGConAuto);
+	pConfig->Write(BAPVersion + _T("/Delai")  , CGRecoDelay);
+	pConfig->Write(BAPVersion + _T("/Essais") , CGRecoRetry);
 	pConfig->Flush(true);
 }
 

@@ -64,7 +64,7 @@ static const wxString AppVersion = AppRevision + _T(" For AW 3.6");
 #endif
 #else
 	static const wxString AppName = _T("BackupVP");
-	static const wxString AppRevision = AppName + _T(" V1.6.0");
+	static const wxString AppRevision = AppName + _T(" V1.6.1 Beta");
     static const wxString AppVersion = AppRevision + _T(" For Virtual Paradise");
 #endif // VP_BUILD
 
@@ -79,7 +79,7 @@ static const  wxString AppLicence = AppVersion
 #ifndef VP_BUILD
 +	_T("BACKUPAW use the (c)Activeworlds SDK published for devellopers, then this software depend of the AW terms in the \"AW_SDK_License_(aw.dll).rtf\" file.")
 #else
-+	_T("BACKUPVP use the Virtual Paradise SDK (c) 2014 Edwin Rijkee. It published at your own risk.")
++	_T("BACKUPVP use the Virtual Paradise SDK (c) 2014 Edwin Rijkee. Use BackupVP at your own risk.")
 #endif
 ;
 

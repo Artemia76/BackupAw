@@ -75,6 +75,7 @@ CBackupCtrl::CBackupCtrl ()
 	BlockScroll=false;
 	BlockSelect=false;
 	Map=0;
+	ScanSize=15;
 	pConfig=wxConfigBase::Get();
 	pConfig->Read(_T("Bot/BuildMode"), &CTBuild, true);
 	ObjectTimer = new wxTimer(this, OBJ_TIME);
@@ -394,4 +395,22 @@ void CBackupCtrl::Reset()
 	DelEC=0;
 	if (Map) Map->Refresh ();
 }
+
+//------------------------------------------------------------------------------
+
+int	CBackupCtrl::GetScanSize()
+{
+	return ScanSize;
+}
+
+//------------------------------------------------------------------------------
+
+void CBackupCtrl::SetScanSize(int Size)
+{
+	if (((Size >5) || (Size < 200)) && (!Scanning))
+	{
+		ScanSize = Size;
+	}
+}
+
 #endif

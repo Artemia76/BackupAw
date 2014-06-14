@@ -65,7 +65,6 @@ class CBot : public wxEvtHandler, public COutils
 		int					CGRecoRetry;	// Nombres d'essais sur AW
 #ifdef VP_BUILD
 		wxString			UserName;		// Virtual Paradise User Name
-        bool                NeedEvent;
 #else
 		int					Citoyen;		// Numéro du citoyen
 #endif // VP_BUILD
