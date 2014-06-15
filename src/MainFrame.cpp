@@ -539,13 +539,16 @@ void CMainFrame::OnSetRelative(wxCommandEvent& WXUNUSED(event))
 {
 	wxString Depart = CoordToAwF(Cell->RelX, Cell->RelZ);
     wxString s = wxGetTextFromUser (_("Please Enter an AW Coord Relative :"),_("Set Relative Object Coord"),Depart);
-    double x,z,y;
-    AwToCoord (x,z,y,s);
-    Cell->RelX = (int) floor(x * 1000);
-    Cell->RelZ = (int) floor(z * 1000);
-    wxString LogMess;
-    LogMess << _("Set Relative Coord to ") << Cell->RelX << _T(" / ") << Cell->RelZ;
-    wxLogMessage(LogMess);
+    if (!s.IsEmpty())
+    {
+        double x,z,y;
+        AwToCoord (x,z,y,s);
+        Cell->RelX = (int) floor(x * 1000);
+        Cell->RelZ = (int) floor(z * 1000);
+        wxString LogMess;
+        LogMess << _("Set Relative Coord to ") << Cell->RelX << _T(" / ") << Cell->RelZ;
+        wxLogMessage(LogMess);
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -553,8 +556,11 @@ void CMainFrame::OnSetRelative(wxCommandEvent& WXUNUSED(event))
 void CMainFrame::OnSetScanSize(wxCommandEvent& WXUNUSED(event))
 {
 	long i = wxGetNumberFromUser(_("Please Enter a value between 5 and 200"),_("Scan size:"), _("Set scan size"), BackupCtrl->GetScanSize(), 5,200);
-	BackupCtrl->SetScanSize((int)i);
-	wxString LogMess;
-	LogMess << _("Set ScanSize to ") << BackupCtrl->GetScanSize();
-    wxLogMessage(LogMess);
+    if (i > 0)
+    {
+        BackupCtrl->SetScanSize((int)i);
+        wxString LogMess;
+        LogMess << _("Set ScanSize to ") << BackupCtrl->GetScanSize();
+        wxLogMessage(LogMess);
+    }
 }

@@ -89,10 +89,10 @@ AboutBox::AboutBox
 		-1,
 		AppLicence,
 		wxDefaultPosition,
-		wxDefaultSize,
+		wxSize(-1,200),
 		wxTE_LEFT|wxTE_MULTILINE|wxTE_READONLY
 	);
-	item0->Add( item5, 0, wxEXPAND, 5 );
+	item0->Add( item5, 1, wxEXPAND, 2 );
 
 	wxBoxSizer *item6 = new wxBoxSizer( wxHORIZONTAL );
 

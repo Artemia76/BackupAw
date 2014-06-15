@@ -50,7 +50,7 @@ CFilter::CFilter(wxWindow* Parent) : wxPanel
 	item1 = new wxStaticBoxSizer( item2, wxHORIZONTAL );
 	item3 = new wxBoxSizer( wxHORIZONTAL);
 	item4 = new wxBoxSizer( wxVERTICAL );
-	item5 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (80,-1), 0 );
+	item5 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (100,-1), 0 );
 	item5->SetValue(Cell->CitFilt);
 	item6 = new wxBoxSizer( wxVERTICAL );
 	item7 = new wxCheckBox( this, -1, _("Exclude"), wxDefaultPosition, wxSize (100,-1), 0 );
@@ -62,7 +62,7 @@ CFilter::CFilter(wxWindow* Parent) : wxPanel
 	item10 = new wxStaticBoxSizer( item11, wxHORIZONTAL );
 	item12 = new wxBoxSizer( wxHORIZONTAL );
 	item13 = new wxBoxSizer( wxVERTICAL );
-	item14 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (80,-1), 0 );
+	item14 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (100,-1), 0 );
 	item14->SetValue(Cell->ModelFilt);
 	item15 = new wxBoxSizer( wxVERTICAL );
 	item16 = new wxCheckBox( this, -1, _("Exclude"), wxDefaultPosition, wxSize (100,-1), 0 );
@@ -74,7 +74,7 @@ CFilter::CFilter(wxWindow* Parent) : wxPanel
 	item19 = new wxStaticBoxSizer( item20, wxHORIZONTAL);
 	item21 = new wxBoxSizer( wxHORIZONTAL);
 	item22 = new wxBoxSizer( wxVERTICAL );
-	item23 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (80,-1), 0 );
+	item23 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (100,-1), 0 );
 	item23->SetValue(Cell->DescrFilt);
 	item24 = new wxBoxSizer( wxVERTICAL );
 	item25 = new wxCheckBox( this, -1, _("Exclude"), wxDefaultPosition, wxSize (100,-1), 0 );
@@ -88,7 +88,7 @@ CFilter::CFilter(wxWindow* Parent) : wxPanel
 	item29 = new wxStaticBoxSizer( item30, wxHORIZONTAL );
 	item31 = new wxBoxSizer( wxHORIZONTAL );
 	item32 = new wxBoxSizer( wxVERTICAL );
-	item33 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (80,-1), 0 );
+	item33 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (100,-1), 0 );
 	item33->SetValue(Cell->ActionFilt);
 	item34 = new wxBoxSizer( wxVERTICAL );
 	item35 = new wxCheckBox( this, -1, _("Exclude"), wxDefaultPosition, wxSize (100,-1), 0 );
@@ -102,7 +102,7 @@ CFilter::CFilter(wxWindow* Parent) : wxPanel
 	item39 = new wxStaticBoxSizer( item40, wxHORIZONTAL );
 	item41 = new wxBoxSizer( wxHORIZONTAL );
 	item42 = new wxBoxSizer( wxVERTICAL );
-	item43 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (80,-1), 0 );
+	item43 = new wxCheckBox( this, -1, _("Enable"), wxDefaultPosition, wxSize (100,-1), 0 );
 	item43->SetValue(Cell->RegioFilt);
 	item44 = new wxBoxSizer( wxVERTICAL );
 	item45 = new wxCheckBox( this, -1, _("Exclude"), wxDefaultPosition, wxSize (100,-1), 0 );
@@ -119,55 +119,60 @@ CFilter::CFilter(wxWindow* Parent) : wxPanel
 	item53 = new wxBoxSizer( wxVERTICAL );
 	item54 = new wxButton (this, CF_UPDATE, _("Update"), wxDefaultPosition, wxDefaultSize, 0);
 
-	item4->Add( item5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item3->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-	item6->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item3->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item8->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
-	item3->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
-	item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item13->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item12->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-	item15->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item12->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item17->Add( item18, 0, wxALIGN_CENTER|wxALL, 5 );
-	item12->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item10->Add( item12, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
-	item0->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item22->Add( item23, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item21->Add( item22, 0, wxGROW, 0 );
-	item24->Add( item25, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item24->Add( item26, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item21->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item27->Add( item28, 0, wxALIGN_CENTER|wxALL, 5 );
-	item21->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item19->Add( item21, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
-	item0->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item32->Add( item33, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item31->Add( item32, 0, wxGROW, 5 );
-	item34->Add( item35, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item34->Add( item36, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item31->Add( item34, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item37->Add( item38, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item31->Add( item37, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
-	item29->Add( item31, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
-	item0->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item42->Add( item43, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item41->Add( item42, 0, 0, 0 );
-	item44->Add( item45, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item41->Add( item44, 0, wxGROW, 5 );
-	item47->Add( item48, 0, wxALIGN_CENTER|wxALL, 5 );
-	item47->Add( item49, 0, wxALIGN_CENTER|wxALL, 5 );
-	item46->Add( item47, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item50->Add( item51, 0, wxALIGN_CENTER|wxALL, 5 );
-	item50->Add( item52, 0, wxALIGN_CENTER|wxALL, 5 );
-	item46->Add( item50, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item41->Add( item46, 0, wxALIGN_CENTER, 5 );
-	item39->Add( item41, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
-	item0->Add( item39, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item53->Add(item54, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-	item0->Add( item53, 0, wxGROW|wxALIGN_CENTER|wxALL, 5 );
+	item4->Add( item5, 0, 0, 2 ); //Vertical Sizer with Enable Check Box
+	item3->Add( item4, 0, wxALIGN_TOP, 2 ); //Add Enable group on Horizontal Sizer
+	item6->Add( item7, 0, 0, 2 ); // Vertical Sizer with Exclude Citizen Check Box
+	item3->Add( item6, 0, wxALIGN_TOP, 2 ); // Add Exclude group on Horizontal Sizer
+	item8->Add( item9, 1, wxEXPAND, 2 ); // Citizen Text Box Sizer on Vertical Sizer
+	item3->Add( item8, 1, wxEXPAND, 2 ); // Add Citizen TextBox on Horizontal Sizer
+	item1->Add( item3, 1, wxEXPAND, 2 ); // Horizontal Sizer
+	item0->Add( item1, 1, wxEXPAND, 2 ); // Add Sizer Citizen to Main Sizer
+
+	item13->Add( item14, 0, 0, 2 ); //Vertical Sizer with Enable Check Box
+	item12->Add( item13, 0, wxALIGN_TOP, 2 ); //Add Enable group on Horizontal
+	item15->Add( item16, 0, 0, 2 ); // Vertical Sizer with Exclude Citizen Check
+	item12->Add( item15, 0, wxALIGN_TOP, 2 ); // Add Exclude group on Horizontal Sizer
+	item17->Add( item18, 1, wxEXPAND, 2 );// Model Text Box Sizer on Vertical Sizer
+	item12->Add( item17, 1, wxEXPAND, 2 );
+	item10->Add( item12, 1, wxEXPAND, 2 );
+	item0->Add( item10, 1, wxEXPAND, 2 );
+
+	item22->Add( item23, 0, 0, 2 ); //Vertical Sizer with Enable Check Box
+	item21->Add( item22, 0, wxALIGN_TOP, 2 ); //Add Enable group on Horizontal Sizer
+	item24->Add( item25, 0, 0, 2 ); // Add Exclude group on Horizontal Sizer
+	item24->Add( item26, 0, 0, 2 ); // Add Exact Match group on Horizontal Sizer
+	item21->Add( item24, 0, wxALIGN_TOP, 2 ); //Add Exclude and Exact Match group on Horizontal Sizer
+	item27->Add( item28, 1, wxEXPAND, 2 ); // Description Text Box Sizer on Vertical Sizer
+	item21->Add( item27, 1, wxEXPAND, 2 );
+	item19->Add( item21, 1, wxEXPAND, 2 );
+	item0->Add( item19, 1, wxEXPAND, 2  );
+
+	item32->Add( item33, 0, 0, 2 );
+	item31->Add( item32, 0, wxALIGN_TOP, 2  );
+	item34->Add( item35, 0, 0, 2 );
+	item34->Add( item36, 0, 0, 2 );
+	item31->Add( item34, 0, wxALIGN_TOP, 2 );
+	item37->Add( item38, 1, wxEXPAND, 2 );
+	item31->Add( item37, 1, wxEXPAND, 2 );
+	item29->Add( item31, 1, wxEXPAND, 2 );
+	item0->Add( item29, 1, wxEXPAND, 2 );
+
+	item42->Add( item43, 0, 0, 2 );
+	item41->Add( item42, 0, wxALIGN_TOP, 2 );
+	item44->Add( item45, 0, 0, 2 );
+	item41->Add( item44, 0, wxALIGN_TOP, 2 );
+	item47->Add( item48, 0, wxALIGN_CENTER, 2 );
+	item47->Add( item49, 0, wxALIGN_CENTER, 2 );
+	item46->Add( item47, 0, wxALIGN_CENTER_VERTICAL, 2 );
+	item50->Add( item51, 0, wxALIGN_CENTER, 2 );
+	item50->Add( item52, 0, wxALIGN_CENTER, 2 );
+	item46->Add( item50, 0, wxALIGN_CENTER_VERTICAL, 2 );
+	item41->Add( item46, 1, wxEXPAND, 2 );
+	item39->Add( item41, 1, wxEXPAND, 2 );
+	item0->Add( item39, 1, wxEXPAND, 2 );
+
+	item53->Add(item54, 1, wxEXPAND|wxALIGN_TOP, 2 );
+	item0->Add( item53, 1, wxEXPAND|wxALIGN_TOP, 2 );
 	SetAutoLayout ( TRUE );
 	SetSizer( item0 );
 	item0->Fit(this);
