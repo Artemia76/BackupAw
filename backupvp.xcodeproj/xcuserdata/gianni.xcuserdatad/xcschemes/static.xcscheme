@@ -24,7 +24,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "41DBA5DD194DBFF2008A08F4"
-               BuildableName = "static.app"
+               BuildableName = "backupvp.app"
                BlueprintName = "static"
                ReferencedContainer = "container:backupvp.xcodeproj">
             </BuildableReference>
@@ -42,7 +42,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "41DBA5DD194DBFF2008A08F4"
-            BuildableName = "static.app"
+            BuildableName = "backupvp.app"
             BlueprintName = "static"
             ReferencedContainer = "container:backupvp.xcodeproj">
          </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "41DBA5DD194DBFF2008A08F4"
-            BuildableName = "static.app"
+            BuildableName = "backupvp.app"
             BlueprintName = "static"
             ReferencedContainer = "container:backupvp.xcodeproj">
          </BuildableReference>

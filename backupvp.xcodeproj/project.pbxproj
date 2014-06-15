@@ -292,6 +292,7 @@
 			baseConfigurationReference = 41B5CD81194DB26500B673EF /* wxdebug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = Info_cocoa.plist;
+				INSTALL_OWNER = "";
 			};
 			name = Debug;
 		};
@@ -300,6 +301,7 @@
 			baseConfigurationReference = 41B5CD83194DB27800B673EF /* wxrelease.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = Info_cocoa.plist;
+				INSTALL_OWNER = "";
 			};
 			name = Release;
 		};
@@ -456,6 +458,7 @@
 				41DBA60E194DBFF3008A08F4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
