@@ -31,19 +31,19 @@
 #ifndef CTRLAW_H
 #define CTRLAW_H
 
+#include "wx/wxprec.h"
 
 #ifndef  WX_PRECOMP
 	#include <wx/wx.h>
 #endif
 
-#include <wx/wxprec.h>
-#include <wx/config.h>
-#include <wx/vector.h>
+#include "wx/config.h"
+#include "wx/vector.h"
 
 #ifndef VP_BUILD
     #include <Aw.h>
 #else
-    #include <VP.h>
+    #include "VP.h"
 #endif // VP_BUILD
 
 #include "CBot.h"

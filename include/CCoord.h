@@ -31,12 +31,13 @@
 #ifndef COORD_H
 #define COORD_H
 
+#include "wx/wxprec.h"
+
 #ifndef  WX_PRECOMP
-	#include <wx/wx.h>
+	#include "wx/wx.h"
 #endif
 
-#include <wx/wxprec.h>
-#include <wx/spinctrl.h>
+#include "wx/spinctrl.h"
 
 #include "CtrlCell.h"
 #include "MapCanvas.h"
@@ -71,7 +72,7 @@ class CCoord : public wxPanel , public COutils
 
 		void				OnChkRelative (wxCommandEvent& event);
 
-		DECLARE_EVENT_TABLE()
+        wxDECLARE_EVENT_TABLE();
 };
 
 #endif

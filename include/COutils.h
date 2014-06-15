@@ -31,11 +31,11 @@
 #ifndef COUTILS_H
 #define COUTILS_H
 
-#ifndef  WX_PRECOMP
-	#include <wx/wx.h>
-#endif
+#include "wx/wxprec.h"
 
-#include <wx/wxprec.h>
+#ifndef  WX_PRECOMP
+	#include "wx/wx.h"
+#endif
 
 class COutils
 {

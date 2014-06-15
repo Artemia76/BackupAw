@@ -31,12 +31,13 @@
 #ifndef ABOUTBOX_H
 #define ABOUTBOX_H
 
+#include "wx/wxprec.h"
+
 #ifndef  WX_PRECOMP
 	#include <wx/wx.h>
 #endif
 
-#include <wx/wxprec.h>
-#include <wx/config.h>
+#include "wx/config.h"
 
 enum
 {
@@ -59,7 +60,7 @@ class AboutBox: public wxDialog
 						~AboutBox ();
 	private:
 		wxConfigBase*	pConfig;
-		wxStaticText	*StaticText;
+		//wxStaticText	*StaticText;
 	protected:
 		void			On_lien_site (wxCommandEvent & event);
 		void			On_lien_wxwidget (wxCommandEvent & event);

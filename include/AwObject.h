@@ -31,16 +31,16 @@
 #ifndef AWOBJECT_H
 #define AWOBJECT_H
 
-#ifndef  WX_PRECOMP
-	#include <wx/wx.h>
-#endif
+#include "wx/wxprec.h"
 
-#include <wx/wxprec.h>
+#ifndef  WX_PRECOMP
+	#include "wx/wx.h"
+#endif
 
 #ifndef VP_BUILD
 #include <Aw.h>
 #else
-#include <VP.h>
+#include "VP.h"
 #endif // VP_BUILD
 
 class CObject
@@ -65,8 +65,8 @@ class CObject
 						wxString Obj_Descr=_T(""),
 						wxString Obj_Action=_T("")
 #if AW_BUILD>76 || VP_BUILD
-						,int Type=0,
-						wxString Dat=_T(""),
+						,int Obj_Type=0,
+						wxString Obj_Dat=_T(""),
 						int id=0
 #endif
 					);

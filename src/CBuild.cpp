@@ -30,8 +30,6 @@
 
 #include "CBuild.h"
 
-#include <wx/config.h>
-
 wxBEGIN_EVENT_TABLE (CBuild, wxPanel)
 	EVT_CHECKBOX	( CB_CTBUILD, CBuild::OnChkCTBuild)
 	EVT_BUTTON		( CB_BUILD, CBuild::OnBuild)

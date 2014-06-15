@@ -31,14 +31,17 @@
 #ifndef CTRLCELL_H
 #define CTRLCELL_H
 
+#include <vector>
+
+#include "wx/wxprec.h"
+
 #ifndef  WX_PRECOMP
-	#include <wx/wx.h>
+	#include "wx/wx.h"
 #endif
 
-#include <wx/wxprec.h>
-#include <wx/vector.h>
-#include <wx/filename.h>
-#include <vector>
+#include "wx/filename.h"
+#include "wx/fileconf.h"
+
 #include "AwObject.h"
 
 using namespace std;

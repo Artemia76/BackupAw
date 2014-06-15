@@ -29,7 +29,6 @@
 // *****************************************************************************
 
 #include "CtrlCell.h"
-#include <wx/fileconf.h>
 
 //------------------------------------------------------------------------------
 // Class CCtrlCell
@@ -490,7 +489,6 @@ CellRes CCtrlCell::SaveSel ()
 CellRes CCtrlCell::SaveGrid ()
 {
 	wxString s;
-	int NbObj=0;
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
 	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T("") , FileName.GetFullPath());

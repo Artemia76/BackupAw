@@ -44,18 +44,18 @@ CCoord::CCoord(wxWindow* Parent) : wxPanel
 {
 	Owner = Parent;
 	Map = 0;
-	CtrlAw = CCtrlAw::Get();
+	CtrlAw = CCtrlAw::Create();
 	Bot=CtrlAw->GetBot ();
 	Cell = CCtrlCell::Create();
 	item2 = new wxStaticText( this, -1, _("Relative X ="), wxDefaultPosition, wxSize(-1,40),0 );
 	item3 = new wxTextCtrl( this, -1, _T(""), wxDefaultPosition, wxDefaultSize,0);
-	item3->SetValue ((int)Cell->RelX);
+	item3->SetValue (wxString::Format(_T("%i"),Cell->RelX));
 	item1 = new wxBoxSizer( wxHORIZONTAL );
 	item1->Add( item2, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	item1->Add( item3, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	item5 = new wxStaticText( this, -1, _("Relative Z ="), wxDefaultPosition, wxSize(-1,40),0 );
 	item6 = new wxTextCtrl( this, -1, _T(""), wxDefaultPosition, wxDefaultSize,0);
-	item6->SetValue (Cell->RelZ);
+	item6->SetValue (wxString::Format(_T("%i"),Cell->RelZ));
 	item4 = new wxBoxSizer( wxHORIZONTAL );
 	item4->Add( item5, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5 );
 	item4->Add( item6, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5 );
@@ -76,7 +76,7 @@ CCoord::~CCoord ()
 }
 
 //------------------------------------------------------------------------------
-
+/*
 void CCoord::OnBuild (wxCommandEvent& WXUNUSED(event))
 {
 	wxMessageDialog BoiteOuiNon
@@ -91,7 +91,7 @@ void CCoord::OnBuild (wxCommandEvent& WXUNUSED(event))
 		Bot->StartBuild	();
 	}
 }
-
+*/
 //------------------------------------------------------------------------------
 
 void CCoord::OnChkCTBuild (wxCommandEvent& WXUNUSED(event))
@@ -102,3 +102,4 @@ void CCoord::OnChkCTBuild (wxCommandEvent& WXUNUSED(event))
 		Bot->Sauve();
 	}
 }
+

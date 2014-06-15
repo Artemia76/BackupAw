@@ -35,12 +35,14 @@
     #pragma hdrstop
 #endif
 
+#include "wx/wxprec.h"
+
 #ifndef WX_PRECOMP
     #include "wx/wx.h"
 #endif
-#include <wx/notebook.h>
 
-#include "CBackupCtrl.h"
+#include "wx/notebook.h"
+
 #include "CFilter.h"
 #include "CDelete.h"
 #include "CBuild.h"
@@ -57,7 +59,6 @@ private:
 		wxWindow*	owner;
 		wxBoxSizer*	SizerPrin;
 		wxNotebook* Tools;
-		CBackupCtrl* BackupCtrl;
 public:
 		CFilter*	Filter;
 		CDelete*	Delete;

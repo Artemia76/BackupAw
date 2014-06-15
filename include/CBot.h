@@ -32,17 +32,18 @@
 #define CBOT_H
 
 #ifdef VP_BUILD
-	#include <VP.h>
+	#include "VP.h"
 #else
 	#include <Aw.h>
 #endif // VP_BUILD
 
+#include "wx/wxprec.h"
+
 #ifndef  WX_PRECOMP
-	#include <wx/wx.h>
+	#include "wx/wx.h"
 #endif
 
-#include <wx/wxprec.h>
-#include <wx/config.h>
+#include "wx/config.h"
 
 #include "Cpasspriv.h"
 #include "COutils.h"

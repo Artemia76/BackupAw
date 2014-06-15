@@ -117,6 +117,8 @@ bool CBackupCtrl::Event( vp_event_t id, CBot* Bot)
     case VP_EVENT_WORLD_DISCONNECT:
         Reset ();
         return true;
+    default:
+        return false;
     }
     return false;
 }
@@ -128,13 +130,15 @@ bool CBackupCtrl::CallBack (vp_callback_t id, int rc, int Handle, CBot* Bot)
 
     switch (id)
     {
-	case VP_CALLBACK_OBJECT_LOAD:
-    case VP_CALLBACK_OBJECT_ADD:
-        CB_Object_Add (rc, Handle, Bot);
-        return true;
-    case VP_CALLBACK_OBJECT_DELETE:
-        CB_Object_Delete (rc, Handle, Bot);
-        return true;
+        case VP_CALLBACK_OBJECT_LOAD:
+        case VP_CALLBACK_OBJECT_ADD:
+            CB_Object_Add (rc, Handle, Bot);
+            return true;
+        case VP_CALLBACK_OBJECT_DELETE:
+            CB_Object_Delete (rc, Handle, Bot);
+            return true;
+        default:
+            return false;
     }
     return false;
 
@@ -266,7 +270,6 @@ void CBackupCtrl::Event_Cell_End (CBot* Bot)
 
 void CBackupCtrl::AskCell(CBot* Bot)
 {
-    VPInstance Instance = Bot->GetInstance();
     int rc;
     wxString CellStr;
     do
@@ -274,7 +277,7 @@ void CBackupCtrl::AskCell(CBot* Bot)
 		CellStr = CoordToAw (SequenceX [PtrX]*1000, SequenceZ [PtrZ]*1000);
 		if ( CellMap.find(CellStr) == CellMap.end())
 		{
-			if (rc=vp_query_cell(CtrlAw->GetBot()->GetInstance() , SequenceX [PtrX], SequenceZ [PtrZ]))
+			if ((rc=vp_query_cell(CtrlAw->GetBot()->GetInstance() , SequenceX [PtrX], SequenceZ [PtrZ])))
 			{
 				wxLogMessage(_("Unable to query cell. Reason : ") + CtrlAw->GetBot()->GetRCString(rc));
 			}
@@ -389,12 +392,12 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
                 LenDat = Obj.Data.Len()/2;
                 Data= new unsigned char[LenDat];
                 HexToBin(Obj.Data,Data);
-                vp_data_set (Instance,VP_OBJECT_DATA, LenDat, (char*)Data);
+                vp_data_set (Instance,VP_OBJECT_DATA, (int)LenDat, (char*)Data);
                 delete Data;
             }
 			BuildEC++;
-            ObjectMap[BuildEC]=Obj;
-            vp_int_set(Instance, VP_REFERENCE_NUMBER,BuildEC );
+            ObjectMap[(int)BuildEC]=Obj;
+            vp_int_set(Instance, VP_REFERENCE_NUMBER,(int)BuildEC );
 			if (CTBuild) vp_object_load (Instance);
 			else vp_object_add (Instance);
             Cell->DelObjSel(0);

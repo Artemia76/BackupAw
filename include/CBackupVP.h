@@ -33,12 +33,14 @@
 #ifndef BACKUPCTRL_H
 #define BACKUPCTRL_H
 
+#include "wx/wxprec.h"
+
 #ifndef WX_PRECOMP
     #include "wx/wx.h"
 #endif
-#include <wx/wxprec.h>
-#include <wx/config.h>
-#include <wx/hashmap.h>
+
+#include "wx/config.h"
+#include "wx/hashmap.h"
 #include <vector>
 
 #include "Ctrlaw.h"
@@ -100,8 +102,8 @@ static	CBackupCtrl*	PtCBackupCtrl;
 		int				CellQueryCnt;
 		int				PtrX;
 		int				PtrZ;
-		int			    CellX;
-		int			    CellZ;
+		//int			    CellX;
+		//int			    CellZ;
 
 protected:
 		bool			Scanning;

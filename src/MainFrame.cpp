@@ -31,7 +31,7 @@
 #include "MainFrame.h"
 #include "Global.h"
 #include "AboutBox.h"
-#include <wx/numdlg.h> 
+#include "wx/numdlg.h"
 
 // Chargement des icones
 #ifndef VP_BUILD
@@ -83,7 +83,6 @@ wxEND_EVENT_TABLE()
 
 CMainFrame::CMainFrame
 	(
-		wxLocale& locale
 	) : wxFrame
 	(
 		(wxWindow*)NULL,
@@ -94,8 +93,7 @@ CMainFrame::CMainFrame
 		wxDefaultSize,
 		wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU |
 		wxCAPTION | wxCLOSE_BOX
-	),
-	m_locale (locale)
+	)
 {
 	pConfig = wxConfigBase::Get();
 

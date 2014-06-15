@@ -32,7 +32,7 @@
 #include "Ctrlaw.h"
 
 #ifdef VP_BUILD
-	#include <rc.h>
+	#include "rc.h"
 	#define DefaultPort 57000
 #else
 	#if AW_BUILD>41
@@ -149,7 +149,7 @@ void CBot::Connection(bool flag)
 			if (rc=aw_login())
 #else
 			vp_callback_set(Instance, VP_CALLBACK_LOGIN, CCtrlAw::On_Login_CB);
-			if (rc=vp_login (Instance, UserName.utf8_str(), PassWord.utf8_str(),Nom.utf8_str()))
+			if ((rc=vp_login (Instance, UserName.utf8_str(), PassWord.utf8_str(),Nom.utf8_str())))
 #endif
 			{
 				wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(rc));
@@ -217,7 +217,6 @@ void CBot::Login_CB(int rc)
 
 void CBot::Enter_CB(int rc)
 {
-	wxLogMessage (_T("Callback call"));
 	wxString Message;
 	EntEC=false;
 	DemCon=false;
@@ -282,12 +281,12 @@ void CBot::Charge ()
 	UserName=pConfig->Read(BAPVersion + _T("/UserName") , _T(""));
 	#endif // VP_BUILD
 	Monde=pConfig->Read(BAPVersion + _T("/Monde") , _T(""));
-	Port=pConfig->Read(BAPVersion + _T("/Port") , DefaultPort);
+	Port=(int)pConfig->Read(BAPVersion + _T("/Port") , DefaultPort);
 	PassWord=PassPriv->Decode(pConfig->Read(BAPVersion + _T("/PassPriv"), _T("")));
 	Nom=pConfig->Read(BAPVersion + _T("/Nom") , _T("BackupAw"));
 	pConfig->Read(BAPVersion + _T("/AutoConnect"), &CGConAuto, false);
-	CGRecoDelay=pConfig->Read(BAPVersion + _T("/Delai") , 15l);
-	CGRecoRetry=pConfig->Read(BAPVersion + _T("/Essais") , 3l);
+	CGRecoDelay=(int)pConfig->Read(BAPVersion + _T("/Delai") , 15l);
+	CGRecoRetry=(int)pConfig->Read(BAPVersion + _T("/Essais") , 3l);
 	if (CGRecoRetry != 0) CGRecoEna=true;
 	else CGRecoEna=false;
 }

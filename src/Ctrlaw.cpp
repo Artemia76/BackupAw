@@ -398,7 +398,6 @@ void CCtrlAw::On_HeartBeat (wxTimerEvent& WXUNUSED(event))
 #ifndef VP_BUILD
 		(*i)->SetInstance();
 #else
-        VPInstance Instance = (*i)->GetInstance();
         if ((*i)->GetInstance()) vp_wait((*i)->GetInstance(),0);
 #endif // VP_BUILD
 		(*i)->Update();

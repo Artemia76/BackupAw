@@ -31,11 +31,13 @@
 #ifndef FILTER_H
 #define FILTER_H
 
+#include "wx/wxprec.h"
+
 #ifndef  WX_PRECOMP
-	#include <wx/wx.h>
+	#include "wx/wx.h"
 #endif
 
-#include <wx/wxprec.h>
+
 #include "CtrlCell.h"
 #include "COutils.h"
 

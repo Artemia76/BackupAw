@@ -48,8 +48,8 @@ CObject::CObject
 		wxString Obj_Descr,
 		wxString Obj_Action
 #if AW_BUILD>76 || VP_BUILD
-		,int Type,
-		wxString Dat,
+		,int Obj_Type,
+		wxString Obj_Dat,
 		int id
 #endif
 	)
@@ -71,8 +71,8 @@ CObject::CObject
 	Description=Obj_Descr;
 	Action=Obj_Action;
 #if AW_BUILD>76 || VP_BUILD
-	Type=Type;
-	Data=Dat;
+	Type=Obj_Type;
+	Data=Obj_Dat;
 #if AW_BUILD>76
 	ID=id;
 #endif // AW_BUILD

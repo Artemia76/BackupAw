@@ -87,7 +87,7 @@ void COutils::AwToCoord (int& x, int& y,wxString Coord)
 	Sec.ToLong (&num);
 	if (Sec.Contains(_T("W")))
 	{
-		x=num;
+		x=(int)num;
 	}
 	else if (Sec.Contains(_T("E")))
 	{
@@ -146,7 +146,7 @@ unsigned short COutils::HexToDec(const char* Hexa)
 {
 	unsigned short valeur=0,res=0;
 	int i=0;
-	int Long=strlen (Hexa);
+	int Long=(int)strlen (Hexa);
 	if ((Long==0)||(Long>4)) return 0;
 	for (i=0;i<Long;i++)
 	{

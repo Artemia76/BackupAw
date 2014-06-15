@@ -1,0 +1,463 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		41DBA613194DC07C008A08F4 /* libvpsdk.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 41DBA5D8194DBEB9008A08F4 /* libvpsdk.dylib */; };
+		41DBA614194DC275008A08F4 /* AboutBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF06194DB2F300B673EF /* AboutBox.cpp */; };
+		41DBA615194DC279008A08F4 /* AwObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF07194DB2F300B673EF /* AwObject.cpp */; };
+		41DBA616194DC280008A08F4 /* CBackupVP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF09194DB2F300B673EF /* CBackupVP.cpp */; };
+		41DBA617194DC283008A08F4 /* CBot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF0A194DB2F300B673EF /* CBot.cpp */; };
+		41DBA618194DC287008A08F4 /* CBuild.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF0B194DB2F300B673EF /* CBuild.cpp */; };
+		41DBA61A194DC294008A08F4 /* CDelete.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF0D194DB2F300B673EF /* CDelete.cpp */; };
+		41DBA61B194DC294008A08F4 /* CFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF0E194DB2F300B673EF /* CFilter.cpp */; };
+		41DBA61C194DC294008A08F4 /* CGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF0F194DB2F300B673EF /* CGeometry.cpp */; };
+		41DBA61D194DC294008A08F4 /* CModify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF10194DB2F300B673EF /* CModify.cpp */; };
+		41DBA61E194DC294008A08F4 /* COutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF11194DB2F300B673EF /* COutils.cpp */; };
+		41DBA61F194DC294008A08F4 /* Cpasspriv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF12194DB2F300B673EF /* Cpasspriv.cpp */; };
+		41DBA620194DC294008A08F4 /* Ctrlaw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF13194DB2F300B673EF /* Ctrlaw.cpp */; };
+		41DBA621194DC294008A08F4 /* CtrlCell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF14194DB2F300B673EF /* CtrlCell.cpp */; };
+		41DBA622194DC294008A08F4 /* MainApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF15194DB2F300B673EF /* MainApp.cpp */; };
+		41DBA623194DC294008A08F4 /* MainFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF16194DB2F300B673EF /* MainFrame.cpp */; };
+		41DBA624194DC294008A08F4 /* MapCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF17194DB2F300B673EF /* MapCanvas.cpp */; };
+		41DBA625194DC294008A08F4 /* OptionBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF18194DB2F300B673EF /* OptionBox.cpp */; };
+		41DBA628194DDADD008A08F4 /* ToolBook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41B5CF1A194DB2F300B673EF /* ToolBook.cpp */; };
+		41DBA62A194DDCD0008A08F4 /* libwx_osx_cocoa_static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41DBA629194DDCD0008A08F4 /* libwx_osx_cocoa_static.a */; };
+		41DBA63D194DE7AE008A08F4 /* lng in Resources */ = {isa = PBXBuildFile; fileRef = 41DBA63C194DE7AE008A08F4 /* lng */; };
+		41DBA644194E00A6008A08F4 /* Backupvp.ico in Resources */ = {isa = PBXBuildFile; fileRef = 41DBA643194E00A6008A08F4 /* Backupvp.ico */; };
+		41DBA648194E0236008A08F4 /* Backupvp.png in Resources */ = {isa = PBXBuildFile; fileRef = 41DBA647194E0236008A08F4 /* Backupvp.png */; };
+		41DBA64C194E0623008A08F4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41DBA64B194E0623008A08F4 /* Images.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		41B5CD7F194DB24F00B673EF /* wxcocoa.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = wxcocoa.xcconfig; path = "../wxWidgets-3.0.0/build/osx/wxcocoa.xcconfig"; sourceTree = "<group>"; };
+		41B5CD81194DB26500B673EF /* wxdebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = wxdebug.xcconfig; path = "../wxWidgets-3.0.0/build/osx/wxdebug.xcconfig"; sourceTree = "<group>"; };
+		41B5CD83194DB27800B673EF /* wxrelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = wxrelease.xcconfig; path = "../wxWidgets-3.0.0/build/osx/wxrelease.xcconfig"; sourceTree = "<group>"; };
+		41B5CEF0194DB2DF00B673EF /* AboutBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutBox.h; sourceTree = "<group>"; };
+		41B5CEF1194DB2DF00B673EF /* AwObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwObject.h; sourceTree = "<group>"; };
+		41B5CEF2194DB2DF00B673EF /* CBackupCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBackupCtrl.h; sourceTree = "<group>"; };
+		41B5CEF3194DB2DF00B673EF /* CBackupVP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBackupVP.h; sourceTree = "<group>"; };
+		41B5CEF4194DB2DF00B673EF /* CBot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBot.h; sourceTree = "<group>"; };
+		41B5CEF5194DB2DF00B673EF /* CBuild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBuild.h; sourceTree = "<group>"; };
+		41B5CEF7194DB2DF00B673EF /* CDelete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDelete.h; sourceTree = "<group>"; };
+		41B5CEF8194DB2DF00B673EF /* CFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFilter.h; sourceTree = "<group>"; };
+		41B5CEF9194DB2DF00B673EF /* CGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGeometry.h; sourceTree = "<group>"; };
+		41B5CEFA194DB2DF00B673EF /* CModify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CModify.h; sourceTree = "<group>"; };
+		41B5CEFB194DB2DF00B673EF /* COutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COutils.h; sourceTree = "<group>"; };
+		41B5CEFC194DB2DF00B673EF /* Cpasspriv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cpasspriv.h; sourceTree = "<group>"; };
+		41B5CEFD194DB2DF00B673EF /* Ctrlaw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ctrlaw.h; sourceTree = "<group>"; };
+		41B5CEFE194DB2DF00B673EF /* CtrlCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CtrlCell.h; sourceTree = "<group>"; };
+		41B5CEFF194DB2DF00B673EF /* Global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
+		41B5CF00194DB2DF00B673EF /* MainApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainApp.h; sourceTree = "<group>"; };
+		41B5CF01194DB2DF00B673EF /* MainFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainFrame.h; sourceTree = "<group>"; };
+		41B5CF02194DB2DF00B673EF /* MapCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapCanvas.h; sourceTree = "<group>"; };
+		41B5CF03194DB2DF00B673EF /* OptionBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionBox.h; sourceTree = "<group>"; };
+		41B5CF04194DB2DF00B673EF /* ToolBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolBook.h; sourceTree = "<group>"; };
+		41B5CF06194DB2F300B673EF /* AboutBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AboutBox.cpp; sourceTree = "<group>"; };
+		41B5CF07194DB2F300B673EF /* AwObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AwObject.cpp; sourceTree = "<group>"; };
+		41B5CF08194DB2F300B673EF /* CBackupCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBackupCtrl.cpp; sourceTree = "<group>"; };
+		41B5CF09194DB2F300B673EF /* CBackupVP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBackupVP.cpp; sourceTree = "<group>"; };
+		41B5CF0A194DB2F300B673EF /* CBot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBot.cpp; sourceTree = "<group>"; };
+		41B5CF0B194DB2F300B673EF /* CBuild.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBuild.cpp; sourceTree = "<group>"; };
+		41B5CF0D194DB2F300B673EF /* CDelete.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDelete.cpp; sourceTree = "<group>"; };
+		41B5CF0E194DB2F300B673EF /* CFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFilter.cpp; sourceTree = "<group>"; };
+		41B5CF0F194DB2F300B673EF /* CGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGeometry.cpp; sourceTree = "<group>"; };
+		41B5CF10194DB2F300B673EF /* CModify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CModify.cpp; sourceTree = "<group>"; };
+		41B5CF11194DB2F300B673EF /* COutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COutils.cpp; sourceTree = "<group>"; };
+		41B5CF12194DB2F300B673EF /* Cpasspriv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cpasspriv.cpp; sourceTree = "<group>"; };
+		41B5CF13194DB2F300B673EF /* Ctrlaw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ctrlaw.cpp; sourceTree = "<group>"; };
+		41B5CF14194DB2F300B673EF /* CtrlCell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CtrlCell.cpp; sourceTree = "<group>"; };
+		41B5CF15194DB2F300B673EF /* MainApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainApp.cpp; sourceTree = "<group>"; };
+		41B5CF16194DB2F300B673EF /* MainFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainFrame.cpp; sourceTree = "<group>"; };
+		41B5CF17194DB2F300B673EF /* MapCanvas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapCanvas.cpp; sourceTree = "<group>"; };
+		41B5CF18194DB2F300B673EF /* OptionBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OptionBox.cpp; sourceTree = "<group>"; };
+		41B5CF1A194DB2F300B673EF /* ToolBook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ToolBook.cpp; sourceTree = "<group>"; };
+		41DBA5D8194DBEB9008A08F4 /* libvpsdk.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvpsdk.dylib; path = ../Downloads/vpsdk_r1228_macosx/libvpsdk.dylib; sourceTree = "<group>"; };
+		41DBA5DE194DBFF2008A08F4 /* backupvp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = backupvp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		41DBA626194DC4C7008A08F4 /* Info_cocoa.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info_cocoa.plist; sourceTree = "<group>"; };
+		41DBA629194DDCD0008A08F4 /* libwx_osx_cocoa_static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwx_osx_cocoa_static.a; path = "../Library/Developer/Xcode/DerivedData/minimal_cocoa-fnwzfdcbkcaevydpzovoxkoiwmac/Build/Products/Release/libwx_osx_cocoa_static.a"; sourceTree = "<group>"; };
+		41DBA63C194DE7AE008A08F4 /* lng */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lng; sourceTree = "<group>"; };
+		41DBA643194E00A6008A08F4 /* Backupvp.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = Backupvp.ico; sourceTree = "<group>"; };
+		41DBA647194E0236008A08F4 /* Backupvp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Backupvp.png; sourceTree = "<group>"; };
+		41DBA64B194E0623008A08F4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = static/Images.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		41DBA5DB194DBFF2008A08F4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41DBA62A194DDCD0008A08F4 /* libwx_osx_cocoa_static.a in Frameworks */,
+				41DBA613194DC07C008A08F4 /* libvpsdk.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		417011DE194DB19700BC3F1C = {
+			isa = PBXGroup;
+			children = (
+				41DBA64B194E0623008A08F4 /* Images.xcassets */,
+				41DBA647194E0236008A08F4 /* Backupvp.png */,
+				41DBA643194E00A6008A08F4 /* Backupvp.ico */,
+				41DBA629194DDCD0008A08F4 /* libwx_osx_cocoa_static.a */,
+				41DBA640194DFBB0008A08F4 /* Frameworks */,
+				41DBA63C194DE7AE008A08F4 /* lng */,
+				41DBA626194DC4C7008A08F4 /* Info_cocoa.plist */,
+				41B5CD7F194DB24F00B673EF /* wxcocoa.xcconfig */,
+				41B5CD81194DB26500B673EF /* wxdebug.xcconfig */,
+				41B5CD83194DB27800B673EF /* wxrelease.xcconfig */,
+				41B5CF05194DB2F300B673EF /* src */,
+				41B5CEEF194DB2DF00B673EF /* include */,
+				41DBA5DE194DBFF2008A08F4 /* backupvp.app */,
+			);
+			sourceTree = "<group>";
+		};
+		41B5CEEF194DB2DF00B673EF /* include */ = {
+			isa = PBXGroup;
+			children = (
+				41B5CEF0194DB2DF00B673EF /* AboutBox.h */,
+				41B5CEF1194DB2DF00B673EF /* AwObject.h */,
+				41B5CEF2194DB2DF00B673EF /* CBackupCtrl.h */,
+				41B5CEF3194DB2DF00B673EF /* CBackupVP.h */,
+				41B5CEF4194DB2DF00B673EF /* CBot.h */,
+				41B5CEF5194DB2DF00B673EF /* CBuild.h */,
+				41B5CEF7194DB2DF00B673EF /* CDelete.h */,
+				41B5CEF8194DB2DF00B673EF /* CFilter.h */,
+				41B5CEF9194DB2DF00B673EF /* CGeometry.h */,
+				41B5CEFA194DB2DF00B673EF /* CModify.h */,
+				41B5CEFB194DB2DF00B673EF /* COutils.h */,
+				41B5CEFC194DB2DF00B673EF /* Cpasspriv.h */,
+				41B5CEFD194DB2DF00B673EF /* Ctrlaw.h */,
+				41B5CEFE194DB2DF00B673EF /* CtrlCell.h */,
+				41B5CEFF194DB2DF00B673EF /* Global.h */,
+				41B5CF00194DB2DF00B673EF /* MainApp.h */,
+				41B5CF01194DB2DF00B673EF /* MainFrame.h */,
+				41B5CF02194DB2DF00B673EF /* MapCanvas.h */,
+				41B5CF03194DB2DF00B673EF /* OptionBox.h */,
+				41B5CF04194DB2DF00B673EF /* ToolBook.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		41B5CF05194DB2F300B673EF /* src */ = {
+			isa = PBXGroup;
+			children = (
+				41B5CF06194DB2F300B673EF /* AboutBox.cpp */,
+				41B5CF07194DB2F300B673EF /* AwObject.cpp */,
+				41B5CF08194DB2F300B673EF /* CBackupCtrl.cpp */,
+				41B5CF09194DB2F300B673EF /* CBackupVP.cpp */,
+				41B5CF0A194DB2F300B673EF /* CBot.cpp */,
+				41B5CF0B194DB2F300B673EF /* CBuild.cpp */,
+				41B5CF0D194DB2F300B673EF /* CDelete.cpp */,
+				41B5CF0E194DB2F300B673EF /* CFilter.cpp */,
+				41B5CF0F194DB2F300B673EF /* CGeometry.cpp */,
+				41B5CF10194DB2F300B673EF /* CModify.cpp */,
+				41B5CF11194DB2F300B673EF /* COutils.cpp */,
+				41B5CF12194DB2F300B673EF /* Cpasspriv.cpp */,
+				41B5CF13194DB2F300B673EF /* Ctrlaw.cpp */,
+				41B5CF14194DB2F300B673EF /* CtrlCell.cpp */,
+				41B5CF15194DB2F300B673EF /* MainApp.cpp */,
+				41B5CF16194DB2F300B673EF /* MainFrame.cpp */,
+				41B5CF17194DB2F300B673EF /* MapCanvas.cpp */,
+				41B5CF18194DB2F300B673EF /* OptionBox.cpp */,
+				41B5CF1A194DB2F300B673EF /* ToolBook.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		41DBA640194DFBB0008A08F4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				41DBA5D8194DBEB9008A08F4 /* libvpsdk.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		41DBA5DD194DBFF2008A08F4 /* static */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 41DBA60C194DBFF3008A08F4 /* Build configuration list for PBXNativeTarget "static" */;
+			buildPhases = (
+				41DBA5DA194DBFF2008A08F4 /* Sources */,
+				41DBA5DB194DBFF2008A08F4 /* Frameworks */,
+				41DBA5DC194DBFF2008A08F4 /* Resources */,
+				41DBA63F194DF969008A08F4 /* Run Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = static;
+			productName = static;
+			productReference = 41DBA5DE194DBFF2008A08F4 /* backupvp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		417011DF194DB19700BC3F1C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = Symerion;
+			};
+			buildConfigurationList = 417011E2194DB19700BC3F1C /* Build configuration list for PBXProject "backupvp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 417011DE194DB19700BC3F1C;
+			productRefGroup = 417011DE194DB19700BC3F1C;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				41DBA5DD194DBFF2008A08F4 /* static */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		41DBA5DC194DBFF2008A08F4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41DBA644194E00A6008A08F4 /* Backupvp.ico in Resources */,
+				41DBA64C194E0623008A08F4 /* Images.xcassets in Resources */,
+				41DBA63D194DE7AE008A08F4 /* lng in Resources */,
+				41DBA648194E0236008A08F4 /* Backupvp.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		41DBA63F194DF969008A08F4 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export DYLIB=libvpsdk.dylib\nmkdir -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks\"\ncp -f \"/usr/local/lib/$DYLIB\" \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/Frameworks\"\ninstall_name_tool -change /usr/local/lib/$DYLIB @loader_path/../Frameworks/$DYLIB \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		41DBA5DA194DBFF2008A08F4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41DBA628194DDADD008A08F4 /* ToolBook.cpp in Sources */,
+				41DBA617194DC283008A08F4 /* CBot.cpp in Sources */,
+				41DBA614194DC275008A08F4 /* AboutBox.cpp in Sources */,
+				41DBA615194DC279008A08F4 /* AwObject.cpp in Sources */,
+				41DBA616194DC280008A08F4 /* CBackupVP.cpp in Sources */,
+				41DBA618194DC287008A08F4 /* CBuild.cpp in Sources */,
+				41DBA61A194DC294008A08F4 /* CDelete.cpp in Sources */,
+				41DBA61B194DC294008A08F4 /* CFilter.cpp in Sources */,
+				41DBA61C194DC294008A08F4 /* CGeometry.cpp in Sources */,
+				41DBA61D194DC294008A08F4 /* CModify.cpp in Sources */,
+				41DBA61E194DC294008A08F4 /* COutils.cpp in Sources */,
+				41DBA61F194DC294008A08F4 /* Cpasspriv.cpp in Sources */,
+				41DBA620194DC294008A08F4 /* Ctrlaw.cpp in Sources */,
+				41DBA621194DC294008A08F4 /* CtrlCell.cpp in Sources */,
+				41DBA622194DC294008A08F4 /* MainApp.cpp in Sources */,
+				41DBA623194DC294008A08F4 /* MainFrame.cpp in Sources */,
+				41DBA624194DC294008A08F4 /* MapCanvas.cpp in Sources */,
+				41DBA625194DC294008A08F4 /* OptionBox.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		41701216194DB19700BC3F1C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41B5CD81194DB26500B673EF /* wxdebug.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = Info_cocoa.plist;
+			};
+			name = Debug;
+		};
+		41701217194DB19700BC3F1C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41B5CD83194DB27800B673EF /* wxrelease.xcconfig */;
+			buildSettings = {
+				INFOPLIST_FILE = Info_cocoa.plist;
+			};
+			name = Release;
+		};
+		41DBA60D194DBFF3008A08F4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41B5CD7F194DB24F00B673EF /* wxcocoa.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = NO;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = NO;
+				CLANG_WARN_ENUM_CONVERSION = NO;
+				CLANG_WARN_INT_CONVERSION = NO;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PFE_FILE_C_DIALECTS = "c++ objective-c++";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(WXROOT)/include/wx/wxprec.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info_cocoa.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/wxcocoa-hkiemmcvuhcaobbqrgijsxlzvaam/Build/Products/Release",
+					/Users/gianni/Downloads/vpsdk_r1228_macosx,
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/minimal_cocoa-fnwzfdcbkcaevydpzovoxkoiwmac/Build/Products/Release",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-lz",
+				);
+				PRODUCT_NAME = backupvp;
+				SDKROOT = "";
+				USER_HEADER_SEARCH_PATHS = "\"$(WXROOT)/include\" \"$(WXROOT)/build/osx/setup/$(WXTOOLKIT)/include\" \"$(WXROOT)/src/jpeg\" \"$(WXROOT)/src/png\" \"$(WXROOT)/src/regex\" \"$(WXROOT)/src/expat/lib\" \"$(WXROOT)/src/tiff/libtiff\" \"$(WXROOT)/src/stc/scintilla/src\" \"$(WXROOT)/src/stc/scintilla/include\" \"$(WXROOT)/src/stc/scintilla/lexlib\" /Users/gianni/Downloads/vpsdk_r1228_macosx/VPSDK ./icones";
+				WRAPPER_EXTENSION = app;
+				WXROOT = "/Users/gianni/wxWidgets-3.0.0";
+			};
+			name = Debug;
+		};
+		41DBA60E194DBFF3008A08F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41B5CD7F194DB24F00B673EF /* wxcocoa.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = NO;
+				CLANG_WARN_CONSTANT_CONVERSION = NO;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = NO;
+				CLANG_WARN_ENUM_CONVERSION = NO;
+				CLANG_WARN_INT_CONVERSION = NO;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				"DEBUG_INFORMATION_FORMAT[sdk=*]" = dwarf;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PFE_FILE_C_DIALECTS = "c++ objective-c++";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(WXROOT)/include/wx/wxprec.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(WX_PREPROCESSOR_DEFINITIONS)",
+					WXBUILDING,
+					"$(WXPLATFORM)",
+					__WX__,
+					"wxUSE_BASE=1",
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					MACOS_CLASSIC,
+					"__WXMAC_XCODE__=1",
+					SCI_LEXER,
+					"WX_PRECOMP=1",
+					"wxUSE_UNICODE_UTF8=0",
+					"wxUSE_UNICODE_WCHAR=1",
+					"VP_BUILD=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS[arch=*]" = "";
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info_cocoa.plist;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/wxcocoa-hkiemmcvuhcaobbqrgijsxlzvaam/Build/Products/Release",
+					/Users/gianni/Downloads/vpsdk_r1228_macosx,
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/minimal_cocoa-fnwzfdcbkcaevydpzovoxkoiwmac/Build/Products/Release",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-lz",
+				);
+				PRODUCT_NAME = backupvp;
+				SDKROOT = "";
+				USER_HEADER_SEARCH_PATHS = "\"$(WXROOT)/include\" \"$(WXROOT)/build/osx/setup/$(WXTOOLKIT)/include\" \"$(WXROOT)/src/jpeg\" \"$(WXROOT)/src/png\" \"$(WXROOT)/src/regex\" \"$(WXROOT)/src/expat/lib\" \"$(WXROOT)/src/tiff/libtiff\" \"$(WXROOT)/src/stc/scintilla/src\" \"$(WXROOT)/src/stc/scintilla/include\" \"$(WXROOT)/src/stc/scintilla/lexlib\" /Users/gianni/Downloads/vpsdk_r1228_macosx/VPSDK ./icones";
+				WRAPPER_EXTENSION = app;
+				WXROOT = "/Users/gianni/wxWidgets-3.0.0";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		417011E2194DB19700BC3F1C /* Build configuration list for PBXProject "backupvp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41701216194DB19700BC3F1C /* Debug */,
+				41701217194DB19700BC3F1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		41DBA60C194DBFF3008A08F4 /* Build configuration list for PBXNativeTarget "static" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41DBA60D194DBFF3008A08F4 /* Debug */,
+				41DBA60E194DBFF3008A08F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 417011DF194DB19700BC3F1C /* Project object */;
+}

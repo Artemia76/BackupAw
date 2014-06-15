@@ -35,17 +35,18 @@
 #ifndef MAINAPP_H
 #define MAINAPP_H
 
-#include <wx/wxprec.h>
+#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-    #include <wx/wx.h>
+    #include "wx/wx.h"
 #endif
-#include <wx/intl.h>
-#include <wx/fileconf.h>
+
+#include "wx/intl.h"
+#include "wx/fileconf.h"
 
 #define NB_MAX_LNG 3
 // language data

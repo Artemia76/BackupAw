@@ -35,8 +35,9 @@
 #include "MainApp.h"
 #include "MainFrame.h"
 #include "Global.h"
-#include <wx/stdpaths.h>
-#include <wx/filename.h>
+
+#include "wx/stdpaths.h"
+#include "wx/filename.h"
 
 IMPLEMENT_APP(CMainApp)
 
@@ -84,8 +85,13 @@ bool CMainApp::OnInit ()
     // in the default locations, but when the program is not installed the
     // catalogs are in the build directory where we wouldn't find them by
     // default
+#ifdef __WXMAC__
+    wxFileName fname(wxTheApp->argv[0]);
+    wxString path= fname.GetPath();
+    wxLocale::AddCatalogLookupPathPrefix(path + _T("/../Resources/lng/"));
+#else
     wxLocale::AddCatalogLookupPathPrefix(_T("./lng/"));
-
+#endif
     // Initialize the catalogs we'll be using
     m_locale.AddCatalog(_T("backup"));
 
@@ -99,7 +105,7 @@ bool CMainApp::OnInit ()
         m_locale.AddCatalog(_T("fileutils"));
     }
 #endif
-	CMainFrame* MainFrame = new CMainFrame (m_locale);
+	CMainFrame* MainFrame = new CMainFrame ();
 	MainFrame->Show (true);
     SetTopWindow(MainFrame);
 	return true;

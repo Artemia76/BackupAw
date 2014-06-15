@@ -112,8 +112,8 @@ AboutBox::AboutBox
 	SetSizer( item0 );
 	item0->Fit(this);
 	item0->SetSizeHints(this);
-	int	x = pConfig->Read(_T("/Fenetre/propx"), 50),
-		y = pConfig->Read(_T("/Fenetre/propy"), 50);
+	int	x = (int)pConfig->Read(_T("/Fenetre/propx"), 50),
+		y = (int)pConfig->Read(_T("/Fenetre/propy"), 50);
 	Move(x, y);
 }
 

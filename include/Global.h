@@ -31,15 +31,15 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include "wx/wxprec.h"
 
 #ifndef  WX_PRECOMP
-	#include <wx/wx.h>
+	#include "wx/wx.h"
 #endif
 
-#include <wx/wxprec.h>
-#include <wx/stdpaths.h>
-#include <wx/filename.h>
-#include <wx/version.h>
+#include "wx/stdpaths.h"
+#include "wx/filename.h"
+#include "wx/version.h"
 
 #ifndef VP_BUILD
 #include <Aw.h>

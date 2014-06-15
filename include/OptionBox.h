@@ -31,14 +31,15 @@
 #ifndef OPTDIAL_H
 #define OPTDIAL_H
 
+#include "wx/wxprec.h"
 
 #ifndef  WX_PRECOMP
-	#include <wx/wx.h>
+	#include "wx/wx.h"
 #endif
 
-#include <wx/wxprec.h>
-#include <wx/fileconf.h>
-#include <wx/spinctrl.h>
+
+#include "wx/fileconf.h"
+#include "wx/spinctrl.h"
 
 #include "CBot.h"
 

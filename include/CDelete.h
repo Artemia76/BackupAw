@@ -31,11 +31,13 @@
 #ifndef CDELETE_H
 #define CDELETE_H
 
+
+#include "wx/wxprec.h"
+
 #ifndef  WX_PRECOMP
-	#include <wx/wx.h>
+	#include "wx/wx.h"
 #endif
 
-#include <wx/wxprec.h>
 #include "CtrlCell.h"
 #ifndef VP_BUILD
     #include "CBackupCtrl.h"

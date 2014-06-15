@@ -35,12 +35,14 @@
     #pragma hdrstop
 #endif
 
+#include "wx/wxprec.h"
+
 #ifndef WX_PRECOMP
-    #include <wx/wx.h>
+    #include "wx/wx.h"
 #endif
-#include <wx/wxprec.h>
-#include <wx/config.h>
-#include <wx/toolbar.h>
+
+#include "wx/config.h"
+#include "wx/toolbar.h"
 
 #ifndef VP_BUILD
 #include "CBackupCtrl.h"
@@ -80,7 +82,7 @@ enum MF_COMMANDS
 class CMainFrame : public wxFrame, public COutils
 {
 	public:
-								CMainFrame (wxLocale& locale);
+								CMainFrame ();
 		virtual					~CMainFrame ();
 
 	private:
@@ -101,7 +103,6 @@ class CMainFrame : public wxFrame, public COutils
 		int						ACntEarth;
 		int						Cnt;
 		bool					CntSens;
-		wxLocale&				m_locale;
 
 	protected:
 

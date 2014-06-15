@@ -30,7 +30,7 @@
 
 #include "MapCanvas.h"
 #include <math.h>
-#include <wx/dcbuffer.h>
+#include "wx/dcbuffer.h"
 
 wxBEGIN_EVENT_TABLE(CMapCanvas, wxWindow)
     EVT_PAINT		(CMapCanvas::OnPaint)

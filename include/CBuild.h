@@ -31,11 +31,13 @@
 #ifndef CBUILD_H
 #define CBUILD_H
 
-#ifndef  WX_PRECOMP
-	#include <wx/wx.h>
-#endif
+#include "wx/wxprec.h"
 
-#include <wx/wxprec.h>
+#ifndef  WX_PRECOMP
+	#include "wx/wx.h"
+#endif
+#include "wx/config.h"
+
 #include "CtrlCell.h"
 #ifndef VP_BUILD
     #include "CBackupCtrl.h"
@@ -62,7 +64,6 @@ class CBuild : public wxPanel
 		wxStaticText*		item1;
 		wxCheckBox*			item3;
 		wxButton*			item2;
-		CCtrlAw*			CtrlAw;
 
 		void				OnBuild (wxCommandEvent& event);
 		void				OnChkCTBuild (wxCommandEvent& event);
