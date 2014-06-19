@@ -342,6 +342,7 @@
 		<Unit filename="include/CBuild.h" />
 		<Unit filename="include/CDelete.h" />
 		<Unit filename="include/CFilter.h" />
+		<Unit filename="include/CGeometry.h" />
 		<Unit filename="include/CModify.h" />
 		<Unit filename="include/COutils.h" />
 		<Unit filename="include/CQuaternion.h" />
@@ -376,6 +377,7 @@
 		<Unit filename="src/CBuild.cpp" />
 		<Unit filename="src/CDelete.cpp" />
 		<Unit filename="src/CFilter.cpp" />
+		<Unit filename="src/CGeometry.cpp" />
 		<Unit filename="src/CModify.cpp" />
 		<Unit filename="src/COutils.cpp" />
 		<Unit filename="src/Cpasspriv.cpp" />
