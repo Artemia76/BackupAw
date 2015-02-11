@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual C++ Express 2010
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "backupaw", "backupaw.vcxproj", "{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}"
 EndProject
 Global
@@ -25,7 +27,8 @@ Global
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_VP|x64.ActiveCfg = Debug_VP|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|Win32.ActiveCfg = Release_sdk101|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|Win32.Build.0 = Release_sdk101|Win32
-		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|x64.ActiveCfg = Release_sdk101|Win32
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|x64.ActiveCfg = Release_sdk101|x64
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|x64.Build.0 = Release_sdk101|x64
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk41|Win32.ActiveCfg = Release_sdk41|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk41|Win32.Build.0 = Release_sdk41|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk41|x64.ActiveCfg = Release_sdk41|Win32

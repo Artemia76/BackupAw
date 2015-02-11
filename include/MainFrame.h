@@ -43,6 +43,7 @@
 
 #include "wx/config.h"
 #include "wx/toolbar.h"
+#include "wx/timer.h"
 
 #ifndef VP_BUILD
 #include "CBackupCtrl.h"

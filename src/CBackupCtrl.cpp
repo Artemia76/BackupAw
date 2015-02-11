@@ -75,9 +75,11 @@ CBackupCtrl::CBackupCtrl ()
 	BlockScroll=false;
 	BlockSelect=false;
 	Map=0;
-	ScanSize=15;
 	pConfig=wxConfigBase::Get();
-	pConfig->Read(_T("Bot/BuildMode"), &CTBuild, true);
+	wxString BAPVersion = wxString::Format(_T("AW%i"), AW_BUILD);
+
+	pConfig->Read(BAPVersion + _T("/BuildMode"), &CTBuild, true);
+	pConfig->Read(BAPVersion + _T("/ScanSize"), &ScanSize, 15);
 	ObjectTimer = new wxTimer(this, OBJ_TIME);
 	Cell = CCtrlCell::Create();
 }
@@ -410,6 +412,9 @@ void CBackupCtrl::SetScanSize(int Size)
 	if (((Size >5) || (Size < 200)) && (!Scanning))
 	{
 		ScanSize = Size;
+		wxString BAPVersion = wxString::Format(_T("AW%i"), AW_BUILD);
+		pConfig->Write(BAPVersion + _T("/ScanSize"), Size);
+		pConfig->Flush();
 	}
 }
 

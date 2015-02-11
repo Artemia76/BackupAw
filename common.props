@@ -6,6 +6,7 @@
     <WX_BASE>30</WX_BASE>
     <UPX_PATH>F:\devel\upx\</UPX_PATH>
     <VP_PATH>F:\devel\activeworlds\</VP_PATH>
+    <WX_LIB>vc_dll</WX_LIB>
   </PropertyGroup>
   <PropertyGroup>
     <IntDir>$(Platform)\$(Configuration)\obj\</IntDir>
@@ -31,6 +32,9 @@
     <BuildMacro Include="VP_PATH">
       <Value>$(VP_PATH)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="WX_LIB">
+      <Value>$(WX_LIB)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>

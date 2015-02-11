@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "BackupAw"
-!define PRODUCT_VERSION "1.5.2 for AW 3.6"
+!define PRODUCT_VERSION "1.6 for AW 3.6"
 !define PRODUCT_PUBLISHER "Neophile"
 !define PRODUCT_WEB_SITE "http://www.symerion.fr"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Backupaw.exe"
@@ -27,13 +27,13 @@
 !insertmacro MUI_PAGE_WELCOME
 ; License page
 !define MUI_LICENSEPAGE_CHECKBOX
-!insertmacro MUI_PAGE_LICENSE ".\readme.txt"
+!insertmacro MUI_PAGE_LICENSE ".\README.md"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\readme.txt"
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\README.md"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -47,7 +47,7 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "BackupAw-1.5_sdk41.exe"
+OutFile "BackupAw-1.6_sdk41.exe"
 InstallDir "$PROGRAMFILES\BackupAw"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -60,21 +60,21 @@ FunctionEnd
 Section "SectionPrincipale" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite on
-  File ".\Release41\Backupaw.exe"
+  File ".\Win32\Release_sdk41\Backupaw.exe"
   CreateDirectory "$SMPROGRAMS\BackupAw"
   CreateShortCut "$SMPROGRAMS\BackupAw\BackupAw.lnk" "$INSTDIR\Backupaw.exe"
   CreateShortCut "$DESKTOP\BackupAw.lnk" "$INSTDIR\Backupaw.exe"
   CreateShortCut "$SMPROGRAMS\BackupAw\Help.lnk" "$INSTDIR\hlp\Backupaw.chm"
-  File ".\AW_SDK_License_(aw.dll).rtf"
-  File ".\Release41\aw.dll"
-  File ".\readme.txt"
+  File ".\AW_SDK_License_(aw.dll).txt"
+  File ".\Win32\Release_sdk41\aw.dll"
+  File ".\README.md"
   File ".\gpl.txt"
   SetOutPath "$INSTDIR\lng\fr"
-  File ".\lng\fr\backupaw.mo"
+  File ".\lng\fr\backup.mo"
   SetOutPath "$INSTDIR\lng\en"
-  File ".\lng\en\backupaw.mo"
+  File ".\lng\en\backup.mo"
   SetOutPath "$INSTDIR\lng\it"
-  File ".\lng\it\backupaw.mo"
+  File ".\lng\it\backup.mo"
   SetOutPath "$INSTDIR\hlp"
   File ".\hlp\Backupaw.chm"
 SectionEnd
