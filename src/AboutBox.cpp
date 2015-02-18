@@ -65,6 +65,7 @@ AboutBox::AboutBox
 	)
 {
 	pConfig = wxConfigBase::Get();
+	wxPlatformInfo* info = new wxPlatformInfo();
 
 	wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
@@ -73,7 +74,7 @@ AboutBox::AboutBox
 	(
 		this,
 		-1,
-		AppVersion,
+		AppVersion + _T(" ") + info->GetArchName(),
 		wxDefaultPosition,
 		wxDefaultSize,
 		wxALIGN_CENTRE

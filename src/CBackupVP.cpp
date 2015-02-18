@@ -226,13 +226,13 @@ void CBackupCtrl::Event_Object (CBot* Bot)
     unsigned char* DatPtr=0;
     unsigned int DatLen=0;
     Obj.Number = vp_int(Instance,VP_OBJECT_ID);
-    Obj.X=vp_float(Instance,VP_OBJECT_X) * 1000.0 ;
-    Obj.Z=vp_float(Instance,VP_OBJECT_Z) * 1000.0 ;
-    Obj.Y=vp_float(Instance,VP_OBJECT_Y) * 1000.0 ;
-    Obj.RotX=vp_float(Instance,VP_OBJECT_ROTATION_X);
-    Obj.RotY=vp_float(Instance,VP_OBJECT_ROTATION_Y);
-    Obj.RotZ=vp_float(Instance,VP_OBJECT_ROTATION_Z);
-    Obj.RotR=vp_float(Instance,VP_OBJECT_ROTATION_ANGLE);
+	Obj.X = vp_double(Instance, VP_OBJECT_X) * 1000.0 ;
+	Obj.Z = vp_double(Instance, VP_OBJECT_Z) * 1000.0 ;
+	Obj.Y = vp_double(Instance, VP_OBJECT_Y) * 1000.0 ;
+	Obj.RotX = vp_double(Instance, VP_OBJECT_ROTATION_X);
+	Obj.RotY = vp_double(Instance, VP_OBJECT_ROTATION_Y);
+	Obj.RotZ = vp_double(Instance, VP_OBJECT_ROTATION_Z);
+	Obj.RotR = vp_double(Instance, VP_OBJECT_ROTATION_ANGLE);
     CAxisAngle  Rotation (Obj.RotZ, Obj.RotY,Obj.RotX,Obj.RotR);
     CEuler Euler = Rotation.GetEuler();
 	Obj.Yaw = Euler.yaw * (1800.0 / M_PI);
@@ -362,25 +362,25 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
         for (size_t i=0; i < NbObj; i++)
         {
             Cell->GetObjSel(Obj,0);
-            vp_float_set (Instance, VP_OBJECT_X, Obj.X / 1000);
-            vp_float_set (Instance,VP_OBJECT_Y, Obj.Y / 1000);
-            vp_float_set (Instance,VP_OBJECT_Z, Obj.Z / 1000);
+			vp_double_set (Instance, VP_OBJECT_X, Obj.X / 1000);
+			vp_double_set(Instance, VP_OBJECT_Y, Obj.Y / 1000);
+			vp_double_set(Instance, VP_OBJECT_Z, Obj.Z / 1000);
 			//If Axis Angle is null, convert from Euler
 			if ((Obj.RotX==0) && (Obj.RotY==0) && (Obj.RotZ==0) && (Obj.RotR == 0))
 			{ 
 				CEuler Euler (Obj.Yaw / (1800.0/M_PI),Obj.Tilt / (1800.0/M_PI), Obj.Roll / (1800.0/M_PI));
 				CAxisAngle AxisAngle  = Euler.GetAxisAngle();
-				vp_float_set (Instance,VP_OBJECT_ROTATION_X, AxisAngle.z);
-				vp_float_set (Instance,VP_OBJECT_ROTATION_Y, AxisAngle.y);
-				vp_float_set (Instance,VP_OBJECT_ROTATION_Z, AxisAngle.x);
-				vp_float_set (Instance,VP_OBJECT_ROTATION_ANGLE, AxisAngle.r);
+				vp_double_set(Instance, VP_OBJECT_ROTATION_X, AxisAngle.z);
+				vp_double_set(Instance, VP_OBJECT_ROTATION_Y, AxisAngle.y);
+				vp_double_set(Instance, VP_OBJECT_ROTATION_Z, AxisAngle.x);
+				vp_double_set(Instance, VP_OBJECT_ROTATION_ANGLE, AxisAngle.r);
 			}
 			else
 			{
-				vp_float_set (Instance,VP_OBJECT_ROTATION_X, Obj.RotX);
-				vp_float_set (Instance,VP_OBJECT_ROTATION_Y, Obj.RotY);
-				vp_float_set (Instance,VP_OBJECT_ROTATION_Z, Obj.RotZ);
-				vp_float_set (Instance,VP_OBJECT_ROTATION_ANGLE, Obj.RotR);
+				vp_double_set (Instance, VP_OBJECT_ROTATION_X, Obj.RotX);
+				vp_double_set (Instance, VP_OBJECT_ROTATION_Y, Obj.RotY);
+				vp_double_set (Instance, VP_OBJECT_ROTATION_Z, Obj.RotZ);
+				vp_double_set(Instance, VP_OBJECT_ROTATION_ANGLE, Obj.RotR);
 			}
 			vp_string_set (Instance,VP_OBJECT_MODEL, Obj.Model.utf8_str());
             vp_string_set (Instance,VP_OBJECT_DESCRIPTION, Obj.Description.utf8_str());
