@@ -74,7 +74,7 @@ AboutBox::AboutBox
 	(
 		this,
 		-1,
-		AppVersion + _T(" ") + info->GetArchName(),
+		AppVersion,
 		wxDefaultPosition,
 		wxDefaultSize,
 		wxALIGN_CENTRE
