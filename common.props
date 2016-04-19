@@ -7,6 +7,7 @@
     <UPX_PATH>E:\devel\upx\</UPX_PATH>
     <VP_PATH>E:\devel\activeworlds\</VP_PATH>
     <WX_LIB>vc_dll</WX_LIB>
+    <WXWIN>E:\devel\wxWidgets-3.0.2</WXWIN>
   </PropertyGroup>
   <PropertyGroup>
     <IntDir>$(Platform)\$(Configuration)\obj\</IntDir>
@@ -35,6 +36,10 @@
     </BuildMacro>
     <BuildMacro Include="WX_LIB">
       <Value>$(WX_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="WXWIN">
+      <Value>$(WXWIN)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>
 </Project>
