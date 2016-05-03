@@ -64,7 +64,7 @@ static const wxString AppVersion = AppRevision + _T(" For AW 3.6");
 #endif
 #else
 	static const wxString AppName = _T("BackupVP");
-	static const wxString AppRevision = AppName + _T(" V1.6.1");
+	static const wxString AppRevision = AppName + _T(" V1.6.2");
     static const wxString AppVersion = AppRevision + _T(" For Virtual Paradise");
 #endif // VP_BUILD
 

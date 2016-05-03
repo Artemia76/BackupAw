@@ -14,7 +14,7 @@ Features
 BackupAW Works with ActiveWorlds Inc SDK (see AW_SDK_License_(aw.dll).txt)
 	
 BackupVP Works with Virtual Paradise SDK provided by is author as it , and use it is at your own risk. 
-The VirtualParadise SDK is copyrighted (c) 2014 Edwin Rijkee
+The VirtualParadise SDK is copyrighted (c) 2016 Edwin Rijkee
 	
 External links
 
