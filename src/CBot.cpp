@@ -112,7 +112,7 @@ void CBot::Connection(bool flag)
 	if (flag && (!On_Universe))
 	{
 #ifdef VP_BUILD
-        if (!Instance) Instance=vp_create();
+        if (!Instance) Instance=vp_create(NULL);
 		if ((rc=vp_connect_universe(Instance,Univers.utf8_str(),Port ))!=0)
 #else
 	#if AW_BUILD>77
