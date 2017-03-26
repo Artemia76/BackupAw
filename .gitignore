@@ -12,6 +12,7 @@
 [Dd]ebug/
 [Rr]elease/
 x64/
+Win32/
 build/
 [Bb]in/
 [Oo]bj/
@@ -59,7 +60,8 @@ ipch/
 *.psess
 *.vsp
 *.vspx
-
+*.VC.db
+*.VC.opendb
 # Guidance Automation Toolkit
 *.gpState
 
