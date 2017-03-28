@@ -63,6 +63,7 @@ static const wxString AppVersion = AppRevision + _T(" For AW 3.6");
 	#endif
 #endif
 #else
+    #include <VP.h>
 	static const wxString AppName = _T("BackupVP");
 	static const wxString AppRevision = AppName + _T(" V1.6.2");
     static const wxString AppVersion = AppRevision + _T(" For Virtual Paradise");
@@ -75,11 +76,14 @@ static const  int NbLigneMax = 150;
 static const  wxString AppLicence = AppVersion
 +   _T("\nThis software is under GPL v2")
 +	_T("\nBuild with ") + wxVERSION_STRING
+#ifdef VP_BUILD
++   _T(" and VP SDK Version ") + wxString::Format(_T("%i"),VPSDK_VERSION)
+#endif
 +	_T("\n\nThird Part License Terms:\n")
 #ifndef VP_BUILD
 +	_T("BACKUPAW use the (c)Activeworlds SDK published for devellopers, then this software depend of the AW terms in the \"AW_SDK_License_(aw.dll).rtf\" file.")
 #else
-+	_T("BACKUPVP use the Virtual Paradise SDK (c) 2014 Edwin Rijkee. Use BackupVP at your own risk.")
++	_T("BACKUPVP use the Virtual Paradise SDK (c) 2016 Edwin Rijkee. Use BackupVP at your own risk.")
 #endif
 ;
 
