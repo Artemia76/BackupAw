@@ -80,7 +80,7 @@ AboutBox::AboutBox
 		wxALIGN_CENTRE
 	);
 	item3->SetForegroundColour( *wxBLUE );
-	item3->SetFont( wxFont( 14, wxROMAN, wxNORMAL, wxBOLD ) );
+	item3->SetFont( wxFont( 14, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD ) );
 	item13->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
 	item0->Add( item13, 0, wxALIGN_CENTER|wxALL, 5 );
 

@@ -8,6 +8,7 @@
     <VP_PATH>E:\devel\activeworlds\</VP_PATH>
     <WX_LIB>vc_dll</WX_LIB>
     <WXWIN>E:\devel\wxWidgets-3.1.0</WXWIN>
+    <WX_LIB_X64>vc_x64_lib</WX_LIB_X64>
   </PropertyGroup>
   <PropertyGroup>
     <IntDir>$(Platform)\$(Configuration)\obj\</IntDir>
@@ -40,6 +41,9 @@
     <BuildMacro Include="WXWIN">
       <Value>$(WXWIN)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="WX_LIB_X64">
+      <Value>$(WX_LIB_X64)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>

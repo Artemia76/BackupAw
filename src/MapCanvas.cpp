@@ -92,7 +92,7 @@ void CMapCanvas::DrawDefault(wxDC& dc)
 	CObject Obj;
     NbCellx = Larg /Cell;
     NbCelly = Haut /Cell;
-	dc.SetPen(wxPen(wxColour (127,127,127),0, wxSOLID ));
+	dc.SetPen(wxPen(wxColour (127,127,127),0, wxPENSTYLE_SOLID ));
 	MCellx = (wxCoord)floor ((double)NbCellx/2);
 	MCelly = (wxCoord)floor ((double)NbCelly/2);
 	xori = BackupCtrl->OrigX + (Cell/2);
@@ -109,11 +109,11 @@ void CMapCanvas::DrawDefault(wxDC& dc)
 	{
 		for (int j=0; j<NbCelly; j++)
 		{
-			dc.SetBrush(wxBrush(GetLevel(Tampon[i][j],Sel[i][j]),wxSOLID));
+			dc.SetBrush(wxBrush(GetLevel(Tampon[i][j],Sel[i][j]), wxBRUSHSTYLE_SOLID));
 			dc.DrawRectangle (i*Cell,j*Cell,Cell, Cell);
 		}
 	}
-	dc.SetPen(wxPen(*wxBLUE, 0, wxSOLID ));
+	dc.SetPen(wxPen(*wxBLUE, 0, wxPENSTYLE_SOLID));
 	while (xbar < NbCellx)
 	{
 		dc.DrawLine ( xbar*Cell, 0 , xbar*Cell , NbCelly*Cell);
@@ -141,8 +141,8 @@ void CMapCanvas::DrawDefault(wxDC& dc)
 			else if (y1>=Haut) y1=Haut-1;
 			if (y2<0) y2=0;
 			else if (y2>=Haut) y2=Haut-1;
-			dc.SetPen(wxPen(wxColour (255,0,0),2, wxSOLID ));
-			dc.SetBrush(wxBrush(wxColour(0,0,0),wxTRANSPARENT));
+			dc.SetPen(wxPen(wxColour (255,0,0),2, wxPENSTYLE_SOLID));
+			dc.SetBrush(wxBrush(wxColour(0,0,0), wxBRUSHSTYLE_TRANSPARENT));
 			dc.DrawRectangle ( x1 , y1 , x2 - x1, y2 - y1);
 		}
 	}
@@ -164,8 +164,8 @@ void CMapCanvas::DrawDefault(wxDC& dc)
 		else if (y1>=Haut) y1=Haut-1;
 		if (y2<0) y2=0;
 		else if (y2>=Haut) y2=Haut-1;
-		dc.SetPen(wxPen(wxColour (0,255,0),2, wxSOLID ));
-		dc.SetBrush(wxBrush(wxColour(0,0,0),wxTRANSPARENT));
+		dc.SetPen(wxPen(wxColour (0,255,0),2, wxPENSTYLE_SOLID));
+		dc.SetBrush(wxBrush(wxColour(0,0,0), wxBRUSHSTYLE_TRANSPARENT));
 		dc.DrawRectangle ( x1 , y1 , x2 - x1, y2 - y1);
 	}
 }

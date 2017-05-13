@@ -3,6 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <AW_LIB>sdk101\</AW_LIB>
+    <AW_LIB_X64>sdk101_x64\</AW_LIB_X64>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
@@ -10,6 +11,9 @@
     <BuildMacro Include="AW_LIB">
       <Value>$(AW_LIB)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="AW_LIB_X64">
+      <Value>$(AW_LIB_X64)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
