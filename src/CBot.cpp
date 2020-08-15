@@ -153,9 +153,9 @@ void CBot::Connection(bool flag)
 #endif
 			{
 				wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(rc));
-				ConEC=false;
+				DemCon = false;
+				if (ModeReco) Tentative();
 			}
-			CGRecoTimer->Start(15000,wxTIMER_ONE_SHOT);
 		}
 	}
 	else if ((!flag) && On_Universe)

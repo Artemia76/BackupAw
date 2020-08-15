@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1231
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "backupaw", "backupaw.vcxproj", "{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}"
 EndProject
@@ -9,10 +9,14 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_sdk101|Win32 = Debug_sdk101|Win32
 		Debug_sdk101|x64 = Debug_sdk101|x64
+		Debug_sdk131|Win32 = Debug_sdk131|Win32
+		Debug_sdk131|x64 = Debug_sdk131|x64
 		Debug_VP|Win32 = Debug_VP|Win32
 		Debug_VP|x64 = Debug_VP|x64
 		Release_sdk101|Win32 = Release_sdk101|Win32
 		Release_sdk101|x64 = Release_sdk101|x64
+		Release_sdk131|Win32 = Release_sdk131|Win32
+		Release_sdk131|x64 = Release_sdk131|x64
 		Release_sdk41|Win32 = Release_sdk41|Win32
 		Release_sdk41|x64 = Release_sdk41|x64
 		Release_VP|Win32 = Release_VP|Win32
@@ -22,6 +26,9 @@ Global
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_sdk101|Win32.ActiveCfg = Debug_sdk101|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_sdk101|Win32.Build.0 = Debug_sdk101|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_sdk101|x64.ActiveCfg = Debug_sdk101|Win32
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_sdk131|Win32.ActiveCfg = Debug_sdk131|Win32
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_sdk131|x64.ActiveCfg = Debug_sdk131|x64
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_sdk131|x64.Build.0 = Debug_sdk131|x64
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_VP|Win32.ActiveCfg = Debug_VP|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_VP|Win32.Build.0 = Debug_VP|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Debug_VP|x64.ActiveCfg = Debug_VP|Win32
@@ -29,6 +36,10 @@ Global
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|Win32.Build.0 = Release_sdk101|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|x64.ActiveCfg = Release_sdk101|x64
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk101|x64.Build.0 = Release_sdk101|x64
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk131|Win32.ActiveCfg = Release_sdk131|Win32
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk131|Win32.Build.0 = Release_sdk131|Win32
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk131|x64.ActiveCfg = Release_sdk131|x64
+		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk131|x64.Build.0 = Release_sdk131|x64
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk41|Win32.ActiveCfg = Release_sdk41|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk41|Win32.Build.0 = Release_sdk41|Win32
 		{8BFFA064-B7C3-4E61-8DC5-7107A2776A9A}.Release_sdk41|x64.ActiveCfg = Release_sdk41|Win32
@@ -39,5 +50,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5416C8E1-EB95-4EEC-8EB7-B5159916D4E7}
 	EndGlobalSection
 EndGlobal

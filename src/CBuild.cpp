@@ -51,9 +51,9 @@ CBuild::CBuild(wxWindow* Parent) : wxPanel
 	item3 = new wxCheckBox (this, CB_CTBUILD, _("Build as a CareTaker (Use many citizen Nb)"),wxDefaultPosition, wxSize(-1,40), 0);
 	item3->SetValue (BackupCtrl->CTBuild);
 	item0 = new wxBoxSizer( wxVERTICAL );
-	item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+	item0->Add( item1, 0, wxGROW, 5 );
+	item0->Add( item3, 0, wxGROW, 5 );
+	item0->Add( item2, 0, wxGROW, 5 );
 	SetAutoLayout ( TRUE );
 	SetSizer( item0 );
 	item0->Fit(this);

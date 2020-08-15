@@ -93,7 +93,7 @@ void CMapCanvas::DrawDefault(wxDC& dc)
     NbCellx = Larg /Cell;
     NbCelly = Haut /Cell;
 	dc.SetPen(wxPen(wxColour (127,127,127),0, wxPENSTYLE_SOLID ));
-	MCellx = (wxCoord)floor ((double)NbCellx/2);
+	MCellx = (wxCoord)floor (static_cast<double>(NbCellx/2));
 	MCelly = (wxCoord)floor ((double)NbCelly/2);
 	xori = BackupCtrl->OrigX + (Cell/2);
 	yori = BackupCtrl->OrigY + (Cell/2);

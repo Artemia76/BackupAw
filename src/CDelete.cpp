@@ -48,8 +48,8 @@ CDelete::CDelete(wxWindow* Parent) : wxPanel
 	item1 = new wxStaticText( this, -1, _("Warning This function can make irreversible destruction."), wxDefaultPosition, wxSize (-1,40),0 );
 	item2 = new wxButton (this, CD_DELETE, _("Delete"), wxDefaultPosition, wxDefaultSize, 0);
 	item0 = new wxBoxSizer( wxVERTICAL );
-	item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-	item0->Add( item2, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+	item0->Add( item1, 0, wxGROW, 5 );
+	item0->Add( item2, 0, wxGROW, 5 );
 	SetAutoLayout ( TRUE );
 	SetSizer( item0 );
 	item0->Fit(this);

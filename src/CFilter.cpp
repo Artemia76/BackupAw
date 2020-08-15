@@ -163,10 +163,10 @@ CFilter::CFilter(wxWindow* Parent) : wxPanel
 	item41->Add( item44, 0, wxALIGN_TOP, 2 );
 	item47->Add( item48, 0, wxALIGN_CENTER, 2 );
 	item47->Add( item49, 0, wxALIGN_CENTER, 2 );
-	item46->Add( item47, 0, wxALIGN_CENTER_VERTICAL, 2 );
+	item46->Add( item47, 0, wxALIGN_CENTER_HORIZONTAL, 2 );
 	item50->Add( item51, 0, wxALIGN_CENTER, 2 );
 	item50->Add( item52, 0, wxALIGN_CENTER, 2 );
-	item46->Add( item50, 0, wxALIGN_CENTER_VERTICAL, 2 );
+	item46->Add( item50, 0, wxALIGN_CENTER_HORIZONTAL, 2 );
 	item41->Add( item46, 1, wxEXPAND, 2 );
 	item39->Add( item41, 1, wxEXPAND, 2 );
 	item0->Add( item39, 1, wxEXPAND, 2 );

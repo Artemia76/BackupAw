@@ -4,10 +4,10 @@
   <PropertyGroup Label="UserMacros">
     <AW_PATH>E:\devel\activeworlds\</AW_PATH>
     <WX_BASE>31</WX_BASE>
-    <UPX_PATH>E:\devel\upx\</UPX_PATH>
+    <UPX_PATH>E:\devel\utils\</UPX_PATH>
     <VP_PATH>E:\devel\activeworlds\</VP_PATH>
     <WX_LIB>vc_dll</WX_LIB>
-    <WXWIN>E:\devel\wxWidgets-3.1.0</WXWIN>
+    <WXWIN>E:\devel\wxwidgets</WXWIN>
     <WX_LIB_X64>vc_x64_lib</WX_LIB_X64>
   </PropertyGroup>
   <PropertyGroup>

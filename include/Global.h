@@ -44,7 +44,7 @@
 #ifndef VP_BUILD
 #include <Aw.h>
 static const wxString AppName = _T("BackupAW");
-static const wxString AppRevision = AppName + _T(" V1.6.0");
+static const wxString AppRevision = AppName + _T(" V1.6.1");
 #if AW_BUILD<77
 static const wxString AppVersion = AppRevision + _T(" For AW 3.6");
 #else

@@ -87,7 +87,7 @@ CModify::CModify(wxWindow* Parent) : wxPanel
 	item1->Add( item5, 0, wxALIGN_CENTER|wxALL, 2 );
 	item9->Add( item10, 0, wxALIGN_CENTER|wxALL, 2 );
 	item1->Add( item9, 0, wxALIGN_CENTER|wxALL, 2 );
-	item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 2 );
+	item0->Add( item1, 0, wxGROW|wxALL, 2 );
 
     item13->Add( item14, 0, wxALIGN_LEFT|wxALL, 2 );
     item13->Add( item15, 0, wxALIGN_LEFT|wxALL, 2 );
@@ -97,7 +97,7 @@ CModify::CModify(wxWindow* Parent) : wxPanel
     item11->Add( item16, 0, wxALIGN_CENTER|wxALL, 2 );
     item19->Add( item20, 0, wxALIGN_CENTER|wxALL, 2 );
     item11->Add( item19, 0, wxALIGN_CENTER|wxALL, 2 );
-	item0->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	item0->Add( item11, 0, wxGROW|wxALL, 5 );
 
     item23->Add( item24, 0, wxALIGN_LEFT|wxALL, 2 );
     item23->Add( item25, 0, wxALIGN_LEFT|wxALL, 2 );
@@ -107,7 +107,7 @@ CModify::CModify(wxWindow* Parent) : wxPanel
     item21->Add( item26, 0, wxALIGN_CENTER|wxALL, 2 );
     item29->Add( item30, 0, wxALIGN_CENTER|wxALL, 2 );
     item21->Add( item29, 0, wxALIGN_CENTER|wxALL, 2 );
-	item0->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	item0->Add( item21, 0, wxGROW|wxALL, 5 );
 
 	SetAutoLayout ( TRUE );
 	SetSizer( item0 );
