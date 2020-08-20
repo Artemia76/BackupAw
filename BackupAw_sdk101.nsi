@@ -68,7 +68,7 @@ Section "SectionPrincipale" SEC01
   File ".\AW_SDK_License_(aw.dll).txt"
   File ".\Win32\Release_sdk101\aw.dll"
   File ".\README.md"
-  File ".\gpl.txt"
+  File ".\LICENSE"
   SetOutPath "$INSTDIR\lng\fr"
   File ".\lng\fr\backup.mo"
   SetOutPath "$INSTDIR\lng\en"

@@ -1,7 +1,7 @@
 backupaw/vp
 ========
 
-BackupAW/VP is a GPLv2 open source survey backup tool for ActiveWorlds and Virtual Paradise, allowing the backup and restore of builds in any world.
+BackupAW/VP is an open source survey backup tool for ActiveWorlds and Virtual Paradise, allowing the backup and restore of builds in any world.
 Features
 
     Backup and Restore local builds
@@ -10,6 +10,8 @@ Features
     Render a colored (infrared-like) density overview of objects on world
     Compatible with v4 objects (Active Worlds >= 4)
     Translations for English, French and Italian
+	
+BackupAW is BSD-3-Clause based licensing
 
 BackupAW Works with ActiveWorlds Inc SDK (see AW_SDK_License_(aw.dll).txt)
 	
