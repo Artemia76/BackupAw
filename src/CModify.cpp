@@ -4,20 +4,45 @@
 // *                        The Modifier Options Tab                           *
 // *                                                                           *
 // *****************************************************************************
-// * This file is part of BackupAw.                                            *
+// * This file is part of BackupAw project.                                    *
 // * BackupAw is free software; you can redistribute it and/or modify          *
-// * it under the terms of the GNU General Public License as published by      *
-// * the Free Software Foundation; either version 2 of the License, or         *
-// * (at your option) any later version.                                       *
+// * it under the terms of BSD Revision 3 License :                            *
 // *                                                                           *
-// * BackupAw is distributed in the hope that it will be useful,               *
+// * Copyright 2020 Neophile                                                   *
+// *                                                                           *
+// * Redistributionand use in source and binary forms, with or without         *
+// * modification, are permitted provided that the following conditions are    *
+// * met :                                                                     *
+// *                                                                           *
+// * 1. Redistributions of source code must retain the above copyright notice, *
+// * this list of conditionsand the following disclaimer.                      *
+// *                                                                           *
+// * 2. Redistributions in binary form must reproduce the above copyright      *
+// * notice, this list of conditionsand the following disclaimer in the        *
+// * documentation and /or other materials provided with the distribution.     *
+// *                                                                           *
+// * 3. Neither the name of the copyright holder nor the names of its          *
+// * contributors may be used to endorse or promote products derived from this *
+// * software without specific prior written permission.                       *
+// *                                                                           *
+// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
+// * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED *
+// * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A           *
+// * PARTICULAR PURPOSE ARE DISCLAIMED.IN NO EVENT SHALL THE COPYRIGHT HOLDER  *
+// * OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,  *
+// * EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT NOT LIMITED TO,        *
+// * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR        *
+// * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF    *
+// * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT                 *
+// * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF  *
+// * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.         *
+// *                                                                           *
+// * BackupAW is distributed in the hope that it will be useful,               *
 // * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
 // * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
-// * GNU General Public License for more details.                              *
 // *                                                                           *
-// * You should have received a copy of the GNU General Public License         *
-// * along with BackupAw; if not, write to the Free Software                   *
-// * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA *
+// * BackupAW use third part library copyrighted by ActiveWorlds Inc.          *
+// * For more details please read attached AW_SDK_License_(aw.dll).txt         *
 // *                                                                           *
 // *****************************************************************************
 // *                                                                           *
@@ -36,83 +61,83 @@ wxBEGIN_EVENT_TABLE (CModify, wxPanel)
     EVT_BUTTON ( CM_ROTATE, CModify::OnRotate)
 wxEND_EVENT_TABLE()
 
-CModify::CModify(wxWindow* Parent) : wxPanel
+CModify::CModify(wxWindow* pParent) : wxPanel
 	(
-		Parent,
+		pParent,
 		-1,
 		wxDefaultPosition,
 		wxDefaultSize
 	)
 {
-	Map=0;
-	Owner = Parent;
-	Cell = CCtrlCell::Create();
-	item0 = new wxBoxSizer( wxVERTICAL );
-	item2 = new wxStaticBox( this, -1, _("Citizen Modifier") );
-	item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
-	item3 = new wxBoxSizer( wxHORIZONTAL );
-	item4 = new wxTextCtrl( this,  -1, _T(""), wxDefaultPosition, wxSize (250,100), wxTE_MULTILINE|wxTE_READONLY );
-	item5 = new wxBoxSizer( wxHORIZONTAL );
-	item6 = new wxTextCtrl( this,  -1, _T(""), wxDefaultPosition, wxSize(50,-1), 0 );
-	item7 = new wxStaticText( this,  -1, _("to"), wxDefaultPosition, wxDefaultSize, 0 );
-	item8 = new wxTextCtrl( this, -1, _T(""), wxDefaultPosition, wxSize(50,-1), 0 );
-	item9 = new wxBoxSizer( wxHORIZONTAL );
-	item10 = new wxButton( this, CM_CHANGE_CIT, _("Change"), wxDefaultPosition, wxDefaultSize, 0 );
-	item12 = new wxStaticBox( this, -1, _("Move") );
-	item11 = new wxStaticBoxSizer( item12, wxVERTICAL );
-	item13 = new wxBoxSizer( wxHORIZONTAL );
-	item14 = new wxStaticText( this,  -1, _("From\t:"), wxDefaultPosition, wxSize(60,-1), 0 );
-	item15 = new wxTextCtrl( this,  -1, _T("0N 0W 0A"), wxDefaultPosition, wxDefaultSize);
-	item16 = new wxBoxSizer( wxHORIZONTAL );
-	item17 = new wxStaticText( this,  -1, _("To\t:"), wxDefaultPosition, wxSize(60,-1), 0 );
-	item18 = new wxTextCtrl( this,  -1, _T("0N 0W 0A"), wxDefaultPosition, wxDefaultSize);
-	item19 = new wxBoxSizer( wxHORIZONTAL );
-	item20 = new wxButton( this, CM_MOVE, _("Move"), wxDefaultPosition, wxDefaultSize, 0 );
-	item22 = new wxStaticBox( this, -1, _("Rotate") );
-	item21 = new wxStaticBoxSizer( item22, wxVERTICAL );
-	item23 = new wxBoxSizer( wxHORIZONTAL );
-	item24 = new wxStaticText( this,  -1, _("Pivot point\t:"), wxDefaultPosition, wxSize(120,-1), 0 );
-	item25 = new wxTextCtrl( this,  -1, _T("0N 0W"), wxDefaultPosition, wxDefaultSize);
-	item26 = new wxBoxSizer( wxHORIZONTAL );
-	item27 = new wxStaticText( this,  -1, _("CCW Angle in degrees\t:"), wxDefaultPosition, wxSize(120,-1), 0 );
-    item28 = new wxSpinCtrl( this, -1, _T("0"), wxDefaultPosition, wxSize(80,-1),wxSP_ARROW_KEYS, -359, 359,0 );
-    item29 = new wxBoxSizer( wxHORIZONTAL );
-	item30 = new wxButton( this, CM_ROTATE, _("Rotate"), wxDefaultPosition, wxDefaultSize, 0 );
+	Map=nullptr;
+	m_Owner = pParent;
+	m_Cell = CCtrlCell::Create();
+	m_Item0 = new wxBoxSizer( wxVERTICAL );
+	m_Item2 = new wxStaticBox( this, -1, _("Citizen Modifier") );
+	m_Item1 = new wxStaticBoxSizer( m_Item2, wxVERTICAL );
+	m_Item3 = new wxBoxSizer( wxHORIZONTAL );
+	m_Item4 = new wxTextCtrl( this,  -1, _T(""), wxDefaultPosition, wxSize (250,100), wxTE_MULTILINE|wxTE_READONLY );
+	m_Item5 = new wxBoxSizer( wxHORIZONTAL );
+	m_Item6 = new wxTextCtrl( this,  -1, _T(""), wxDefaultPosition, wxSize(50,-1), 0 );
+	m_Item7 = new wxStaticText( this,  -1, _("to"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_Item8 = new wxTextCtrl( this, -1, _T(""), wxDefaultPosition, wxSize(50,-1), 0 );
+	m_Item9 = new wxBoxSizer( wxHORIZONTAL );
+	m_Item10 = new wxButton( this, CM_CHANGE_CIT, _("Change"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_Item12 = new wxStaticBox( this, -1, _("Move") );
+	m_Item11 = new wxStaticBoxSizer( m_Item12, wxVERTICAL );
+	m_Item13 = new wxBoxSizer( wxHORIZONTAL );
+	m_Item14 = new wxStaticText( this,  -1, _("From\t:"), wxDefaultPosition, wxSize(60,-1), 0 );
+	m_Item15 = new wxTextCtrl( this,  -1, _T("0N 0W 0A"), wxDefaultPosition, wxDefaultSize);
+	m_Item16 = new wxBoxSizer( wxHORIZONTAL );
+	m_Item17 = new wxStaticText( this,  -1, _("To\t:"), wxDefaultPosition, wxSize(60,-1), 0 );
+	m_Item18 = new wxTextCtrl( this,  -1, _T("0N 0W 0A"), wxDefaultPosition, wxDefaultSize);
+	m_Item19 = new wxBoxSizer( wxHORIZONTAL );
+	m_Item20 = new wxButton( this, CM_MOVE, _("Move"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_Item22 = new wxStaticBox( this, -1, _("Rotate") );
+	m_Item21 = new wxStaticBoxSizer( m_Item22, wxVERTICAL );
+	m_Item23 = new wxBoxSizer( wxHORIZONTAL );
+	m_Item24 = new wxStaticText( this,  -1, _("Pivot point\t:"), wxDefaultPosition, wxSize(120,-1), 0 );
+	m_Item25 = new wxTextCtrl( this,  -1, _T("0N 0W"), wxDefaultPosition, wxDefaultSize);
+	m_Item26 = new wxBoxSizer( wxHORIZONTAL );
+	m_Item27 = new wxStaticText( this,  -1, _("CCW Angle in degrees\t:"), wxDefaultPosition, wxSize(120,-1), 0 );
+    m_Item28 = new wxSpinCtrl( this, -1, _T("0"), wxDefaultPosition, wxSize(80,-1),wxSP_ARROW_KEYS, -359, 359,0 );
+    m_Item29 = new wxBoxSizer( wxHORIZONTAL );
+	m_Item30 = new wxButton( this, CM_ROTATE, _("Rotate"), wxDefaultPosition, wxDefaultSize, 0 );
 
-    item3->Add( item4, 0, wxALIGN_CENTER|wxALL, 2 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 2 );
-    item5->Add( item6, 0, wxALIGN_CENTER|wxALL, 2 );
-	item5->Add( item7, 0, wxALIGN_CENTER|wxALL, 2 );
-	item5->Add( item8, 0, wxALIGN_CENTER|wxALL, 2 );
-	item1->Add( item5, 0, wxALIGN_CENTER|wxALL, 2 );
-	item9->Add( item10, 0, wxALIGN_CENTER|wxALL, 2 );
-	item1->Add( item9, 0, wxALIGN_CENTER|wxALL, 2 );
-	item0->Add( item1, 0, wxGROW|wxALL, 2 );
+    m_Item3->Add( m_Item4, 0, wxALIGN_CENTER|wxALL, 2 );
+    m_Item1->Add( m_Item3, 0, wxALIGN_CENTER|wxALL, 2 );
+    m_Item5->Add( m_Item6, 0, wxALIGN_CENTER|wxALL, 2 );
+	m_Item5->Add( m_Item7, 0, wxALIGN_CENTER|wxALL, 2 );
+	m_Item5->Add( m_Item8, 0, wxALIGN_CENTER|wxALL, 2 );
+	m_Item1->Add( m_Item5, 0, wxALIGN_CENTER|wxALL, 2 );
+	m_Item9->Add( m_Item10, 0, wxALIGN_CENTER|wxALL, 2 );
+	m_Item1->Add( m_Item9, 0, wxALIGN_CENTER|wxALL, 2 );
+	m_Item0->Add( m_Item1, 0, wxGROW|wxALL, 2 );
 
-    item13->Add( item14, 0, wxALIGN_LEFT|wxALL, 2 );
-    item13->Add( item15, 0, wxALIGN_LEFT|wxALL, 2 );
-    item11->Add( item13, 0, wxALIGN_CENTER|wxALL, 2 );
-    item16->Add( item17, 0, wxALIGN_LEFT|wxALL, 2 );
-    item16->Add( item18, 0, wxALIGN_LEFT|wxALL, 2 );
-    item11->Add( item16, 0, wxALIGN_CENTER|wxALL, 2 );
-    item19->Add( item20, 0, wxALIGN_CENTER|wxALL, 2 );
-    item11->Add( item19, 0, wxALIGN_CENTER|wxALL, 2 );
-	item0->Add( item11, 0, wxGROW|wxALL, 5 );
+    m_Item13->Add( m_Item14, 0, wxALIGN_LEFT|wxALL, 2 );
+    m_Item13->Add( m_Item15, 0, wxALIGN_LEFT|wxALL, 2 );
+    m_Item11->Add( m_Item13, 0, wxALIGN_CENTER|wxALL, 2 );
+    m_Item16->Add( m_Item17, 0, wxALIGN_LEFT|wxALL, 2 );
+    m_Item16->Add( m_Item18, 0, wxALIGN_LEFT|wxALL, 2 );
+    m_Item11->Add( m_Item16, 0, wxALIGN_CENTER|wxALL, 2 );
+    m_Item19->Add( m_Item20, 0, wxALIGN_CENTER|wxALL, 2 );
+    m_Item11->Add( m_Item19, 0, wxALIGN_CENTER|wxALL, 2 );
+	m_Item0->Add( m_Item11, 0, wxGROW|wxALL, 5 );
 
-    item23->Add( item24, 0, wxALIGN_LEFT|wxALL, 2 );
-    item23->Add( item25, 0, wxALIGN_LEFT|wxALL, 2 );
-    item21->Add( item23, 0, wxALIGN_CENTER|wxALL, 2 );
-    item26->Add( item27, 0, wxALIGN_LEFT|wxALL, 2 );
-    item26->Add( item28, 0, wxALIGN_LEFT|wxALL, 2 );
-    item21->Add( item26, 0, wxALIGN_CENTER|wxALL, 2 );
-    item29->Add( item30, 0, wxALIGN_CENTER|wxALL, 2 );
-    item21->Add( item29, 0, wxALIGN_CENTER|wxALL, 2 );
-	item0->Add( item21, 0, wxGROW|wxALL, 5 );
+    m_Item23->Add( m_Item24, 0, wxALIGN_LEFT|wxALL, 2 );
+    m_Item23->Add( m_Item25, 0, wxALIGN_LEFT|wxALL, 2 );
+    m_Item21->Add( m_Item23, 0, wxALIGN_CENTER|wxALL, 2 );
+    m_Item26->Add( m_Item27, 0, wxALIGN_LEFT|wxALL, 2 );
+    m_Item26->Add( m_Item28, 0, wxALIGN_LEFT|wxALL, 2 );
+    m_Item21->Add( m_Item26, 0, wxALIGN_CENTER|wxALL, 2 );
+    m_Item29->Add( m_Item30, 0, wxALIGN_CENTER|wxALL, 2 );
+    m_Item21->Add( m_Item29, 0, wxALIGN_CENTER|wxALL, 2 );
+	m_Item0->Add( m_Item21, 0, wxGROW|wxALL, 5 );
 
 	SetAutoLayout ( TRUE );
-	SetSizer( item0 );
-	item0->Fit(this);
-	item0->SetSizeHints(this);
+	SetSizer( m_Item0 );
+	m_Item0->Fit(this);
+	m_Item0->SetSizeHints(this);
 }
 
 //------------------------------------------------------------------------------
@@ -124,19 +149,19 @@ CModify::~CModify ()
 
 //------------------------------------------------------------------------------
 
-void CModify::OnChange (wxCommandEvent& WXUNUSED(event))
+void CModify::OnChange (wxCommandEvent& WXUNUSED(pEvent))
 {
 	long num;
 	wxString s;
 	int Cit1;
 	int Cit2;
-	s=item6->GetValue();
+	s=m_Item6->GetValue();
 	s.ToLong (&num);
 	Cit1=(int) num;
-	s=item8->GetValue();
+	s=m_Item8->GetValue();
 	s.ToLong (&num);
 	Cit2=(int) num;
-	Cell->ChgeCitSel(Cit1,Cit2);
+	m_Cell->ChgeCitSel(Cit1,Cit2);
 	MAJ ();
 }
 
@@ -144,18 +169,18 @@ void CModify::OnChange (wxCommandEvent& WXUNUSED(event))
 
 void CModify::MAJ ()
 {
-	Cell->GetCitSel(item4);
+	m_Cell->GetCitSel(m_Item4);
 }
 
 //------------------------------------------------------------------------------
 
-void CModify::OnMove (wxCommandEvent& WXUNUSED(event))
+void CModify::OnMove (wxCommandEvent& WXUNUSED(pEvent))
 {
 	double x1,y1,a1,x2,y2,a2;
 	int x,y,a;
 	wxString s1,s2;
-	s1=item15->GetValue();
-	s2=item18->GetValue();
+	s1=m_Item15->GetValue();
+	s2=m_Item18->GetValue();
 	AwToCoord (x1,y1,a1,s1);
 	AwToCoord (x2,y2,a2,s2);
 	x1*=1000;
@@ -167,24 +192,24 @@ void CModify::OnMove (wxCommandEvent& WXUNUSED(event))
 	x=(int)(x2-x1);
 	y=(int)(y2-y1);
 	a=(int)(a2-a1);
-	Cell->MoveSel(x,y,a);
+	m_Cell->MoveSel(x,y,a);
 	if (Map) Map->Refresh ();
 }
 
 //------------------------------------------------------------------------------
 
-void CModify::OnRotate (wxCommandEvent& WXUNUSED(event))
+void CModify::OnRotate (wxCommandEvent& WXUNUSED(pEvent))
 {
 	double x1,y1,a1;
 	int x,y,alpha;
 	wxString s;
-	s=item25->GetValue();
-	alpha=item28->GetValue();
+	s=m_Item25->GetValue();
+	alpha=m_Item28->GetValue();
 	AwToCoord (x1,y1,a1,s);
 	x1*=1000;
 	y1*=1000;
 	x=(int)(x1);
 	y=(int)(y1);
-	Cell->RotateSel(x,y,alpha);
+	m_Cell->RotateSel(x,y,alpha);
 	if (Map) Map->Refresh ();
 }

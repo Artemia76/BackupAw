@@ -4,20 +4,45 @@
 // *       Contain the project and provide method For backup,transform,...     *
 // *                                                                           *
 // *****************************************************************************
-// * This file is part of BackupAw.                                            *
+// * This file is part of BackupAw project.                                    *
 // * BackupAw is free software; you can redistribute it and/or modify          *
-// * it under the terms of the GNU General Public License as published by      *
-// * the Free Software Foundation; either version 2 of the License, or         *
-// * (at your option) any later version.                                       *
+// * it under the terms of BSD Revision 3 License :                            *
 // *                                                                           *
-// * BackupAw is distributed in the hope that it will be useful,               *
+// * Copyright 2020 Neophile                                                   *
+// *                                                                           *
+// * Redistributionand use in source and binary forms, with or without         *
+// * modification, are permitted provided that the following conditions are    *
+// * met :                                                                     *
+// *                                                                           *
+// * 1. Redistributions of source code must retain the above copyright notice, *
+// * this list of conditionsand the following disclaimer.                      *
+// *                                                                           *
+// * 2. Redistributions in binary form must reproduce the above copyright      *
+// * notice, this list of conditionsand the following disclaimer in the        *
+// * documentation and /or other materials provided with the distribution.     *
+// *                                                                           *
+// * 3. Neither the name of the copyright holder nor the names of its          *
+// * contributors may be used to endorse or promote products derived from this *
+// * software without specific prior written permission.                       *
+// *                                                                           *
+// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
+// * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED *
+// * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A           *
+// * PARTICULAR PURPOSE ARE DISCLAIMED.IN NO EVENT SHALL THE COPYRIGHT HOLDER  *
+// * OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,  *
+// * EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT NOT LIMITED TO,        *
+// * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR        *
+// * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF    *
+// * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT                 *
+// * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF  *
+// * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.         *
+// *                                                                           *
+// * BackupAW is distributed in the hope that it will be useful,               *
 // * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
 // * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
-// * GNU General Public License for more details.                              *
 // *                                                                           *
-// * You should have received a copy of the GNU General Public License         *
-// * along with BackupAw; if not, write to the Free Software                   *
-// * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA *
+// * BackupAW use third part library copyrighted by ActiveWorlds Inc.          *
+// * For more details please read attached AW_SDK_License_(aw.dll).txt         *
 // *                                                                           *
 // *****************************************************************************
 // *                                                                           *
@@ -33,20 +58,20 @@
 //------------------------------------------------------------------------------
 // Class CCtrlCell
 
-CCtrlCell* CCtrlCell::PtCCtrlCell = 0;
+CCtrlCell* CCtrlCell::m_PtrCCtrlCell = 0;
 
 CCtrlCell* CCtrlCell::Create()
 {
-	if (!CCtrlCell::PtCCtrlCell) CCtrlCell::PtCCtrlCell = new CCtrlCell ();
-	return CCtrlCell::PtCCtrlCell;
+	if (!CCtrlCell::m_PtrCCtrlCell) CCtrlCell::m_PtrCCtrlCell = new CCtrlCell ();
+	return CCtrlCell::m_PtrCCtrlCell;
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlCell::Kill()
 {
-	delete CCtrlCell::PtCCtrlCell;
-	CCtrlCell::PtCCtrlCell=0;
+	delete CCtrlCell::m_PtrCCtrlCell;
+	CCtrlCell::m_PtrCCtrlCell =0;
 }
 
 //------------------------------------------------------------------------------
@@ -77,8 +102,6 @@ CCtrlCell::CCtrlCell ()
 	RelX=0;
 	RelZ=0;
 	RelY=0;
-	//Selection.reserve (100000);
-	//Cell.reserve (100000);
 }
 
 //------------------------------------------------------------------------------
@@ -91,61 +114,61 @@ CCtrlCell::~CCtrlCell ()
 
 void CCtrlCell::DelGrid ()
 {
-	Cell.clear();
+	m_Cell.clear();
 }
 
 //------------------------------------------------------------------------------
 
 void CCtrlCell::DelSel ()
 {
-	Selection.clear();
+	m_Selection.clear();
 }
 
 //------------------------------------------------------------------------------
 
-CellRes CCtrlCell::AddObj (CObject Obj)
+CellRes CCtrlCell::AddObj (CObject pObj)
 {
-	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = m_Cell.begin(); i < m_Cell.end (); i++)
 	{
 #ifndef VP_BUILD
-		if ((Obj.Number==i->Number)&&(Obj.X==i->X)&&(Obj.Y==i->Y)) return CELL_OBJ_ALREADY_EXIST;
+		if ((pObj.Number==i->Number)&&(pObj.X==i->X)&&(pObj.Y==i->Y)) return CELL_OBJ_ALREADY_EXIST;
 #else
-        if (Obj.Number==i->Number)
+        if (pObj.Number==i->Number)
         {
-            UpdateObj(Obj,i - Cell.begin());
+            UpdateObj(pObj,i - m_Cell.begin());
             return CELL_OK;
         }
 #endif // VP_BUILD
 	}
-	Cell.push_back(Obj);
+	m_Cell.push_back(pObj);
 	return CELL_OK;
 
 }
 
 //------------------------------------------------------------------------------
 
-CellRes	CCtrlCell::GetObj (CObject& Obj, size_t index)
+CellRes	CCtrlCell::GetObj (CObject& pObj, size_t index)
 {
 	if (index >= GetNbSel()) return CELL_INDEX_TOO_BIG;
-	Obj = Cell [index];
+	pObj = m_Cell[index];
 	return CELL_OK;
 }
 
 //------------------------------------------------------------------------------
 
-CellRes CCtrlCell::UpdateObj (CObject Obj, size_t index)
+CellRes CCtrlCell::UpdateObj (CObject pObj, size_t index)
 {
 	if (index >= GetNbObj()) return CELL_INDEX_TOO_BIG;
-	Cell [index] = Obj;
+	m_Cell[index] = pObj;
 	return CELL_OK;
 }
 
 //------------------------------------------------------------------------------
 
-CellRes	CCtrlCell::GetObjSel (CObject& Obj, size_t index)
+CellRes	CCtrlCell::GetObjSel (CObject& pObj, size_t index)
 {
 	if (index >= GetNbSel()) return CELL_INDEX_TOO_BIG;
-	Obj = Selection [index];
+	pObj = m_Selection [index];
 	return CELL_OK;
 }
 
@@ -155,7 +178,7 @@ unsigned int CCtrlCell::GetNbObj (int x, int y)
 {
 	unsigned int cnt=0;
 	double X,Y;
-	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = m_Cell.begin(); i < m_Cell.end (); i++)
 	{
 		X=i->X/1000;
 		Y=i->Z/1000;
@@ -168,14 +191,14 @@ unsigned int CCtrlCell::GetNbObj (int x, int y)
 
 unsigned int CCtrlCell::GetNbObj ()
 {
-	return (Cell.end()-Cell.begin());
+	return (m_Cell.end()-m_Cell.begin());
 }
 
 //------------------------------------------------------------------------------
 
 unsigned int CCtrlCell::GetNbSel ()
 {
-	return (Selection.end()-Selection.begin());
+	return (m_Selection.end()-m_Selection.begin());
 }
 
 //------------------------------------------------------------------------------
@@ -183,7 +206,7 @@ unsigned int CCtrlCell::GetNbSel ()
 CellRes	CCtrlCell::DelObj ( size_t index)
 {
 	if (index >= GetNbObj()) return CELL_INDEX_TOO_BIG;
-	Cell.erase (Cell.begin() + index);
+	m_Cell.erase (m_Cell.begin() + index);
 	return CELL_OK;
 }
 
@@ -192,16 +215,16 @@ CellRes	CCtrlCell::DelObj ( size_t index)
 CellRes	CCtrlCell::DelObjSel ( size_t index)
 {
 	if (index >= GetNbSel ()) return CELL_INDEX_TOO_BIG;
-	Selection.erase (Selection.begin() + index);
+	m_Selection.erase (m_Selection.begin() + index);
 	return CELL_OK;
 }
 
 //------------------------------------------------------------------------------
 
-CellRes CCtrlCell::ChangeObj (const CObject& Obj,size_t index)
+CellRes CCtrlCell::ChangeObj (const CObject& pObj,size_t index)
 {
 	if (index >= GetNbObj()) return CELL_INDEX_TOO_BIG;
-	Cell[index]=Obj;
+	m_Cell[index]= pObj;
 	return CELL_OK;
 }
 
@@ -209,11 +232,11 @@ CellRes CCtrlCell::ChangeObj (const CObject& Obj,size_t index)
 
 CellRes CCtrlCell::FindObjNum (size_t& index, int ObjNum)
 {
-	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = m_Cell.begin(); i < m_Cell.end (); i++)
 	{
 		if (i->Number==ObjNum)
 		{
-			index=i-Cell.begin();
+			index=i-m_Cell.begin();
 			return CELL_OK;
 		}
 	}
@@ -224,12 +247,12 @@ CellRes CCtrlCell::FindObjNum (size_t& index, int ObjNum)
 
 CellRes CCtrlCell::SortObj ()
 {
-	Selection.clear();
+	m_Selection.clear();
 	bool FM,FD,FA,FC,FR;
 	double x,y;
 	int X,Z;
 	wxString s;
-	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = m_Cell.begin(); i < m_Cell.end (); i++)
 	{
 		FC=false;
 		FM=false;
@@ -287,7 +310,7 @@ CellRes CCtrlCell::SortObj ()
 					((!RegioFilt) || FR)
 				)
 			{
-				Selection.push_back (*i);
+				m_Selection.push_back (*i);
 			}
 		}
 	}
@@ -296,20 +319,20 @@ CellRes CCtrlCell::SortObj ()
 
 //------------------------------------------------------------------------------
 
-CellRes	CCtrlCell::Update (int* Buffer, int XMax,int YMax,int w, int h)
+CellRes	CCtrlCell::Update (int* pBuffer, int pXMax,int pYMax,int pWidth, int pHeigh)
 {
 	int X,Z;
 	int* Pt=0;
 	double x,y;
-	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	for (vector<CObject>::iterator i = m_Cell.begin(); i < m_Cell.end (); i++)
 	{
 		x=i->X;
 		y=i->Z;
 		X=(int)floor(x/1000);
 		Z=(int)floor(y/1000);
-		if ( (X <= XMax) && (X > (XMax-w)) && (Z <=YMax) && (Z > (YMax-h)))
+		if ( (X <= pXMax) && (X > (pXMax- pWidth)) && (Z <=pYMax) && (Z > (pYMax- pHeigh)))
 		{
-			Pt=(Buffer+ (((XMax-X)*200) + (YMax-Z)));
+			Pt=pBuffer+ ((pXMax-X)*200) + (pYMax-Z);
 			(*Pt)=(*Pt) +1;
 		}
 	}
@@ -318,20 +341,20 @@ CellRes	CCtrlCell::Update (int* Buffer, int XMax,int YMax,int w, int h)
 
 //------------------------------------------------------------------------------
 
-CellRes	CCtrlCell::UpdateSel (int* Buffer, int XMax,int YMax,int w, int h)
+CellRes	CCtrlCell::UpdateSel (int* pBuffer, int pXMax,int pYMax,int pWidth, int pHeigh)
 {
 	int X,Z;
 	int* Pt=0;
 	double x,y;
-	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = m_Selection.begin(); i < m_Selection.end (); i++)
 	{
 		x=i->X;
 		y=i->Z;
 		X=(int)floor(x/1000);
 		Z=(int)floor(y/1000);
-		if ( (X <= XMax) && (X > (XMax-w)) && (Z <=YMax) && (Z > (YMax-h)))
+		if ( (X <= pXMax) && (X > (pXMax- pWidth)) && (Z <=pYMax) && (Z > (pYMax- pHeigh)))
 		{
-			Pt=(Buffer+ (((XMax-X)*200) + (YMax-Z)));
+			Pt=(pBuffer+ (((pXMax-X)*200) + (pYMax-Z)));
 			(*Pt)=(*Pt) +1;
 		}
 	}
@@ -346,44 +369,44 @@ CellRes CCtrlCell::LoadSel ()
 	int NbObj;
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
-	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T(""), FileName.GetFullPath());
-	Selection.clear ();
-	pConfig->Read(_T("General/NbObj"), &NbObj, 0);
-	pConfig->Read(_T("General/RelX"), &RelX, 0);
-	pConfig->Read(_T("General/RelZ"), &RelZ, 0);
-	pConfig->Read(_T("General/RelY"), &RelY, 0);
-	pConfig->Read(_T("General/RelYAW"), &RelYaw, 0);
+	wxFileConfig* Config = new wxFileConfig(_T(""), _T(""), FileName.GetFullPath());
+	m_Selection.clear ();
+	Config->Read(_T("General/NbObj"), &NbObj, 0);
+	Config->Read(_T("General/RelX"), &RelX, 0);
+	Config->Read(_T("General/RelZ"), &RelZ, 0);
+	Config->Read(_T("General/RelY"), &RelY, 0);
+	Config->Read(_T("General/RelYAW"), &RelYaw, 0);
 
 	for (int i=0; i < NbObj; i++)
 	{
 		s=wxString::Format(_T("Objet%i/"),i);
-		pConfig->Read(s+_T("Number"),&Obj.Number,0);
-		pConfig->Read(s+_T("Owner"),&Obj.Owner,0);
-		pConfig->Read(s+_T("BTime"),&Obj.BuildTime,0);
-		pConfig->Read(s+_T("X"),&Obj.X,0.0);
-		pConfig->Read(s+_T("Y"),&Obj.Y,0.0);
-		pConfig->Read(s+_T("Z"),&Obj.Z,0.0);
-		pConfig->Read(s+_T("Yaw"),&Obj.Yaw,0.0);
-		pConfig->Read(s+_T("Tilt"),&Obj.Tilt,0.0);
-		pConfig->Read(s+_T("Roll"),&Obj.Roll,0.0);
-		pConfig->Read(s+_T("RotX"),&Obj.RotX,0.0);
-		pConfig->Read(s+_T("RotY"),&Obj.RotY,0.0);
-		pConfig->Read(s+_T("RotZ"),&Obj.RotZ,0.0);
-		pConfig->Read(s+_T("RotR"),&Obj.RotR,0.0);
-		pConfig->Read(s+_T("Model"),&Obj.Model,_T(""));
-		pConfig->Read(s+_T("Descr"),&Obj.Description,_T(""));
-		pConfig->Read(s+_T("Action"),&Obj.Action,_T(""));
+		Config->Read(s+_T("Number"),&Obj.Number,0);
+		Config->Read(s+_T("Owner"),&Obj.Owner,0);
+		Config->Read(s+_T("BTime"),&Obj.BuildTime,0);
+		Config->Read(s+_T("X"),&Obj.X,0.0);
+		Config->Read(s+_T("Y"),&Obj.Y,0.0);
+		Config->Read(s+_T("Z"),&Obj.Z,0.0);
+		Config->Read(s+_T("Yaw"),&Obj.Yaw,0.0);
+		Config->Read(s+_T("Tilt"),&Obj.Tilt,0.0);
+		Config->Read(s+_T("Roll"),&Obj.Roll,0.0);
+		Config->Read(s+_T("RotX"),&Obj.RotX,0.0);
+		Config->Read(s+_T("RotY"),&Obj.RotY,0.0);
+		Config->Read(s+_T("RotZ"),&Obj.RotZ,0.0);
+		Config->Read(s+_T("RotR"),&Obj.RotR,0.0);
+		Config->Read(s+_T("Model"),&Obj.Model,_T(""));
+		Config->Read(s+_T("Descr"),&Obj.Description,_T(""));
+		Config->Read(s+_T("Action"),&Obj.Action,_T(""));
 #if AW_BUILD>41 || VP_BUILD
 #ifdef AW_BUILD
-        pConfig->Read(s+_T("ID"),&Obj.ID,0);
+		Config->Read(s+_T("ID"),&Obj.ID,0);
 #endif
-		pConfig->Read(s+_T("Type"),&Obj.Type,0);
+		Config->Read(s+_T("Type"),&Obj.Type,0);
 		if (Obj.Type>1)
 		{
-			pConfig->Read(s+_T("Data"),&Obj.Data,_T(""));
+			Config->Read(s+_T("Data"),&Obj.Data,_T(""));
 		}
 #endif
-		Selection.push_back (Obj);
+		m_Selection.push_back (Obj);
 	}
 	return CELL_OK;
 }
@@ -396,41 +419,41 @@ CellRes CCtrlCell::LoadGrid ()
 	int NbObj;
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
-	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T(""), FileName.GetFullPath());
-	Cell.clear ();
-	pConfig->Read(_T("General/NbObj"), &NbObj, 0);
+	wxFileConfig* Config = new wxFileConfig(_T(""), _T(""), FileName.GetFullPath());
+	m_Cell.clear ();
+	Config->Read(_T("General/NbObj"), &NbObj, 0);
 	for (int i=0; i < NbObj; i++)
 	{
 		s=wxString::Format(_T("Objet%i/"),i);
-		pConfig->Read(s+_T("Number"),&Obj.Number,0);
-		pConfig->Read(s+_T("Owner"),&Obj.Owner,0);
-		pConfig->Read(s+_T("BTime"),&Obj.BuildTime,0);
-		pConfig->Read(s+_T("X"),&Obj.X,0.0);
-		pConfig->Read(s+_T("Y"),&Obj.Y,0.0);
-		pConfig->Read(s+_T("Z"),&Obj.Z,0.0);
-		pConfig->Read(s+_T("Yaw"),&Obj.Yaw,0.0);
-		pConfig->Read(s+_T("Tilt"),&Obj.Tilt,0.0);
-		pConfig->Read(s+_T("Roll"),&Obj.Roll,0.0);
-		pConfig->Read(s+_T("RotX"),&Obj.RotX,0.0);
-		pConfig->Read(s+_T("RotY"),&Obj.RotY,0.0);
-		pConfig->Read(s+_T("RotZ"),&Obj.RotZ,0.0);
-		pConfig->Read(s+_T("RotR"),&Obj.RotR,0.0);
-		pConfig->Read(s+_T("Model"),&Obj.Model,_T(""));
-		pConfig->Read(s+_T("Descr"),&Obj.Description,_T(""));
-		pConfig->Read(s+_T("Action"),&Obj.Action,_T(""));
+		Config->Read(s+_T("Number"),&Obj.Number,0);
+		Config->Read(s+_T("Owner"),&Obj.Owner,0);
+		Config->Read(s+_T("BTime"),&Obj.BuildTime,0);
+		Config->Read(s+_T("X"),&Obj.X,0.0);
+		Config->Read(s+_T("Y"),&Obj.Y,0.0);
+		Config->Read(s+_T("Z"),&Obj.Z,0.0);
+		Config->Read(s+_T("Yaw"),&Obj.Yaw,0.0);
+		Config->Read(s+_T("Tilt"),&Obj.Tilt,0.0);
+		Config->Read(s+_T("Roll"),&Obj.Roll,0.0);
+		Config->Read(s+_T("RotX"),&Obj.RotX,0.0);
+		Config->Read(s+_T("RotY"),&Obj.RotY,0.0);
+		Config->Read(s+_T("RotZ"),&Obj.RotZ,0.0);
+		Config->Read(s+_T("RotR"),&Obj.RotR,0.0);
+		Config->Read(s+_T("Model"),&Obj.Model,_T(""));
+		Config->Read(s+_T("Descr"),&Obj.Description,_T(""));
+		Config->Read(s+_T("Action"),&Obj.Action,_T(""));
 #if AW_BUILD>41 || VP_BUILD
 #ifdef AW_BUILD
-        pConfig->Read(s+_T("ID"),&Obj.ID,0);
+		Config->Read(s+_T("ID"),&Obj.ID,0);
 #endif
-		pConfig->Read(s+_T("Type"),&Obj.Type,0);
+		Config->Read(s+_T("Type"),&Obj.Type,0);
 		if (Obj.Type>1)
 		{
-			pConfig->Read(s+_T("Data"),&Obj.Data,_T(""));
+			Config->Read(s+_T("Data"),&Obj.Data,_T(""));
 		}
 #endif
-		Cell.push_back(Obj);
+		m_Cell.push_back(Obj);
 	}
-	delete pConfig;
+	delete Config;
 	return CELL_OK;
 }
 
@@ -442,45 +465,45 @@ CellRes CCtrlCell::SaveSel ()
 	int NbObj=0;
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
-	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T("") , FileName.GetFullPath());
+	wxFileConfig* Config = new wxFileConfig(_T(""), _T("") , FileName.GetFullPath());
 	NbObj=GetNbSel();
-	pConfig->DeleteAll ();
-	pConfig->Write(_T("General/NbObj"), NbObj);
-	pConfig->Write(_T("General/RelX"), RelX);
-	pConfig->Write(_T("General/RelZ"), RelZ);
-	pConfig->Write(_T("General/RelY"), RelY);
-	pConfig->Write(_T("General/RelYAW"), RelYaw);
-	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	Config->DeleteAll ();
+	Config->Write(_T("General/NbObj"), NbObj);
+	Config->Write(_T("General/RelX"), RelX);
+	Config->Write(_T("General/RelZ"), RelZ);
+	Config->Write(_T("General/RelY"), RelY);
+	Config->Write(_T("General/RelYAW"), RelYaw);
+	for (vector<CObject>::iterator i = m_Selection.begin(); i < m_Selection.end (); i++)
 	{
-		s=wxString::Format(_T("Objet%i/"),(unsigned int)(i-Selection.begin()));
-		pConfig->Write(s+_T("Number"),i->Number);
-		pConfig->Write(s+_T("Owner"),i->Owner);
-		pConfig->Write(s+_T("BTime"),i->BuildTime);
-		pConfig->Write(s+_T("X"),(i->X - RelX));
-		pConfig->Write(s+_T("Y"),(i->Y - RelY));
-		pConfig->Write(s+_T("Z"),(i->Z - RelZ));
-		pConfig->Write(s+_T("Yaw"),i->Yaw);
-		pConfig->Write(s+_T("Tilt"),i->Tilt);
-		pConfig->Write(s+_T("Roll"),i->Roll);
-		pConfig->Write(s+_T("RotX"),i->RotX);
-		pConfig->Write(s+_T("RotY"),i->RotY);
-		pConfig->Write(s+_T("RotZ"),i->RotZ);
-		pConfig->Write(s+_T("RotR"),i->RotR);
-		pConfig->Write(s+_T("Model"),i->Model);
-		pConfig->Write(s+_T("Descr"),i->Description);
-		pConfig->Write(s+_T("Action"),i->Action);
+		s=wxString::Format(_T("Objet%i/"),(unsigned int)(i-m_Selection.begin()));
+		Config->Write(s+_T("Number"),i->Number);
+		Config->Write(s+_T("Owner"),i->Owner);
+		Config->Write(s+_T("BTime"),i->BuildTime);
+		Config->Write(s+_T("X"),(i->X - RelX));
+		Config->Write(s+_T("Y"),(i->Y - RelY));
+		Config->Write(s+_T("Z"),(i->Z - RelZ));
+		Config->Write(s+_T("Yaw"),i->Yaw);
+		Config->Write(s+_T("Tilt"),i->Tilt);
+		Config->Write(s+_T("Roll"),i->Roll);
+		Config->Write(s+_T("RotX"),i->RotX);
+		Config->Write(s+_T("RotY"),i->RotY);
+		Config->Write(s+_T("RotZ"),i->RotZ);
+		Config->Write(s+_T("RotR"),i->RotR);
+		Config->Write(s+_T("Model"),i->Model);
+		Config->Write(s+_T("Descr"),i->Description);
+		Config->Write(s+_T("Action"),i->Action);
 #if AW_BUILD>41 || VP_BUILD
 #ifndef VP_BUILD
-        pConfig->Write(s+_T("ID"),i->ID);
+        Config->Write(s+_T("ID"),i->ID);
 #endif // VP_BUILD
 		if (i->Type>1)
 		{
-			pConfig->Write(s+_T("Type"),i->Type);
-			pConfig->Write(s+_T("Data"),i->Data);
+			Config->Write(s+_T("Type"),i->Type);
+			Config->Write(s+_T("Data"),i->Data);
 		}
 #endif
 	}
-	pConfig->Flush();
+	Config->Flush();
 	return CELL_OK;
 }
 
@@ -491,59 +514,59 @@ CellRes CCtrlCell::SaveGrid ()
 	wxString s;
 	CObject Obj;
 	if (FileName==_T("")) return CELL_BAD_FILENAME;
-	wxFileConfig* pConfig = new wxFileConfig(_T(""), _T("") , FileName.GetFullPath());
-	pConfig->DeleteAll ();
-	pConfig->Write(_T("General/NbObj"), GetNbObj());
-	pConfig->Write(_T("General/RelX"), RelX);
-	pConfig->Write(_T("General/RelZ"), RelZ);
-	pConfig->Write(_T("General/RelY"), RelY);
-	pConfig->Write(_T("General/RelYAW"), RelYaw);
-	for (vector<CObject>::iterator i = Cell.begin(); i < Cell.end (); i++)
+	wxFileConfig* Config = new wxFileConfig(_T(""), _T("") , FileName.GetFullPath());
+	Config->DeleteAll ();
+	Config->Write(_T("General/NbObj"), GetNbObj());
+	Config->Write(_T("General/RelX"), RelX);
+	Config->Write(_T("General/RelZ"), RelZ);
+	Config->Write(_T("General/RelY"), RelY);
+	Config->Write(_T("General/RelYAW"), RelYaw);
+	for (vector<CObject>::iterator i = m_Cell.begin(); i < m_Cell.end (); i++)
 	{
-		s=wxString::Format(_T("Objet%i/"),(unsigned int)(i-Cell.begin()));
-		pConfig->Write(s+_T("Number"),i->Number);
-		pConfig->Write(s+_T("Owner"),i->Owner);
-		pConfig->Write(s+_T("BTime"),i->BuildTime);
-		pConfig->Write(s+_T("X"),i->X);
-		pConfig->Write(s+_T("Y"),i->Y);
-		pConfig->Write(s+_T("Z"),i->Z);
-		pConfig->Write(s+_T("Yaw"),i->Yaw);
-		pConfig->Write(s+_T("Tilt"),i->Tilt);
-		pConfig->Write(s+_T("Roll"),i->Roll);
-		pConfig->Write(s+_T("RotX"),i->RotX);
-		pConfig->Write(s+_T("RotY"),i->RotY);
-		pConfig->Write(s+_T("RotZ"),i->RotZ);
-		pConfig->Write(s+_T("RotR"),i->RotR);
-		pConfig->Write(s+_T("Model"),i->Model);
-		pConfig->Write(s+_T("Descr"),i->Description);
-		pConfig->Write(s+_T("Action"),i->Action);
+		s=wxString::Format(_T("Objet%i/"),(unsigned int)(i-m_Cell.begin()));
+		Config->Write(s+_T("Number"),i->Number);
+		Config->Write(s+_T("Owner"),i->Owner);
+		Config->Write(s+_T("BTime"),i->BuildTime);
+		Config->Write(s+_T("X"),i->X);
+		Config->Write(s+_T("Y"),i->Y);
+		Config->Write(s+_T("Z"),i->Z);
+		Config->Write(s+_T("Yaw"),i->Yaw);
+		Config->Write(s+_T("Tilt"),i->Tilt);
+		Config->Write(s+_T("Roll"),i->Roll);
+		Config->Write(s+_T("RotX"),i->RotX);
+		Config->Write(s+_T("RotY"),i->RotY);
+		Config->Write(s+_T("RotZ"),i->RotZ);
+		Config->Write(s+_T("RotR"),i->RotR);
+		Config->Write(s+_T("Model"),i->Model);
+		Config->Write(s+_T("Descr"),i->Description);
+		Config->Write(s+_T("Action"),i->Action);
 #if AW_BUILD>41 || VP_BUILD
 #ifdef AW_BUILD
-        pConfig->Write(s+_T("ID"),i->ID);
+        Config->Write(s+_T("ID"),i->ID);
 #endif // AW_BUILD
 		if (i->Type>1)
 		{
-			pConfig->Write(s+_T("Type"),i->Type);
-			pConfig->Write(s+_T("Data"),i->Data);
+			Config->Write(s+_T("Type"),i->Type);
+			Config->Write(s+_T("Data"),i->Data);
 		}
 #endif
 	}
-	pConfig->Flush();
-	delete pConfig;
+	Config->Flush();
+	delete Config;
 	return CELL_OK;
 }
 
 
 //------------------------------------------------------------------------------
 
-CellRes CCtrlCell::ChgeCitSel (int CitSrc, int CitDest)
+CellRes CCtrlCell::ChgeCitSel (int pCitSrc, int pCitDest)
 {
 	CellRes Result=CELL_CIT_NOT_FOUND;
-	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = m_Selection.begin(); i < m_Selection.end (); i++)
 	{
-		if ((i->Owner == CitSrc) || (CitSrc<0))
+		if ((i->Owner == pCitSrc) || (pCitSrc<0))
 		{
-			if (i->Owner != CitDest) i->Owner =CitDest;
+			if (i->Owner != pCitDest) i->Owner =pCitDest;
 			Result=CELL_OK;
 		}
 	}
@@ -552,16 +575,16 @@ CellRes CCtrlCell::ChgeCitSel (int CitSrc, int CitDest)
 
 //------------------------------------------------------------------------------
 
-CellRes CCtrlCell::GetCitSel (wxTextCtrl* TxtZone)
+CellRes CCtrlCell::GetCitSel (wxTextCtrl* pTxtZone)
 {
-	if (TxtZone==0) return CELL_BAD_POINTER;
-	TxtZone->Clear ();
+	if (pTxtZone ==0) return CELL_BAD_POINTER;
+	pTxtZone->Clear ();
 	wxArrayString Liste;
 	wxString s;
 	int rc;
 	long Lon;
 	int Nombre;
-	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = m_Selection.begin(); i < m_Selection.end (); i++)
 	{
 		s.Printf(_T("%d"), i->Owner);
 		rc=Liste.Index (s, false);
@@ -577,52 +600,52 @@ CellRes CCtrlCell::GetCitSel (wxTextCtrl* TxtZone)
 			Nombre=0;
 			Liste[i].ToLong(&Lon);
 			rc=(int)Lon;
-			for (vector<CObject>::iterator j = Selection.begin(); j < Selection.end (); j++)
+			for (vector<CObject>::iterator j = m_Selection.begin(); j < m_Selection.end (); j++)
 			{
 				if (j->Owner==rc) Nombre ++;
 			}
 			s.Printf(_T("%d"),Nombre);
-			TxtZone->AppendText (Liste [i]+_T("\t:")+s+_(" Object(s)\n"));
+			pTxtZone->AppendText (Liste [i]+_T("\t:")+s+_(" Object(s)\n"));
 		}
 	}
 	else
 	{
-		TxtZone->AppendText (_("No Objects in Project."));
+		pTxtZone->AppendText (_("No Objects in Project."));
 	}
 	return CELL_OK;
 }
 
 //------------------------------------------------------------------------------
 
-CellRes CCtrlCell::MoveSel (int x, int y, int a)
+CellRes CCtrlCell::MoveSel (int pX, int pY, int pAlpha)
 {
-	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+	for (vector<CObject>::iterator i = m_Selection.begin(); i < m_Selection.end (); i++)
 	{
-		i->X+=x;
-		i->Z+=y;
-		i->Y+=a;
+		i->X+=pX;
+		i->Z+=pY;
+		i->Y+=pAlpha;
 	}
 	return CELL_OK;
 }
 
 //------------------------------------------------------------------------------
 
-CellRes CCtrlCell::RotateSel (int x, int y, int alpha)
+CellRes CCtrlCell::RotateSel (int pX, int pY, int pAlpha)
 {
 	double XO,YO,XA,YA,ALPHA,BETA,R;
-    XO=(double)y;
-    YO=(double)x;
+    XO= static_cast<double>(pX);
+    YO=static_cast<double>(pY);
     wxString s;
-    ALPHA=(double)(alpha*(M_PI/180.0));
-	for (vector<CObject>::iterator i = Selection.begin(); i < Selection.end (); i++)
+    ALPHA=(double)(pAlpha*(M_PI/180.0));
+	for (vector<CObject>::iterator i = m_Selection.begin(); i < m_Selection.end (); i++)
 	{
 		XA=(double)i->Z;
 		YA=(double)i->X;
 		R=sqrt( pow((XA-XO),2)+pow((YA-YO),2));
 		BETA= atan2 ((YA-YO),(XA-XO));
-		i->Yaw-=(alpha*10);
-		i->Z = (int)(XO+(R * cos(BETA-ALPHA)));
-		i->X = (int)(YO+(R * sin(BETA-ALPHA)));
+		i->Yaw-=(pAlpha*10);
+		i->Z = (int)(YO+(R * cos(BETA-ALPHA)));
+		i->X = (int)(XO+(R * sin(BETA-ALPHA)));
 		i->RotR=0;
 		i->RotX=0;
 		i->RotY=0;

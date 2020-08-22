@@ -4,20 +4,45 @@
 // *                      Represent An ActiveWorld Bot                         *
 // *                                                                           *
 // *****************************************************************************
-// * This file is part of BackupAw.                                            *
+// * This file is part of BackupAw project.                                    *
 // * BackupAw is free software; you can redistribute it and/or modify          *
-// * it under the terms of the GNU General Public License as published by      *
-// * the Free Software Foundation; either version 2 of the License, or         *
-// * (at your option) any later version.                                       *
+// * it under the terms of BSD Revision 3 License :                            *
 // *                                                                           *
-// * BackupAw is distributed in the hope that it will be useful,               *
+// * Copyright 2020 Neophile                                                   *
+// *                                                                           *
+// * Redistributionand use in source and binary forms, with or without         *
+// * modification, are permitted provided that the following conditions are    *
+// * met :                                                                     *
+// *                                                                           *
+// * 1. Redistributions of source code must retain the above copyright notice, *
+// * this list of conditionsand the following disclaimer.                      *
+// *                                                                           *
+// * 2. Redistributions in binary form must reproduce the above copyright      *
+// * notice, this list of conditionsand the following disclaimer in the        *
+// * documentation and /or other materials provided with the distribution.     *
+// *                                                                           *
+// * 3. Neither the name of the copyright holder nor the names of its          *
+// * contributors may be used to endorse or promote products derived from this *
+// * software without specific prior written permission.                       *
+// *                                                                           *
+// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
+// * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED *
+// * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A           *
+// * PARTICULAR PURPOSE ARE DISCLAIMED.IN NO EVENT SHALL THE COPYRIGHT HOLDER  *
+// * OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,  *
+// * EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT NOT LIMITED TO,        *
+// * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR        *
+// * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF    *
+// * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT                 *
+// * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF  *
+// * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.         *
+// *                                                                           *
+// * BackupAW is distributed in the hope that it will be useful,               *
 // * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
 // * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
-// * GNU General Public License for more details.                              *
 // *                                                                           *
-// * You should have received a copy of the GNU General Public License         *
-// * along with BackupAw; if not, write to the Free Software                   *
-// * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA *
+// * BackupAW use third part library copyrighted by ActiveWorlds Inc.          *
+// * For more details please read attached AW_SDK_License_(aw.dll).txt         *
 // *                                                                           *
 // *****************************************************************************
 // *                                                                           *
@@ -80,13 +105,13 @@ class CBot : public wxEvtHandler, public COutils
 		wxString			PassWord;		// Mot de Passe Citoyen
 		wxString			Univers;		// Adresse de l'univers
 
-		void				Connection	(bool);	// Connection/Deconnection de l'univers
+		void				Connection	(bool pFlag);	// Connection/Deconnection de l'univers
 		void				Enter		();	// Entrer/Sortir du monde
 		void				Connect		();
 		void				Deconnect	();
 virtual	void				Update		();
-		void				Login_CB	(int rc);
-		void				Enter_CB	(int rc);
+		void				Login_CB	(int pRC);
+		void				Enter_CB	(int pRC);
 		void				World_Attribute ();
 		void				StartDelete	();
 		void				StartBuild	();
@@ -103,36 +128,36 @@ virtual	void				Charge		();
 		VPInstance			GetInstance			();
 #endif // VP_BUILD
 
-static	wxString			GetRCString			(int); // Traduction littérale du reason code
+static	wxString			GetRCString			(int pRC); // Traduction littérale du reason code
 
 	protected:
 							CBot ();		// Constructeur
 							~CBot();		// Destructeur
-		wxTimer*			CGRecoTimer;
+		wxTimer*			m_CGRecoTimer;
 
 
-		void				OnCGRecoEvent	(wxTimerEvent  & event);
+		void				OnCGRecoEvent	(wxTimerEvent  & pEvent);
 
 		// Table d'Evenements
 		wxDECLARE_EVENT_TABLE();
 	private:
 
-		wxConfigBase*		pConfig;
+		wxConfigBase*		m_Config;
 
-		bool				PerteUniv;
-		bool				PerteMonde;
-		bool				DemCon;
-		bool				ConEC;
-		bool				EntEC;
-		bool				On_Universe;		// Etat de la connection univers
-		bool				On_World;			// Etat de la connection au monde
-		bool				DemDeco;
-		bool				Visible;			// Etat de la visibilité
-		CPassPriv*			PassPriv;
+		bool				m_PerteUniv;
+		bool				m_PerteMonde;
+		bool				m_DemCon;
+		bool				m_ConEC;
+		bool				m_EntEC;
+		bool				m_On_Universe;		// Etat de la connection univers
+		bool				m_On_World;			// Etat de la connection au monde
+		bool				m_DemDeco;
+		bool				m_Visible;			// Etat de la visibilité
+		CPassPriv*			m_PassPriv;
 #ifdef VP_BUILD
-		VPInstance			Instance;
+		VPInstance			m_Instance;
 #else
-		void*				Instance;
+		void*				m_Instance;
 #endif // VP_BUILD
 };
 

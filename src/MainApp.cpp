@@ -24,12 +24,12 @@
 // * 3. Neither the name of the copyright holder nor the names of its          *
 // * contributors may be used to endorse or promote products derived from this *
 // * software without specific prior written permission.                       *
-// *
+// *                                                                           *
 // * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
 // * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED *
-// * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR*
-// * PURPOSE ARE DISCLAIMED.IN NO EVENT SHALL THE COPYRIGHT HOLDER OR          *
-// * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,     *
+// * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A           *
+// * PARTICULAR PURPOSE ARE DISCLAIMED.IN NO EVENT SHALL THE COPYRIGHT HOLDER  *
+// * OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,  *
 // * EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT NOT LIMITED TO,        *
 // * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR        *
 // * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF    *
@@ -72,7 +72,7 @@ bool CMainApp::OnInit ()
 	ConfPath = wxStandardPaths::Get().GetUserLocalDataDir() + wxFileName::GetPathSeparator();
 	wxFileName ConfFile = ConfPath + AppName.Lower() + _T(".ini");
 	if (!ConfFile.DirExists()) ConfFile.Mkdir(0777, wxPATH_MKDIR_FULL);
-	pConfig = new wxFileConfig
+	m_Config = new wxFileConfig
 		(
 			AppName,
 			wxEmptyString,
@@ -80,8 +80,8 @@ bool CMainApp::OnInit ()
 			wxEmptyString,
 			wxCONFIG_USE_LOCAL_FILE
 		);
-	wxConfigBase::Set(pConfig);
-	pConfig->Read (_T("misc/language"),&lng,-1);
+	wxConfigBase::Set(m_Config);
+    m_Config->Read (_T("misc/language"),&lng,-1);
 	if ((lng < 0) || (lng >= NB_MAX_LNG))
     {
         lng = wxGetSingleChoiceIndex
@@ -101,8 +101,8 @@ bool CMainApp::OnInit ()
             wxLogError(_T("This language is not supported by the system."));
             return false;
         }
-        pConfig->Write (_T("misc/language"),lng);
-        pConfig->Flush ();
+        m_Config->Write (_T("misc/language"),lng);
+        m_Config->Flush ();
     }
     else return false;
 

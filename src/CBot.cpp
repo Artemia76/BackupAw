@@ -4,20 +4,45 @@
 // *                       Represent An ActiveWorld Bot                        *
 // *                                                                           *
 // *****************************************************************************
-// * This file is part of BackupAw.                                            *
+// * This file is part of BackupAw project.                                    *
 // * BackupAw is free software; you can redistribute it and/or modify          *
-// * it under the terms of the GNU General Public License as published by      *
-// * the Free Software Foundation; either version 2 of the License, or         *
-// * (at your option) any later version.                                       *
+// * it under the terms of BSD Revision 3 License :                            *
 // *                                                                           *
-// * BackupAw is distributed in the hope that it will be useful,               *
+// * Copyright 2020 Neophile                                                   *
+// *                                                                           *
+// * Redistributionand use in source and binary forms, with or without         *
+// * modification, are permitted provided that the following conditions are    *
+// * met :                                                                     *
+// *                                                                           *
+// * 1. Redistributions of source code must retain the above copyright notice, *
+// * this list of conditionsand the following disclaimer.                      *
+// *                                                                           *
+// * 2. Redistributions in binary form must reproduce the above copyright      *
+// * notice, this list of conditionsand the following disclaimer in the        *
+// * documentation and /or other materials provided with the distribution.     *
+// *                                                                           *
+// * 3. Neither the name of the copyright holder nor the names of its          *
+// * contributors may be used to endorse or promote products derived from this *
+// * software without specific prior written permission.                       *
+// *                                                                           *
+// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
+// * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED *
+// * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A           *
+// * PARTICULAR PURPOSE ARE DISCLAIMED.IN NO EVENT SHALL THE COPYRIGHT HOLDER  *
+// * OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,  *
+// * EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT NOT LIMITED TO,        *
+// * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR        *
+// * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF    *
+// * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT                 *
+// * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF  *
+// * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.         *
+// *                                                                           *
+// * BackupAW is distributed in the hope that it will be useful,               *
 // * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
 // * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
-// * GNU General Public License for more details.                              *
 // *                                                                           *
-// * You should have received a copy of the GNU General Public License         *
-// * along with BackupAw; if not, write to the Free Software                   *
-// * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA *
+// * BackupAW use third part library copyrighted by ActiveWorlds Inc.          *
+// * For more details please read attached AW_SDK_License_(aw.dll).txt         *
 // *                                                                           *
 // *****************************************************************************
 // *                                                                           *
@@ -53,28 +78,28 @@ wxEND_EVENT_TABLE()
 
 CBot::CBot ()
 {
-	pConfig = wxConfigBase::Get();
+	m_Config = wxConfigBase::Get();
 // Déclaration des instances
-	CGRecoTimer = new wxTimer(this, CG_RECO);
-	PassPriv = CPassPriv::Create();
+	m_CGRecoTimer = new wxTimer(this, CG_RECO);
+	m_PassPriv = CPassPriv::Create();
 
 // Initialisation des variables internes
 
 	Global=true;
-	On_Universe=false;
-	On_World=false;
-	Visible=false;
+	m_On_Universe=false;
+	m_On_World=false;
+	m_Visible=false;
 	CGRecoCnt=0;
-	PerteUniv=false;
-	PerteMonde=false;
-	Instance=0;
-	DemCon=false;
-	ConEC=false;
-	EntEC=false;
-	DemDeco=false;
+	m_PerteUniv=false;
+	m_PerteMonde=false;
+	m_Instance=0;
+	m_DemCon=false;
+	m_ConEC=false;
+	m_EntEC=false;
+	m_DemDeco=false;
 	ModeReco=false;
-	Visible=false;
-	Instance=0;
+	m_Visible=false;
+	m_Instance=0;
 }
 
 //------------------------------------------------------------------------------
@@ -82,7 +107,7 @@ CBot::CBot ()
 
 CBot::~CBot ()
 {
-	if (On_World || On_Universe) Connection(false);
+	if (m_On_World || m_On_Universe) Connection(false);
 }
 
 //------------------------------------------------------------------------------
@@ -90,7 +115,7 @@ CBot::~CBot ()
 
 void CBot::Connect()
 {
-	if ((!ConEC) && (!EntEC) && (!DemCon) && (!DemDeco) && (!On_Universe) && (!On_World)) DemCon=true;
+	if ((!m_ConEC) && (!m_EntEC) && (!m_DemCon) && (!m_DemDeco) && (!m_On_Universe) && (!m_On_World)) m_DemCon=true;
 }
 
 //------------------------------------------------------------------------------
@@ -98,43 +123,43 @@ void CBot::Connect()
 
 void CBot::Deconnect()
 {
-	if ((!ConEC) && (!EntEC) && (!DemCon) && (!DemDeco) && ((On_Universe) || (On_World))) DemDeco=true;
+	if ((!m_ConEC) && (!m_EntEC) && (!m_DemCon) && (!m_DemDeco) && ((m_On_Universe) || (m_On_World))) m_DemDeco=true;
 }
 
 //------------------------------------------------------------------------------
 // Methode d'entrée/sortie d'univers
 
-void CBot::Connection(bool flag)
+void CBot::Connection(bool pFlag)
 {
 // Variables Internes
 	wxString Message, s;
 	int rc;
-	if (flag && (!On_Universe))
+	if (pFlag && (!m_On_Universe))
 	{
 #ifdef VP_BUILD
-        if (!Instance) Instance=vp_create(NULL);
-		if ((rc=vp_connect_universe(Instance,Univers.utf8_str(),Port ))!=0)
+        if (!m_Instance) m_Instance=vp_create(NULL);
+		if ((rc=vp_connect_universe(m_Instance,Univers.utf8_str(),Port ))!=0)
 #else
 	#if AW_BUILD>77
-		if ((rc=aw_create(Univers, Port, &Instance))!=0)
+		if ((rc=aw_create(Univers, Port, &m_Instance))!=0)
 	#else
         if ((rc=aw_create(Univers.mb_str(), Port, &Instance))!=0)
 	#endif
 #endif // VP_BUILD
 		{
 			wxLogMessage (_("Unable to create instance, Reason : ") + GetRCString(rc));
-			DemCon=false;
+			m_DemCon=false;
 			if (ModeReco) Tentative();
 #ifdef VP_BUILD
-            vp_destroy(Instance);
-            Instance=0;
+            vp_destroy(m_Instance);
+			m_Instance=0;
 #endif
 		}
 		else
 		{
 
 			wxLogMessage (_("Instance Initialized."));
-			ConEC=true;
+			m_ConEC=true;
 #ifndef VP_BUILD
 			aw_int_set (AW_LOGIN_OWNER, Citoyen);
 #if AW_BUILD>77
@@ -148,46 +173,46 @@ void CBot::Connection(bool flag)
 #endif
 			if (rc=aw_login())
 #else
-			vp_callback_set(Instance, VP_CALLBACK_LOGIN, CCtrlAw::On_Login_CB);
-			if ((rc=vp_login (Instance, UserName.utf8_str(), PassWord.utf8_str(),Nom.utf8_str())))
+			vp_callback_set(m_Instance, VP_CALLBACK_LOGIN, CCtrlAw::On_Login_CB);
+			if ((rc=vp_login (m_Instance, UserName.utf8_str(), PassWord.utf8_str(),Nom.utf8_str())))
 #endif
 			{
 				wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(rc));
-				DemCon = false;
+				m_DemCon = false;
 				if (ModeReco) Tentative();
 			}
 		}
 	}
-	else if ((!flag) && On_Universe)
+	else if ((!pFlag) && m_On_Universe)
 	{
 #ifndef VP_BUILD
 		aw_destroy();
 #else
-        if (IsOnWorld()) vp_leave(Instance);
-		vp_destroy(Instance);
+        if (IsOnWorld()) vp_leave(m_Instance);
+		vp_destroy(m_Instance);
 #endif
-		Instance=0;
+		m_Instance=0;
 		wxLogMessage (_("Disconnected from Universe "));
-		On_Universe=false;
-		On_World=false;
-		DemDeco=false;
+		m_On_Universe=false;
+		m_On_World=false;
+		m_DemDeco=false;
 	}
 }
 
 //------------------------------------------------------------------------------
 // Retour Callback d'une demande de connection
 
-void CBot::Login_CB(int rc)
+void CBot::Login_CB(int pRC)
 {
-	ConEC=false;
-	if (CGRecoTimer->IsRunning()) CGRecoTimer->Stop();
-	if (rc)
+	m_ConEC=false;
+	if (m_CGRecoTimer->IsRunning()) m_CGRecoTimer->Stop();
+	if (pRC)
 	{
-		DemCon=false;
-		wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(rc));
+		m_DemCon=false;
+		wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(pRC));
 #ifdef VP_BUILD
-		vp_destroy(Instance);
-		Instance=0;
+		vp_destroy(m_Instance);
+		m_Instance=0;
 #else
 		aw_destroy();
 #endif
@@ -196,18 +221,18 @@ void CBot::Login_CB(int rc)
 	else
 	{
 		wxLogMessage (_("Connected on Universe"));
-		On_Universe=true;
+		m_On_Universe=true;
 #ifdef VP_BUILD
-		vp_event_set(Instance, VP_EVENT_WORLD_DISCONNECT, CCtrlAw::On_World_Disconnect);
-		vp_event_set(Instance, VP_EVENT_UNIVERSE_DISCONNECT, CCtrlAw::On_Universe_Disconnect);
-		vp_event_set(Instance, VP_EVENT_CELL_END, CCtrlAw::On_Cell_End);
-		vp_event_set(Instance, VP_EVENT_OBJECT, CCtrlAw::On_Object);
-		vp_event_set(Instance, VP_EVENT_OBJECT_CHANGE, CCtrlAw::On_Object_Change);
-		vp_event_set(Instance, VP_EVENT_OBJECT_DELETE, CCtrlAw::On_Object_Delete);
+		vp_event_set(m_Instance, VP_EVENT_WORLD_DISCONNECT, CCtrlAw::On_World_Disconnect);
+		vp_event_set(m_Instance, VP_EVENT_UNIVERSE_DISCONNECT, CCtrlAw::On_Universe_Disconnect);
+		vp_event_set(m_Instance, VP_EVENT_CELL_END, CCtrlAw::On_Cell_End);
+		vp_event_set(m_Instance, VP_EVENT_OBJECT, CCtrlAw::On_Object);
+		vp_event_set(m_Instance, VP_EVENT_OBJECT_CHANGE, CCtrlAw::On_Object_Change);
+		vp_event_set(m_Instance, VP_EVENT_OBJECT_DELETE, CCtrlAw::On_Object_Delete);
 
-		vp_callback_set(Instance, VP_CALLBACK_OBJECT_ADD, CCtrlAw::On_Object_Add_CB);
-		vp_callback_set(Instance, VP_CALLBACK_OBJECT_LOAD, CCtrlAw::On_Object_Load_CB);
-		vp_callback_set(Instance, VP_CALLBACK_OBJECT_DELETE, CCtrlAw::On_Object_Delete_CB);
+		vp_callback_set(m_Instance, VP_CALLBACK_OBJECT_ADD, CCtrlAw::On_Object_Add_CB);
+		vp_callback_set(m_Instance, VP_CALLBACK_OBJECT_LOAD, CCtrlAw::On_Object_Load_CB);
+		vp_callback_set(m_Instance, VP_CALLBACK_OBJECT_DELETE, CCtrlAw::On_Object_Delete_CB);
 #endif
 	}
 }
@@ -215,31 +240,31 @@ void CBot::Login_CB(int rc)
 //------------------------------------------------------------------------------
 // Retour Callback d'une demande d'entrée sur un monde
 
-void CBot::Enter_CB(int rc)
+void CBot::Enter_CB(int pRC)
 {
 	wxString Message;
-	EntEC=false;
-	DemCon=false;
-	if (rc)
+	m_EntEC=false;
+	m_DemCon=false;
+	if (pRC)
 	{
-		DemCon=false;
-		wxLogMessage (_("Unable to connect on world ") + Monde + _(",Reason: ") + GetRCString (rc));
+		m_DemCon=false;
+		wxLogMessage (_("Unable to connect on world ") + Monde + _(",Reason: ") + GetRCString (pRC));
 #ifndef VP_BUILD
 		aw_destroy();
 #else
-        vp_destroy(Instance);
+        vp_destroy(m_Instance);
 #endif // VP_BUILD
-		On_World=false;
-		On_Universe=false;
+		m_On_World=false;
+		m_On_Universe=false;
 		if (ModeReco) Tentative();
 	}
 	else
 	{
 		wxLogMessage (_("Connected on world ")+Monde);
-		On_World=true;
+		m_On_World=true;
 		ModeReco=false;
 #ifndef VP_BUILD
-		if (Visible)
+		if (m_Visible)
 		{
 			aw_state_change();
 		}
@@ -252,7 +277,7 @@ void CBot::Enter_CB(int rc)
 
 void CBot::Enter()
 {
-	EntEC=true;
+	m_EntEC=true;
 	#ifndef VP_BUILD
 	aw_bool_set (AW_ENTER_GLOBAL, Global);
 		#if AW_BUILD>77
@@ -261,8 +286,8 @@ void CBot::Enter()
     aw_enter(Monde.mb_str());
 		#endif
 	#else
-	vp_callback_set (Instance, VP_CALLBACK_ENTER,CCtrlAw::On_Enter_CB);
-	vp_enter(Instance, Monde.utf8_str());
+	vp_callback_set (m_Instance, VP_CALLBACK_ENTER,CCtrlAw::On_Enter_CB);
+	vp_enter(m_Instance, Monde.utf8_str());
 	#endif // VP_BUILD
 }
 
@@ -273,20 +298,20 @@ void CBot::Charge ()
 {
 	#ifndef VP_BUILD
 	wxString BAPVersion = wxString::Format(_T("AW%i"),AW_BUILD);
-	Univers=pConfig->Read(BAPVersion + _T("/Univers") , _T("auth.activeworlds.com"));
-	Citoyen=pConfig->Read(BAPVersion + _T("/Citoyen") , 0l);
+	Univers= m_Config->Read(BAPVersion + _T("/Univers") , _T("auth.activeworlds.com"));
+	Citoyen= m_Config->Read(BAPVersion + _T("/Citoyen") , 0l);
 	#else
 	wxString BAPVersion = _T("VP");
-	Univers=pConfig->Read(BAPVersion + _T("/Univers") , _T("universe.virtualparadise.org"));
-	UserName=pConfig->Read(BAPVersion + _T("/UserName") , _T(""));
+	Univers=m_Config->Read(BAPVersion + _T("/Univers") , _T("universe.virtualparadise.org"));
+	UserName=m_Config->Read(BAPVersion + _T("/UserName") , _T(""));
 	#endif // VP_BUILD
-	Monde=pConfig->Read(BAPVersion + _T("/Monde") , _T(""));
-	Port=(int)pConfig->Read(BAPVersion + _T("/Port") , DefaultPort);
-	PassWord=PassPriv->Decode(pConfig->Read(BAPVersion + _T("/PassPriv"), _T("")));
-	Nom=pConfig->Read(BAPVersion + _T("/Nom") , _T("BackupAw"));
-	pConfig->Read(BAPVersion + _T("/AutoConnect"), &CGConAuto, false);
-	CGRecoDelay=(int)pConfig->Read(BAPVersion + _T("/Delai") , 15l);
-	CGRecoRetry=(int)pConfig->Read(BAPVersion + _T("/Essais") , 3l);
+	Monde= m_Config->Read(BAPVersion + _T("/Monde") , _T(""));
+	Port=static_cast<int>(m_Config->Read(BAPVersion + _T("/Port") , DefaultPort));
+	PassWord= m_PassPriv->Decode(m_Config->Read(BAPVersion + _T("/PassPriv"), _T("")));
+	Nom= m_Config->Read(BAPVersion + _T("/Nom") , _T("BackupAw"));
+	m_Config->Read(BAPVersion + _T("/AutoConnect"), &CGConAuto, false);
+	CGRecoDelay= static_cast<int>(m_Config->Read(BAPVersion + _T("/Delai") , 15l));
+	CGRecoRetry= static_cast<int>(m_Config->Read(BAPVersion + _T("/Essais") , 3l));
 	if (CGRecoRetry != 0) CGRecoEna=true;
 	else CGRecoEna=false;
 }
@@ -298,21 +323,21 @@ void CBot::Sauve ()
 {
 	#ifndef VP_BUILD
 	wxString BAPVersion = wxString::Format(_T("AW%i"),AW_BUILD);
-	pConfig->Write(BAPVersion + _T("/Univers") ,Univers);
-	pConfig->Write(BAPVersion + _T("/Citoyen") ,Citoyen);
+	m_Config->Write(BAPVersion + _T("/Univers") ,Univers);
+	m_Config->Write(BAPVersion + _T("/Citoyen") ,Citoyen);
 	#else
 	wxString BAPVersion = _T("vp");
-	pConfig->Write(BAPVersion + _T("/Univers") ,Univers);
-	pConfig->Write(BAPVersion + _T("/UserName") ,UserName);
+	m_Config->Write(BAPVersion + _T("/Univers") ,Univers);
+	m_Config->Write(BAPVersion + _T("/UserName") ,UserName);
 	#endif // VP_BUILD
-	pConfig->Write(BAPVersion + _T("/Monde") ,Monde);
-	pConfig->Write(BAPVersion + _T("/PassPriv") ,PassPriv->Code(PassWord));
-	pConfig->Write(BAPVersion + _T("/Nom") ,Nom);
-	pConfig->Write(BAPVersion + _T("/Port") ,Port);
-	pConfig->Write(BAPVersion + _T("/AutoConnect") , CGConAuto);
-	pConfig->Write(BAPVersion + _T("/Delai")  , CGRecoDelay);
-	pConfig->Write(BAPVersion + _T("/Essais") , CGRecoRetry);
-	pConfig->Flush(true);
+	m_Config->Write(BAPVersion + _T("/Monde") ,Monde);
+	m_Config->Write(BAPVersion + _T("/PassPriv") ,m_PassPriv->Code(PassWord));
+	m_Config->Write(BAPVersion + _T("/Nom") ,Nom);
+	m_Config->Write(BAPVersion + _T("/Port") ,Port);
+	m_Config->Write(BAPVersion + _T("/AutoConnect") , CGConAuto);
+	m_Config->Write(BAPVersion + _T("/Delai")  , CGRecoDelay);
+	m_Config->Write(BAPVersion + _T("/Essais") , CGRecoRetry);
+	m_Config->Flush(true);
 }
 
 //------------------------------------------------------------------------------
@@ -320,7 +345,7 @@ void CBot::Sauve ()
 
 void CBot::OnCGRecoEvent (wxTimerEvent& WXUNUSED(event))
 {
-	if (ConEC)
+	if (m_ConEC)
 	{
 		Login_CB(1000);
 	}
@@ -339,7 +364,7 @@ void CBot::Tentative ()
 	if ((CGRecoCnt<CGRecoRetry) || (CGRecoRetry < 0))
 	{
 		wxLogMessage(wxString::Format(_("A reconnection will be tryed in %i sec."),CGRetente));
-		CGRecoTimer->Start(CGRetente * 1000,wxTIMER_ONE_SHOT);
+		m_CGRecoTimer->Start(CGRetente * 1000,wxTIMER_ONE_SHOT);
 		if (CGRecoRetry > (-1)) CGRecoCnt++;
 		if (CGRetente < 900) CGRetente = CGRetente * 2;
 	}
@@ -355,7 +380,7 @@ void CBot::Tentative ()
 
 bool CBot::IsOnWorld()
 {
-	return On_World;
+	return m_On_World;
 }
 
 //------------------------------------------------------------------------------
@@ -363,7 +388,7 @@ bool CBot::IsOnWorld()
 
 bool CBot::IsOnUniverse()
 {
-	return On_Universe;
+	return m_On_Universe;
 }
 
 //------------------------------------------------------------------------------
@@ -372,8 +397,8 @@ bool CBot::IsOnUniverse()
 #ifndef VP_BUILD
 bool CBot::SetInstance ()
 {
-	if (!Instance) return false;
-	aw_instance_set(Instance);
+	if (!m_Instance) return false;
+	aw_instance_set(m_Instance);
 	return true;
 }
 #endif // VP_BUILD
@@ -386,7 +411,7 @@ void* CBot::GetInstance ()
 VPInstance CBot::GetInstance ()
 #endif
 {
-	return Instance;
+	return m_Instance;
 }
 
 //------------------------------------------------------------------------------
@@ -395,20 +420,20 @@ VPInstance CBot::GetInstance ()
 void CBot::Update ()
 {
 	wxString Message;
-	if (PerteUniv || PerteMonde)
+	if (m_PerteUniv || m_PerteMonde)
 	{
-		if (PerteUniv) wxLogMessage(_("Connection lost with universe ") + Univers + _T("."));
+		if (m_PerteUniv) wxLogMessage(_("Connection lost with universe ") + Univers + _T("."));
 		else wxLogMessage(_("Connection lost with the world ") + Monde + _T("."));
-		PerteUniv=false;
-		PerteMonde=false;
-		On_Universe=false;
-		On_World=false;
+		m_PerteUniv=false;
+		m_PerteMonde=false;
+		m_On_Universe=false;
+		m_On_World=false;
 #ifndef VP_BUILD
 		aw_destroy();
 #else
-        vp_destroy(Instance);
+        vp_destroy(m_Instance);
 #endif // VP_BUILD
-		Instance=0;
+		m_Instance=0;
 		if (CGRecoEna)
 		{
 			CGRecoCnt=0;
@@ -417,20 +442,20 @@ void CBot::Update ()
 			ModeReco=true;
 		}
 	}
-	if (DemCon && (!On_Universe) && (!ConEC)) Connection(true);
-	if (DemCon && On_Universe && (!On_World) && (!EntEC)) Enter();
-	if (DemDeco) Connection(false);
-	if (CGRecoTimer->IsRunning() && (!ConEC) && (!ModeReco)) CGRecoTimer->Stop();
+	if (m_DemCon && (!m_On_Universe) && (!m_ConEC)) Connection(true);
+	if (m_DemCon && m_On_Universe && (!m_On_World) && (!m_EntEC)) Enter();
+	if (m_DemDeco) Connection(false);
+	if (m_CGRecoTimer->IsRunning() && (!m_ConEC) && (!ModeReco)) m_CGRecoTimer->Stop();
 }
 
 
 //------------------------------------------------------------------------------
 // Methode de Traduction du codes d'erreurs
 
-wxString CBot::GetRCString (int rc)
+wxString CBot::GetRCString (int pRC)
 {
 	wxString rcs;
-	switch (rc)
+	switch (pRC)
 	{
 #ifndef VP_BUILD
 		case 0 :

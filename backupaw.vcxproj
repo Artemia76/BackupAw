@@ -83,16 +83,14 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_sdk101|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_sdk131|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_VP|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -100,10 +98,9 @@
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_VP|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_VP|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -111,9 +108,8 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_VP|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_sdk41|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -121,9 +117,8 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_sdk41|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug_sdk101|Win32'">
     <PlatformToolset>v142</PlatformToolset>
@@ -134,12 +129,12 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_sdk101|x64'" Label="Configuration">
-    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_sdk131|x64'" Label="Configuration">
-    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -181,13 +176,13 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_VP|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="common.props" />
     <Import Project="ReleaseVP.props" />
+    <Import Project="common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_VP|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="common.props" />
     <Import Project="ReleaseVP.props" />
+    <Import Project="common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_sdk41|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -258,7 +253,6 @@
     <TargetName>backupvpd</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_VP|x64'">
-    <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
     <TargetName>backupvpd</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_sdk41|Win32'">
@@ -278,7 +272,6 @@
     <IntDir>$(Platform)\$(Configuration)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_sdk131|Win32'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_sdk101|x64'">
@@ -287,7 +280,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_sdk131|x64'">
     <IntDir>$(Platform)\$(Configuration)\obj\</IntDir>
-    <OutDir>$(SolutionDir)\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_sdk100|x64'">
     <ClCompile>
@@ -397,10 +389,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
       <FunctionLevelLinking>
       </FunctionLevelLinking>
       <WholeProgramOptimization>false</WholeProgramOptimization>
@@ -415,7 +404,6 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <SubSystem>
       </SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration />
     </Link>
@@ -434,10 +422,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
       <FunctionLevelLinking>
       </FunctionLevelLinking>
       <WholeProgramOptimization>false</WholeProgramOptimization>
@@ -452,7 +437,6 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <SubSystem>
       </SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>
       </LinkTimeCodeGeneration>
@@ -467,7 +451,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;$(VP_PATH)$(VP_LIB)\VPSDK;.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB)\mswu;$(WXWIN)\include;$(VP_PATH)$(VP_LIB)\VPSDK;.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;VP_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -517,8 +501,6 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>.\icones;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -558,7 +540,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;$(VP_PATH)$(VP_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB)\mswud;$(WXWIN)\include;$(VP_PATH)$(VP_LIB)\VPSDK;.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;DEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;__WXDEBUG__;VP_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -571,7 +553,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>wxmsw$(WX_BASE)ud_adv.lib;wxmsw$(WX_BASE)ud_core.lib;wxbase$(WX_BASE)ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;odbc32.lib;vpsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib;$(VP_PATH)$(VP_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\$(WX_LIB);$(VP_PATH)$(VP_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>
@@ -584,7 +566,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     </Link>
     <PostBuildEvent>
       <Command>
-copy $(VP_PATH)$(VP_LIB)vpsdk.dll  $(TargetDir)
+copy $(VP_PATH)$(VP_LIB)\vpsdk.dll  $(TargetDir)
 xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -592,19 +574,17 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;$(VP_PATH)$(VP_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB_X64)\mswud;$(WXWIN)\include;$(VP_PATH)$(VP_LIB)_x64\VPSDK;.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;DEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;__WXDEBUG__;VP_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>.\icones;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>wxmsw$(WX_BASE)ud_adv.lib;wxmsw$(WX_BASE)ud_core.lib;wxbase$(WX_BASE)ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;odbc32.lib;vpsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib;$(VP_PATH)$(VP_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\$(WX_LIB_X64);$(VP_PATH)$(VP_LIB)_x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>
@@ -616,7 +596,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     </Link>
     <PostBuildEvent>
       <Command>
-copy $(VP_PATH)$(VP_LIB)vpsdk.dll  $(TargetDir)
+copy $(VP_PATH)$(VP_LIB)_x64\vpsdk.dll  $(TargetDir)
 xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -624,7 +604,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB)\mswu;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -654,13 +634,11 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswu;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB_X64)\mswu;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>.\icones;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -681,7 +659,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_sdk101|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB)\mswud;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -693,6 +671,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <AdditionalDependencies>wxmsw$(WX_BASE)ud_adv.lib;wxmsw$(WX_BASE)ud_core.lib;wxbase$(WX_BASE)ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;odbc32.lib;aw.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\$(WX_LIB);$(AW_PATH)$(AW_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -707,7 +686,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_sdk131|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB)\mswud;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -719,6 +698,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <AdditionalDependencies>wxmsw$(WX_BASE)ud_adv.lib;wxmsw$(WX_BASE)ud_core.lib;wxbase$(WX_BASE)ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;odbc32.lib;aw.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\$(WX_LIB);$(AW_PATH)$(AW_LIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -733,9 +713,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_sdk101|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\vc_lib\mswud;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB_X64)\mswud;$(WXWIN)\include;$(AW_PATH)$(AW_LIB);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;DEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;__WXDEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -744,6 +722,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <AdditionalDependencies>wxmsw$(WX_BASE)ud_adv.lib;wxmsw$(WX_BASE)ud_core.lib;wxbase$(WX_BASE)ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;odbc32.lib;aw.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\$(WX_LIB_X64);$(AW_PATH)$(AW_LIB_X64);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <OutputManifestFile>$(IntDir)$(TargetName)$(TargetExt).embed.manifest</OutputManifestFile>
@@ -759,11 +738,10 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_sdk131|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB_X64)\mswud;$(WXWIN)\include;$(AW_PATH)$(AW_LIB_x64);.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;DEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;__WXDEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level4</WarningLevel>
     </ClCompile>
     <Link>
       <AdditionalDependencies>wxmsw$(WX_BASE)ud_adv.lib;wxmsw$(WX_BASE)ud_core.lib;wxbase$(WX_BASE)ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;odbc32.lib;aw64.lib;%(AdditionalDependencies)</AdditionalDependencies>

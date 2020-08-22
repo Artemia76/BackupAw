@@ -4,20 +4,45 @@
 // *                         The Deletion Option Tab                           *
 // *                                                                           *
 // *****************************************************************************
-// * This file is part of BackupAw.                                            *
+// * This file is part of BackupAw project.                                    *
 // * BackupAw is free software; you can redistribute it and/or modify          *
-// * it under the terms of the GNU General Public License as published by      *
-// * the Free Software Foundation; either version 2 of the License, or         *
-// * (at your option) any later version.                                       *
+// * it under the terms of BSD Revision 3 License :                            *
 // *                                                                           *
-// * BackupAw is distributed in the hope that it will be useful,               *
+// * Copyright 2020 Neophile                                                   *
+// *                                                                           *
+// * Redistributionand use in source and binary forms, with or without         *
+// * modification, are permitted provided that the following conditions are    *
+// * met :                                                                     *
+// *                                                                           *
+// * 1. Redistributions of source code must retain the above copyright notice, *
+// * this list of conditionsand the following disclaimer.                      *
+// *                                                                           *
+// * 2. Redistributions in binary form must reproduce the above copyright      *
+// * notice, this list of conditionsand the following disclaimer in the        *
+// * documentation and /or other materials provided with the distribution.     *
+// *                                                                           *
+// * 3. Neither the name of the copyright holder nor the names of its          *
+// * contributors may be used to endorse or promote products derived from this *
+// * software without specific prior written permission.                       *
+// *                                                                           *
+// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
+// * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED *
+// * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A           *
+// * PARTICULAR PURPOSE ARE DISCLAIMED.IN NO EVENT SHALL THE COPYRIGHT HOLDER  *
+// * OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,  *
+// * EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT NOT LIMITED TO,        *
+// * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR        *
+// * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF    *
+// * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT                 *
+// * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF  *
+// * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.         *
+// *                                                                           *
+// * BackupAW is distributed in the hope that it will be useful,               *
 // * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
 // * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
-// * GNU General Public License for more details.                              *
 // *                                                                           *
-// * You should have received a copy of the GNU General Public License         *
-// * along with BackupAw; if not, write to the Free Software                   *
-// * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA *
+// * BackupAW use third part library copyrighted by ActiveWorlds Inc.          *
+// * For more details please read attached AW_SDK_License_(aw.dll).txt         *
 // *                                                                           *
 // *****************************************************************************
 // *                                                                           *
@@ -34,26 +59,26 @@ wxBEGIN_EVENT_TABLE (CDelete, wxPanel)
 	EVT_BUTTON ( CD_DELETE, CDelete::OnDelete)
 wxEND_EVENT_TABLE()
 
-CDelete::CDelete(wxWindow* Parent) : wxPanel
+CDelete::CDelete(wxWindow* pParent) : wxPanel
 	(
-		Parent,
+		pParent,
 		-1,
 		wxDefaultPosition,
 		wxDefaultSize
 	)
 {
-	Owner = Parent;
+	m_Owner = pParent;
 	BackupCtrl = CBackupCtrl::Create();
-	Cell = CCtrlCell::Create();
-	item1 = new wxStaticText( this, -1, _("Warning This function can make irreversible destruction."), wxDefaultPosition, wxSize (-1,40),0 );
-	item2 = new wxButton (this, CD_DELETE, _("Delete"), wxDefaultPosition, wxDefaultSize, 0);
-	item0 = new wxBoxSizer( wxVERTICAL );
-	item0->Add( item1, 0, wxGROW, 5 );
-	item0->Add( item2, 0, wxGROW, 5 );
+	m_Cell = CCtrlCell::Create();
+	m_Item1 = new wxStaticText( this, -1, _("Warning This function can make irreversible destruction."), wxDefaultPosition, wxSize (-1,40),0 );
+	m_Item2 = new wxButton (this, CD_DELETE, _("Delete"), wxDefaultPosition, wxDefaultSize, 0);
+	m_Item0 = new wxBoxSizer( wxVERTICAL );
+	m_Item0->Add(m_Item1, 0, wxGROW, 5 );
+	m_Item0->Add(m_Item2, 0, wxGROW, 5 );
 	SetAutoLayout ( TRUE );
-	SetSizer( item0 );
-	item0->Fit(this);
-	item0->SetSizeHints(this);
+	SetSizer(m_Item0 );
+	m_Item0->Fit(this);
+	m_Item0->SetSizeHints(this);
 }
 
 //------------------------------------------------------------------------------
@@ -65,7 +90,7 @@ CDelete::~CDelete ()
 
 //------------------------------------------------------------------------------
 
-void CDelete::OnDelete (wxCommandEvent& WXUNUSED(event))
+void CDelete::OnDelete (wxCommandEvent& WXUNUSED(pEvent))
 {
 	wxMessageDialog BoiteOuiNon
 	(

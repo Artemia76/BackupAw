@@ -4,20 +4,45 @@
 // *                        Controller For AW Sdk                              *
 // *                                                                           *
 // *****************************************************************************
-// * This file is part of BackupAw.                                            *
+// * This file is part of BackupAw project.                                    *
 // * BackupAw is free software; you can redistribute it and/or modify          *
-// * it under the terms of the GNU General Public License as published by      *
-// * the Free Software Foundation; either version 2 of the License, or         *
-// * (at your option) any later version.                                       *
+// * it under the terms of BSD Revision 3 License :                            *
 // *                                                                           *
-// * BackupAw is distributed in the hope that it will be useful,               *
+// * Copyright 2020 Neophile                                                   *
+// *                                                                           *
+// * Redistributionand use in source and binary forms, with or without         *
+// * modification, are permitted provided that the following conditions are    *
+// * met :                                                                     *
+// *                                                                           *
+// * 1. Redistributions of source code must retain the above copyright notice, *
+// * this list of conditionsand the following disclaimer.                      *
+// *                                                                           *
+// * 2. Redistributions in binary form must reproduce the above copyright      *
+// * notice, this list of conditionsand the following disclaimer in the        *
+// * documentation and /or other materials provided with the distribution.     *
+// *                                                                           *
+// * 3. Neither the name of the copyright holder nor the names of its          *
+// * contributors may be used to endorse or promote products derived from this *
+// * software without specific prior written permission.                       *
+// *                                                                           *
+// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
+// * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED *
+// * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A           *
+// * PARTICULAR PURPOSE ARE DISCLAIMED.IN NO EVENT SHALL THE COPYRIGHT HOLDER  *
+// * OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,  *
+// * EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT NOT LIMITED TO,        *
+// * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR        *
+// * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF    *
+// * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT                 *
+// * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF  *
+// * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.         *
+// *                                                                           *
+// * BackupAW is distributed in the hope that it will be useful,               *
 // * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
 // * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
-// * GNU General Public License for more details.                              *
 // *                                                                           *
-// * You should have received a copy of the GNU General Public License         *
-// * along with BackupAw; if not, write to the Free Software                   *
-// * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA *
+// * BackupAW use third part library copyrighted by ActiveWorlds Inc.          *
+// * For more details please read attached AW_SDK_License_(aw.dll).txt         *
 // *                                                                           *
 // *****************************************************************************
 // *                                                                           *
@@ -31,35 +56,35 @@
 #include "Ctrlaw.h"
 
 
-CAwListenner::CAwListenner ()
+CAwListenner::CAwListenner()
 {
-	CtrlAw = CCtrlAw::Create ();
-	CtrlAw->AddListenner(this);
+    CtrlAw = CCtrlAw::Create();
+    CtrlAw->AddListenner(this);
 }
 
-CAwListenner::~CAwListenner ()
+CAwListenner::~CAwListenner()
 {
-	CtrlAw->DelListenner(this);
+    CtrlAw->DelListenner(this);
 }
 
 wxBEGIN_EVENT_TABLE(CCtrlAw, wxEvtHandler)
-	EVT_TIMER (HEARTBEAT, CCtrlAw::On_HeartBeat)
+    EVT_TIMER(HEARTBEAT, CCtrlAw::On_HeartBeat)
 wxEND_EVENT_TABLE()
 
 //------------------------------------------------------------------------------
 // SingleTon Private pointer
 
-CCtrlAw* CCtrlAw::PtCCtrlAw = 0;
+CCtrlAw* CCtrlAw::m_PtrCCtrlAw = nullptr;
 
 //------------------------------------------------------------------------------
 // Creator
 CCtrlAw* CCtrlAw::Create()
 {
-	if (!PtCCtrlAw)
-	{
-		PtCCtrlAw = new CCtrlAw();
-	}
-	return PtCCtrlAw;
+    if (!m_PtrCCtrlAw)
+    {
+        m_PtrCCtrlAw = new CCtrlAw();
+    }
+    return m_PtrCCtrlAw;
 }
 
 //------------------------------------------------------------------------------
@@ -67,18 +92,18 @@ CCtrlAw* CCtrlAw::Create()
 
 void CCtrlAw::Kill()
 {
-	if (PtCCtrlAw != 0) delete PtCCtrlAw;
-	PtCCtrlAw=0;
+    if (m_PtrCCtrlAw != nullptr) delete m_PtrCCtrlAw;
+    m_PtrCCtrlAw = nullptr;
 }
 
 //------------------------------------------------------------------------------
 // Private Constructor
 
-CCtrlAw::CCtrlAw ()
+CCtrlAw::CCtrlAw()
 {
-	AwInit=false;
-	pConfig=wxConfigBase::Get();
-	Heart = new wxTimer (this, HEARTBEAT);
+    m_AwInit = false;
+    m_Config = wxConfigBase::Get();
+    m_Heart = new wxTimer(this, HEARTBEAT);
 }
 
 //------------------------------------------------------------------------------
@@ -93,84 +118,84 @@ CCtrlAw::~CCtrlAw()
 // bool flag = TRUE : Initialization
 //           = FALSE : Close SDK
 
-int CCtrlAw::Init (bool flag, size_t NbBot)
+int CCtrlAw::Init(bool pFlag, size_t pNbBot)
 {
-	int rc;
-	if (NbBot<1) NbBot=1;
-	if ((flag) && (!AwInit))
-	{
+    int rc;
+    if (pNbBot < 1) pNbBot = 1;
+    if ((pFlag) && (!m_AwInit))
+    {
 #ifndef VP_BUILD
-		if ((rc=aw_init (AW_BUILD)))
+        if (rc = aw_init(AW_BUILD))
 #else
-        if ((rc=vp_init ()))
+        if (rc = vp_init())
 #endif // VP_BUILD
-		{
-			wxLogMessage(_("Unable to init the SDK, Reason :")+ CBot::GetRCString(rc));
-			return rc;
-		}
-		else
-		{
-			wxLogMessage(_("SDK Initialized"));
-		}
-		// Install AW Events
+        {
+            wxLogMessage(_("Unable to init the SDK, Reason :") + CBot::GetRCString(rc));
+            return rc;
+        }
+        else
+        {
+            wxLogMessage(_("SDK Initialized"));
+        }
+        // Install AW Events
 #ifndef VP_BUILD
-		aw_event_set (AW_EVENT_WORLD_DISCONNECT, CCtrlAw::On_World_Disconnect);
-		aw_event_set (AW_EVENT_UNIVERSE_DISCONNECT, CCtrlAw::On_Universe_Disconnect);
-		aw_event_set (AW_EVENT_CELL_BEGIN, CCtrlAw::On_Cell_Begin);
-		aw_event_set (AW_EVENT_CELL_OBJECT, CCtrlAw::On_Cell_Object);
-		aw_event_set (AW_EVENT_OBJECT_ADD, CCtrlAw::On_Object_Add);
-		aw_event_set (AW_EVENT_OBJECT_DELETE, CCtrlAw::On_Object_Delete);
-		// Installe AW Callbacks
-		aw_callback_set (AW_CALLBACK_LOGIN, CCtrlAw::On_Login);
-		aw_callback_set (AW_CALLBACK_ENTER, CCtrlAw::On_Enter);
-		aw_callback_set (AW_CALLBACK_QUERY, CCtrlAw::On_Query);
-		aw_callback_set (AW_CALLBACK_OBJECT_RESULT, CCtrlAw::On_Object);
+        aw_event_set(AW_EVENT_WORLD_DISCONNECT, CCtrlAw::On_World_Disconnect);
+        aw_event_set(AW_EVENT_UNIVERSE_DISCONNECT, CCtrlAw::On_Universe_Disconnect);
+        aw_event_set(AW_EVENT_CELL_BEGIN, CCtrlAw::On_Cell_Begin);
+        aw_event_set(AW_EVENT_CELL_OBJECT, CCtrlAw::On_Cell_Object);
+        aw_event_set(AW_EVENT_OBJECT_ADD, CCtrlAw::On_Object_Add);
+        aw_event_set(AW_EVENT_OBJECT_DELETE, CCtrlAw::On_Object_Delete);
+        // Installe AW Callbacks
+        aw_callback_set(AW_CALLBACK_LOGIN, CCtrlAw::On_Login);
+        aw_callback_set(AW_CALLBACK_ENTER, CCtrlAw::On_Enter);
+        aw_callback_set(AW_CALLBACK_QUERY, CCtrlAw::On_Query);
+        aw_callback_set(AW_CALLBACK_OBJECT_RESULT, CCtrlAw::On_Object);
 #endif // VP_BUILD
-		AwInit=true;
-		for (size_t i=0 ; i<NbBot ; i++)
-		{
-			Bot.push_back(new CBot());
-			Bot.back()->Charge ();
-			if (Bot.back()->CGConAuto)
-			{
-				Bot.back()->Global=true;
-				if (Bot.back()->CGRecoEna)
-				{
-					Bot.back()->CGRecoCnt=0;
-					Bot.back()->CGRetente=Bot.back()->CGRecoDelay;
-					Bot.back()->ModeReco=true;
-				}
-				Bot.back()->Connect();
-			}
-		}
-		Heart->Start(200);
-		return 0;
-	}
-	else if((!flag) && (AwInit))
-	{
-		Heart->Stop();
-		for (wxVector<CBot*>::iterator i = Bot.begin() ; i < Bot.end(); i++)
-		{
+        m_AwInit = true;
+        for (size_t i = 0; i < pNbBot; i++)
+        {
+            m_Bot.push_back(new CBot());
+            m_Bot.back()->Charge();
+            if (m_Bot.back()->CGConAuto)
+            {
+                m_Bot.back()->Global = true;
+                if (m_Bot.back()->CGRecoEna)
+                {
+                    m_Bot.back()->CGRecoCnt = 0;
+                    m_Bot.back()->CGRetente = m_Bot.back()->CGRecoDelay;
+                    m_Bot.back()->ModeReco = true;
+                }
+                m_Bot.back()->Connect();
+            }
+        }
+        m_Heart->Start(200);
+        return 0;
+    }
+    else if ((!pFlag) && (m_AwInit))
+    {
+        m_Heart->Stop();
+        for (wxVector<CBot*>::iterator i = m_Bot.begin(); i < m_Bot.end(); i++)
+        {
 #ifndef VP_BUILD
-			if ( (*i)->SetInstance())
-			{
-				(*i)->Connection(false);
-			}
+            if ((*i)->SetInstance())
+            {
+                (*i)->Connection(false);
+            }
 #else
             (*i)->Connection(false);
 #endif // VP_BUILD
-			(*i)->Sauve();
-			delete (*i);
-		}
-		Bot.clear();
-		AwInit=false;
+            (*i)->Sauve();
+            delete (*i);
+        }
+        m_Bot.clear();
+        m_AwInit = false;
 #ifndef VP_BUILD
-		aw_term();
+        aw_term();
 #endif
-		wxLogMessage(_("SDK Stopped."));
-		return 0;
-	}
-	return 1000;
+        wxLogMessage(_("SDK Stopped."));
+        return 0;
+    }
+    return 1000;
 }
 
 #ifndef VP_BUILD
@@ -179,17 +204,17 @@ int CCtrlAw::Init (bool flag, size_t NbBot)
 
 void CCtrlAw::On_Cell_Begin(void)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
-	PtCCtrlAw->EventDispatch (AW_EVENT_CELL_BEGIN, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(aw_instance());
+    m_PtrCCtrlAw->EventDispatch(AW_EVENT_CELL_BEGIN, Robot);
 }
 #endif // VP_BUILD
 
 //------------------------------------------------------------------------------
 #ifdef VP_BUILD
-void CCtrlAw::On_Cell_End(VPInstance Instance)
+void CCtrlAw::On_Cell_End(VPInstance pInstance)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-	PtCCtrlAw->EventDispatch (VP_EVENT_CELL_END, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    m_PtrCCtrlAw->EventDispatch(VP_EVENT_CELL_END, Robot);
 }
 #endif // VP_BUILD
 
@@ -197,8 +222,8 @@ void CCtrlAw::On_Cell_End(VPInstance Instance)
 #ifndef VP_BUILD
 void CCtrlAw::On_Cell_Object(void)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
-	PtCCtrlAw->EventDispatch (AW_EVENT_CELL_OBJECT, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(aw_instance());
+    m_PtrCCtrlAw->EventDispatch(AW_EVENT_CELL_OBJECT, Robot);
 }
 #endif // VP_BUILD
 
@@ -206,27 +231,27 @@ void CCtrlAw::On_Cell_Object(void)
 #ifndef VP_BUILD
 void CCtrlAw::On_Object_Add(void)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
-	PtCCtrlAw->EventDispatch (AW_EVENT_OBJECT_ADD, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(aw_instance());
+    m_PtrCCtrlAw->EventDispatch(AW_EVENT_OBJECT_ADD, Robot);
 }
 #endif // VP_BUILD
 
 //------------------------------------------------------------------------------
 #ifdef VP_BUILD
-void CCtrlAw::On_Object(VPInstance Instance)
+void CCtrlAw::On_Object(VPInstance pInstance)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-	PtCCtrlAw->EventDispatch (VP_EVENT_OBJECT, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    m_PtrCCtrlAw->EventDispatch(VP_EVENT_OBJECT, Robot);
 }
 #endif // VP_BUILD
 
 
 //------------------------------------------------------------------------------
 #ifdef VP_BUILD
-void CCtrlAw::On_Object_Change(VPInstance Instance)
+void CCtrlAw::On_Object_Change(VPInstance pInstance)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-	PtCCtrlAw->EventDispatch (VP_EVENT_OBJECT_CHANGE, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    m_PtrCCtrlAw->EventDispatch(VP_EVENT_OBJECT_CHANGE, Robot);
 }
 #endif // VP_BUILD
 
@@ -235,14 +260,14 @@ void CCtrlAw::On_Object_Change(VPInstance Instance)
 #ifndef VP_BUILD
 void CCtrlAw::On_Object_Delete(void)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
-	PtCCtrlAw->EventDispatch (AW_EVENT_OBJECT_DELETE, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(aw_instance());
+    m_PtrCCtrlAw->EventDispatch(AW_EVENT_OBJECT_DELETE, Robot);
 }
 #else
-void CCtrlAw::On_Object_Delete(VPInstance Instance)
+void CCtrlAw::On_Object_Delete(VPInstance pInstance)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-	PtCCtrlAw->EventDispatch (VP_EVENT_OBJECT_DELETE, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    m_PtrCCtrlAw->EventDispatch(VP_EVENT_OBJECT_DELETE, Robot);
 }
 #endif // VP_BUILD
 
@@ -250,16 +275,16 @@ void CCtrlAw::On_Object_Delete(VPInstance Instance)
 #ifndef VP_BUILD
 void CCtrlAw::On_World_Disconnect(void)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
-	Robot->PerteMonde=true;
-	PtCCtrlAw->EventDispatch (AW_EVENT_WORLD_DISCONNECT, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(aw_instance());
+    Robot->m_PerteMonde = true;
+    m_PtrCCtrlAw->EventDispatch(AW_EVENT_WORLD_DISCONNECT, Robot);
 }
 #else
-void CCtrlAw::On_World_Disconnect(VPInstance Instance)
+void CCtrlAw::On_World_Disconnect(VPInstance pInstance)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-	Robot->PerteMonde=true;
-	PtCCtrlAw->EventDispatch (VP_EVENT_WORLD_DISCONNECT, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    Robot->m_PerteMonde = true;
+    m_PtrCCtrlAw->EventDispatch(VP_EVENT_WORLD_DISCONNECT, Robot);
 }
 #endif // VP_BUILD
 
@@ -267,93 +292,93 @@ void CCtrlAw::On_World_Disconnect(VPInstance Instance)
 #ifndef VP_BUILD
 void CCtrlAw::On_Universe_Disconnect(void)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
-	Robot->PerteUniv=true;
-	PtCCtrlAw->EventDispatch (AW_EVENT_UNIVERSE_DISCONNECT, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(aw_instance());
+    Robot->m_PerteUniv = true;
+    m_PtrCCtrlAw->EventDispatch(AW_EVENT_UNIVERSE_DISCONNECT, Robot);
 }
 #else
 
-void CCtrlAw::On_Universe_Disconnect(VPInstance Instance)
+void CCtrlAw::On_Universe_Disconnect(VPInstance pInstance)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-	Robot->PerteUniv=true;
-	PtCCtrlAw->EventDispatch (VP_EVENT_UNIVERSE_DISCONNECT, Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    Robot->m_PerteUniv = true;
+    m_PtrCCtrlAw->EventDispatch(VP_EVENT_UNIVERSE_DISCONNECT, Robot);
 }
 #endif // VP_BUILD
 //------------------------------------------------------------------------------
 // Callbacks Events
 #ifndef VP_BUILD
-void CCtrlAw::On_Login (int rc)
+void CCtrlAw::On_Login(int pRC)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
-	Robot->Login_CB(rc);
-	PtCCtrlAw->CallBackDispatch (AW_CALLBACK_LOGIN,rc,Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(aw_instance());
+    Robot->Login_CB(pRC);
+    m_PtrCCtrlAw->CallBackDispatch(AW_CALLBACK_LOGIN, pRC, Robot);
 }
 
 //------------------------------------------------------------------------------
 
-void CCtrlAw::On_Enter (int rc)
+void CCtrlAw::On_Enter(int pRC)
 {
-	CBot* Robot=PtCCtrlAw->GetBotInst(aw_instance());
-	Robot->Enter_CB(rc);
-	PtCCtrlAw->CallBackDispatch (AW_CALLBACK_ENTER,rc,Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(aw_instance());
+    Robot->Enter_CB(pRC);
+    m_PtrCCtrlAw->CallBackDispatch(AW_CALLBACK_ENTER, pRC, Robot);
 }
 
 //------------------------------------------------------------------------------
 
-void CCtrlAw::On_Query (int rc)
+void CCtrlAw::On_Query(int pRC)
 {
-	PtCCtrlAw->CallBackDispatch (AW_CALLBACK_QUERY,rc,PtCCtrlAw->GetBotInst(aw_instance()));
+    m_PtrCCtrlAw->CallBackDispatch(AW_CALLBACK_QUERY, pRC, m_PtrCCtrlAw->GetBotInst(aw_instance()));
 }
 
 //------------------------------------------------------------------------------
 
-void CCtrlAw::On_Object (int rc)
+void CCtrlAw::On_Object(int pRC)
 {
-	PtCCtrlAw->CallBackDispatch (AW_CALLBACK_OBJECT_RESULT, rc, PtCCtrlAw->GetBotInst(aw_instance()));
+    m_PtrCCtrlAw->CallBackDispatch(AW_CALLBACK_OBJECT_RESULT, pRC, m_PtrCCtrlAw->GetBotInst(aw_instance()));
 }
 #else
 
 //------------------------------------------------------------------------------
 
-void CCtrlAw::On_Object_Add_CB (VPInstance Instance,int rc , int Handle)
+void CCtrlAw::On_Object_Add_CB(VPInstance pInstance, int pRC, int pHandle)
 {
-    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_OBJECT_ADD,rc,Handle,Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    m_PtrCCtrlAw->CallBackDispatch(VP_CALLBACK_OBJECT_ADD, pRC, pHandle, Robot);
 }
 
 //------------------------------------------------------------------------------
 
-void CCtrlAw::On_Object_Load_CB (VPInstance Instance,int rc , int Handle)
+void CCtrlAw::On_Object_Load_CB(VPInstance pInstance, int pRC, int pHandle)
 {
-    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_OBJECT_LOAD,rc,Handle,Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    m_PtrCCtrlAw->CallBackDispatch(VP_CALLBACK_OBJECT_LOAD, pRC, pHandle, Robot);
 }
 
 //------------------------------------------------------------------------------
 
-void CCtrlAw::On_Object_Delete_CB (VPInstance Instance,int rc , int Handle)
+void CCtrlAw::On_Object_Delete_CB(VPInstance pInstance, int pRC, int pHandle)
 {
-    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_OBJECT_DELETE,rc,Handle,Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    m_PtrCCtrlAw->CallBackDispatch(VP_CALLBACK_OBJECT_DELETE, pRC, pHandle, Robot);
 }
 
 //------------------------------------------------------------------------------
 
-void CCtrlAw::On_Login_CB (VPInstance Instance,int rc , int Handle)
+void CCtrlAw::On_Login_CB(VPInstance pInstance, int pRC, int pHandle)
 {
-    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-	Robot->Login_CB(rc);
-    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_LOGIN,rc,Handle,Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    Robot->Login_CB(pRC);
+    m_PtrCCtrlAw->CallBackDispatch(VP_CALLBACK_LOGIN, pRC, pHandle, Robot);
 }
 
 //------------------------------------------------------------------------------
 
-void CCtrlAw::On_Enter_CB (VPInstance Instance,int rc , int Handle)
+void CCtrlAw::On_Enter_CB(VPInstance pInstance, int pRC, int pHandle)
 {
-    CBot* Robot=PtCCtrlAw->GetBotInst(Instance);
-	Robot->Enter_CB(rc);
-    PtCCtrlAw->CallBackDispatch (VP_CALLBACK_LOGIN,rc,Handle,Robot);
+    CBot* Robot = m_PtrCCtrlAw->GetBotInst(pInstance);
+    Robot->Enter_CB(pRC);
+    m_PtrCCtrlAw->CallBackDispatch(VP_CALLBACK_LOGIN, pRC, pHandle, Robot);
 }
 
 #endif
@@ -362,106 +387,106 @@ void CCtrlAw::On_Enter_CB (VPInstance Instance,int rc , int Handle)
 
 //------------------------------------------------------------------------------
 
-CBot* CCtrlAw::GetBot (unsigned int num)
+CBot* CCtrlAw::GetBot(unsigned int pNum)
 {
-	if ( (num >= Bot.size()) || (!AwInit) ) return 0;
-	return Bot[num];
+    if ((pNum >= m_Bot.size()) || (!m_AwInit)) return 0;
+    return m_Bot[pNum];
 }
 
 //------------------------------------------------------------------------------
 #ifndef VP_BUILD
-CBot* CCtrlAw::GetBotInst(void* Instance)
+CBot* CCtrlAw::GetBotInst(void* pInstance)
 #else
-CBot* CCtrlAw::GetBotInst(VPInstance Instance)
+CBot* CCtrlAw::GetBotInst(VPInstance pInstance)
 #endif
 {
-	for (wxVector<CBot*>::iterator i = Bot.begin(); i< Bot.end(); i++)
-	{
-		if ((*i)->GetInstance()==Instance)
-		{
-			return (*i);
-		}
-	}
-	return 0;
+    for (wxVector<CBot*>::iterator i = m_Bot.begin(); i < m_Bot.end(); i++)
+    {
+        if ((*i)->GetInstance() == pInstance)
+        {
+            return (*i);
+        }
+    }
+    return 0;
 }
 
 //------------------------------------------------------------------------------
 // Controller HeartBeat for SDK update
 
-void CCtrlAw::On_HeartBeat (wxTimerEvent& WXUNUSED(event))
+void CCtrlAw::On_HeartBeat(wxTimerEvent& WXUNUSED(pEvent))
 {
 #ifndef VP_BUILD
-	aw_wait(0);
+    aw_wait(0);
 #endif
-	for (wxVector<CBot*>::iterator i = Bot.begin(); i< Bot.end(); i++)
-	{
+    for (wxVector<CBot*>::iterator i = m_Bot.begin(); i < m_Bot.end(); i++)
+    {
 #ifndef VP_BUILD
-		(*i)->SetInstance();
+        (*i)->SetInstance();
 #else
-        if ((*i)->GetInstance()) vp_wait((*i)->GetInstance(),0);
+        if ((*i)->GetInstance()) vp_wait((*i)->GetInstance(), 0);
 #endif // VP_BUILD
-		(*i)->Update();
-	}
+        (*i)->Update();
+    }
 }
 
 //------------------------------------------------------------------------------
 // Add a listenner to list
 
-void CCtrlAw::AddListenner (CAwListenner* pListenner)
+void CCtrlAw::AddListenner(CAwListenner* pListenner)
 {
-	if (pListenner)
-	{
-		Listenners.push_back(pListenner);
-	}
+    if (pListenner)
+    {
+        m_Listenners.push_back(pListenner);
+    }
 }
 
 //------------------------------------------------------------------------------
 // Del a listenner from list
 
-void CCtrlAw::DelListenner (CAwListenner* pListenner)
+void CCtrlAw::DelListenner(CAwListenner* pListenner)
 {
-	if (pListenner)
-	{
-		for (wxVector<CAwListenner*>::iterator i = Listenners.begin(); i != Listenners.end();)
-		{
-			if ( *i == pListenner)
-			{
-				i = Listenners.erase(i);
-				break;
-			}
-			else ++i;
-		}
-	}
+    if (pListenner)
+    {
+        for (wxVector<CAwListenner*>::iterator i = m_Listenners.begin(); i != m_Listenners.end();)
+        {
+            if (*i == pListenner)
+            {
+                i = m_Listenners.erase(i);
+                break;
+            }
+            else ++i;
+        }
+    }
 }
 
 //------------------------------------------------------------------------------
 // Dispatch Event to suscribers
 #ifndef VP_BUILD
-void CCtrlAw::EventDispatch (AW_EVENT_ATTRIBUTE id, CBot* Bot)
+void CCtrlAw::EventDispatch(AW_EVENT_ATTRIBUTE pID, CBot* pBot)
 #else
-void CCtrlAw::EventDispatch (vp_event_t id, CBot* Bot)
+void CCtrlAw::EventDispatch(vp_event_t pID, CBot* pBot)
 #endif // VP_BUILD
 {
-	for (wxVector<CAwListenner*>::iterator i = Listenners.begin(); i != Listenners.end();i++)
-	{
-		(*i)->Event (id, Bot);
-	}
+    for (wxVector<CAwListenner*>::iterator i = m_Listenners.begin(); i != m_Listenners.end(); i++)
+    {
+        (*i)->Event(pID, pBot);
+    }
 }
 
 //------------------------------------------------------------------------------
 // Dispatch CallBacks to suscribers
 #ifndef VP_BUILD
-void CCtrlAw::CallBackDispatch (AW_CALLBACK id, int rc, CBot* Bot)
+void CCtrlAw::CallBackDispatch(AW_CALLBACK pID, int pRC, CBot* pBot)
 #else
-void CCtrlAw::CallBackDispatch (vp_callback_t id, int rc, int Handle, CBot* Bot)
+void CCtrlAw::CallBackDispatch(vp_callback_t pID, int pRC, int pHandle, CBot* pBot)
 #endif
 {
-	for (wxVector<CAwListenner*>::iterator i = Listenners.begin(); i != Listenners.end();i++)
-	{
+    for (wxVector<CAwListenner*>::iterator i = m_Listenners.begin(); i != m_Listenners.end(); i++)
+    {
 #ifndef VP_BUILD
-		(*i)->CallBack (id,rc,Bot);
+        (*i)->CallBack(pID, pRC, pBot);
 #else
-		(*i)->CallBack (id,rc,Handle,Bot);
+        (*i)->CallBack(pID, pRC, pHandle, pBot);
 #endif // VP_BUILD
-	}
+    }
 }

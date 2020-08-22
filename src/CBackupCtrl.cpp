@@ -4,20 +4,45 @@
 // *                  The Grid Canvas to display project                       *
 // *                                                                           *
 // *****************************************************************************
-// * This file is part of BackupAw.                                            *
+// * This file is part of BackupAw project.                                    *
 // * BackupAw is free software; you can redistribute it and/or modify          *
-// * it under the terms of the GNU General Public License as published by      *
-// * the Free Software Foundation; either version 2 of the License, or         *
-// * (at your option) any later version.                                       *
+// * it under the terms of BSD Revision 3 License :                            *
 // *                                                                           *
-// * BackupAw is distributed in the hope that it will be useful,               *
+// * Copyright 2020 Neophile                                                   *
+// *                                                                           *
+// * Redistributionand use in source and binary forms, with or without         *
+// * modification, are permitted provided that the following conditions are    *
+// * met :                                                                     *
+// *                                                                           *
+// * 1. Redistributions of source code must retain the above copyright notice, *
+// * this list of conditionsand the following disclaimer.                      *
+// *                                                                           *
+// * 2. Redistributions in binary form must reproduce the above copyright      *
+// * notice, this list of conditionsand the following disclaimer in the        *
+// * documentation and /or other materials provided with the distribution.     *
+// *                                                                           *
+// * 3. Neither the name of the copyright holder nor the names of its          *
+// * contributors may be used to endorse or promote products derived from this *
+// * software without specific prior written permission.                       *
+// *                                                                           *
+// * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
+// * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED *
+// * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A           *
+// * PARTICULAR PURPOSE ARE DISCLAIMED.IN NO EVENT SHALL THE COPYRIGHT HOLDER  *
+// * OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,  *
+// * EXEMPLARY, OR CONSEQUENTIAL DAMAGES(INCLUDING, BUT NOT LIMITED TO,        *
+// * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR        *
+// * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF    *
+// * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT                 *
+// * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF  *
+// * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.         *
+// *                                                                           *
+// * BackupAW is distributed in the hope that it will be useful,               *
 // * but WITHOUT ANY WARRANTY; without even the implied warranty of            *
 // * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
-// * GNU General Public License for more details.                              *
 // *                                                                           *
-// * You should have received a copy of the GNU General Public License         *
-// * along with BackupAw; if not, write to the Free Software                   *
-// * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA *
+// * BackupAW use third part library copyrighted by ActiveWorlds Inc.          *
+// * For more details please read attached AW_SDK_License_(aw.dll).txt         *
 // *                                                                           *
 // *****************************************************************************
 // *                                                                           *
@@ -37,17 +62,17 @@ wxEND_EVENT_TABLE()
 //------------------------------------------------------------------------------
 // SingleTon Private pointer
 
-CBackupCtrl* CBackupCtrl::PtCBackupCtrl = 0;
+CBackupCtrl* CBackupCtrl::m_PtrCBackupCtrl = nullptr;
 
 //------------------------------------------------------------------------------
 // Creator
 CBackupCtrl* CBackupCtrl::Create()
 {
-	if (!PtCBackupCtrl)
+	if (!m_PtrCBackupCtrl)
 	{
-		PtCBackupCtrl = new CBackupCtrl();
+		m_PtrCBackupCtrl = new CBackupCtrl();
 	}
-	return PtCBackupCtrl;
+	return m_PtrCBackupCtrl;
 }
 
 //------------------------------------------------------------------------------
@@ -55,8 +80,8 @@ CBackupCtrl* CBackupCtrl::Create()
 
 void CBackupCtrl::Kill()
 {
-	if (PtCBackupCtrl != 0) delete PtCBackupCtrl;
-	PtCBackupCtrl=0;
+	if (m_PtrCBackupCtrl != 0) delete m_PtrCBackupCtrl;
+	m_PtrCBackupCtrl =0;
 }
 
 //------------------------------------------------------------------------------
@@ -64,24 +89,27 @@ void CBackupCtrl::Kill()
 
 CBackupCtrl::CBackupCtrl ()
 {
-	Scanning=false;
-	Survey=false;
+	m_CellX = 0;
+	m_CellZ = 0;
+	//m_Sequence = 0;
+	m_Scanning=false;
+	m_Survey=false;
 	Deleting=false;
 	Building=false;
-	BuildEC=0;
-	DelEC=0;
+	m_BuildEC=0;
+	m_DelEC=0;
 	OrigX=0;
 	OrigY=0;
 	BlockScroll=false;
 	BlockSelect=false;
-	Map=0;
-	pConfig=wxConfigBase::Get();
+	Map=nullptr;
+	m_Config=wxConfigBase::Get();
 	wxString BAPVersion = wxString::Format(_T("AW%i"), AW_BUILD);
 
-	pConfig->Read(BAPVersion + _T("/BuildMode"), &CTBuild, true);
-	pConfig->Read(BAPVersion + _T("/ScanSize"), &ScanSize, 15);
-	ObjectTimer = new wxTimer(this, OBJ_TIME);
-	Cell = CCtrlCell::Create();
+	m_Config->Read(BAPVersion + _T("/BuildMode"), &CTBuild, true);
+	m_Config->Read(BAPVersion + _T("/ScanSize"), &m_ScanSize, 15);
+	m_ObjectTimer = new wxTimer(this, OBJ_TIME);
+	m_Cell = CCtrlCell::Create();
 }
 
 //------------------------------------------------------------------------------
@@ -94,21 +122,21 @@ CBackupCtrl::~CBackupCtrl()
 //------------------------------------------------------------------------------
 // Event Dispatcher
 
-bool CBackupCtrl::Event( AW_EVENT_ATTRIBUTE id, CBot* Bot)
+bool CBackupCtrl::Event( AW_EVENT_ATTRIBUTE pID, CBot* pBot)
 {
-	switch (id)
+	switch (pID)
 	{
 		case AW_EVENT_CELL_BEGIN:
-			Cell_Begin (Bot);
+			Cell_Begin (pBot);
 			return true;
 		case AW_EVENT_CELL_OBJECT:
-			Cell_Object (Bot);
+			Cell_Object (pBot);
 			return true;
 		case AW_EVENT_OBJECT_ADD:
-			Cell_Object(Bot);
+			Cell_Object(pBot);
 			return true;
 		case AW_EVENT_OBJECT_DELETE:
-			Object_Delete (Bot);
+			Object_Delete (pBot);
 			return true;
 		case AW_EVENT_UNIVERSE_DISCONNECT:
 			Reset ();
@@ -123,15 +151,15 @@ bool CBackupCtrl::Event( AW_EVENT_ATTRIBUTE id, CBot* Bot)
 //------------------------------------------------------------------------------
 // CallBack Dispatcher
 
-bool CBackupCtrl::CallBack (AW_CALLBACK id, int rc, CBot* Bot)
+bool CBackupCtrl::CallBack (AW_CALLBACK pID, int pRC, CBot* pBot)
 {
-	switch (id)
+	switch (pID)
 	{
 		case AW_CALLBACK_QUERY:
-			Query_CB(rc, Bot);
+			Query_CB(pRC, pBot);
 			return true;
 		case AW_CALLBACK_OBJECT_RESULT:
-			Object_CB(rc,Bot);
+			Object_CB(pRC,pBot);
 			return true;
 	}
 	return false;
@@ -139,40 +167,40 @@ bool CBackupCtrl::CallBack (AW_CALLBACK id, int rc, CBot* Bot)
 //------------------------------------------------------------------------------
 // Retour Callback d'un query
 
-void CBackupCtrl::Query_CB(int rc, CBot* Bot)
+void CBackupCtrl::Query_CB(int pRC, CBot* pBot)
 {
-	if (rc)
+	if (pRC)
 	{
-		wxLogMessage(_("Unable to query properties. Reason :") + Bot->GetRCString (rc));
-		Scanning=false;
+		wxLogMessage(_("Unable to query properties. Reason :") + pBot->GetRCString (pRC));
+		m_Scanning=false;
 		BlockScroll=false;
 	}
 	else
 	{
 		if (aw_bool(AW_QUERY_COMPLETE))
 		{
-			Scanning=false;
+			m_Scanning=false;
 			BlockScroll=false;
-			Survey=true;
+			m_Survey=true;
 		}
-		else aw_query_5x5 (aw_sector_from_cell (OrigX), aw_sector_from_cell (OrigY), sequence);
+		else aw_query_5x5 (aw_sector_from_cell (OrigX), aw_sector_from_cell (OrigY), m_Sequence);
 	}
 }
 
 //------------------------------------------------------------------------------
 // Object Callback
 
-void CBackupCtrl::Object_CB (int rc, CBot* Bot)
+void CBackupCtrl::Object_CB (int pRC, CBot* pBot)
 {
-	if (BuildEC)
+	if (m_BuildEC)
 	{
-		if (rc) wxLogMessage(_("Unable to Build object. Reason : ") + Bot->GetRCString(rc));
-		BuildEC--;
+		if (pRC) wxLogMessage(_("Unable to Build object. Reason : ") + pBot->GetRCString(pRC));
+		m_BuildEC--;
 	}
-	else if (DelEC)
+	else if (m_DelEC)
 	{
-		if (rc) wxLogMessage(_("Unable to Delete object. Reason : ") + Bot->GetRCString(rc));
-		DelEC--;
+		if (pRC) wxLogMessage(_("Unable to Delete object. Reason : ") + pBot->GetRCString(pRC));
+		m_DelEC--;
 	}
 }
 
@@ -181,33 +209,33 @@ void CBackupCtrl::Object_CB (int rc, CBot* Bot)
 
 void CBackupCtrl::Scan ()
 {
-	if ((!Scanning)&&CtrlAw->GetBot()->IsOnWorld())
+	if ((!m_Scanning)&&CtrlAw->GetBot()->IsOnWorld())
 	{
-		memset (sequence, 0, sizeof (sequence));
-		aw_query_5x5 (aw_sector_from_cell (OrigX), aw_sector_from_cell (OrigY), sequence);
-		Scanning=true;
+		memset (m_Sequence, 0, sizeof (m_Sequence));
+		aw_query_5x5 (aw_sector_from_cell (OrigX), aw_sector_from_cell (OrigY), m_Sequence);
+		m_Scanning =true;
 		BlockScroll=true;
 	}
 }
 
 //------------------------------------------------------------------------------
 
-void CBackupCtrl::Cell_Begin(CBot* Bot)
+void CBackupCtrl::Cell_Begin(CBot* WXUNUSED(pBot))
 {
 	int sector_x;
 	int sector_z;
 	int sectorxmax = 2 - aw_sector_from_cell (OrigX);
 	int sectorzmax = 2 - aw_sector_from_cell (OrigY);
-	CellX = aw_int (AW_CELL_X);
-	CellZ = aw_int (AW_CELL_Z);
-	sector_x = aw_sector_from_cell (CellX);
-	sector_z = aw_sector_from_cell (CellZ);
-	sequence[sectorzmax+sector_z][sectorxmax+sector_x] = aw_int (AW_CELL_SEQUENCE);
+	m_CellX = aw_int (AW_CELL_X);
+	m_CellZ = aw_int (AW_CELL_Z);
+	sector_x = aw_sector_from_cell (m_CellX);
+	sector_z = aw_sector_from_cell (m_CellZ);
+	m_Sequence[sectorzmax+sector_z][sectorxmax+sector_x] = aw_int (AW_CELL_SEQUENCE);
 }
 
 //------------------------------------------------------------------------------
 
-void CBackupCtrl::Cell_Object (CBot* Bot)
+void CBackupCtrl::Cell_Object (CBot* WXUNUSED(pBot))
 {
 	CObject NObj;
     #if AW_BUILD>41
@@ -242,7 +270,7 @@ void CBackupCtrl::Cell_Object (CBot* Bot)
 		NObj.Data = BinToHex (DatPtr,DatLen);
 	}
 	#endif
-	Cell->AddObj (NObj);
+	m_Cell->AddObj (NObj);
 	if (Map) Map->Refresh();
 }
 
@@ -250,19 +278,19 @@ void CBackupCtrl::Cell_Object (CBot* Bot)
 
 bool CBackupCtrl::IsScanning	()
 {
-	return Scanning;
+	return m_Scanning;
 }
 
 //------------------------------------------------------------------------------
 
-void CBackupCtrl::Object_Delete(CBot* Bot)
+void CBackupCtrl::Object_Delete(CBot* WXUNUSED(pBot))
 {
-	if (Survey)
+	if (m_Survey)
 	{
 		size_t Index;
-		if (Cell->FindObjNum (Index, aw_int (AW_OBJECT_NUMBER))==CELL_OK)
+		if (m_Cell->FindObjNum (Index, aw_int (AW_OBJECT_NUMBER))==CELL_OK)
 		{
-			Cell->DelObj(Index);
+			m_Cell->DelObj(Index);
 			if (Map) Map->Refresh ();
 		}
 	}
@@ -270,7 +298,7 @@ void CBackupCtrl::Object_Delete(CBot* Bot)
 
 //------------------------------------------------------------------------------
 
-void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
+void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(pEvent))
 {
 	size_t NbObj=10;
 	#if AW_BUILD>41
@@ -281,18 +309,18 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
 	if (!CtrlAw->GetBot()->IsOnWorld()) return;
 	if (Deleting)
 	{
-		if (Cell->GetNbSel() < NbObj) NbObj=Cell->GetNbSel();
+		if (m_Cell->GetNbSel() < NbObj) NbObj= m_Cell->GetNbSel();
 		for (size_t i=0; i < NbObj; i++)
 		{
-			Cell->GetObjSel(Obj,0);
+			m_Cell->GetObjSel(Obj,0);
 			aw_int_set (AW_OBJECT_NUMBER, Obj.Number);
 			aw_int_set (AW_OBJECT_X, Obj.X);
 			aw_int_set (AW_OBJECT_Z, Obj.Z);
 			aw_object_delete ();
-			Cell->DelObjSel(0);
-			DelEC++;
+			m_Cell->DelObjSel(0);
+			m_DelEC++;
 		}
-		if (Cell->GetNbSel() >0) ObjectTimer->Start (1000,true);
+		if (m_Cell->GetNbSel() >0) m_ObjectTimer->Start (1000,true);
 		else
 		{
 			Deleting=false;
@@ -304,10 +332,10 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
 	}
 	if (Building)
 	{
-		if (Cell->GetNbSel() < NbObj) NbObj=Cell->GetNbSel();
+		if (m_Cell->GetNbSel() < NbObj) NbObj= m_Cell->GetNbSel();
 		for (size_t i=0; i < NbObj; i++)
 		{
-			Cell->GetObjSel(Obj,0);
+			m_Cell->GetObjSel(Obj,0);
 			aw_int_set (AW_OBJECT_X, Obj.X);
 			aw_int_set (AW_OBJECT_Y, Obj.Y);
 			aw_int_set (AW_OBJECT_Z, Obj.Z);
@@ -333,15 +361,15 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
 				Data= new unsigned char[LenDat];
 				HexToBin(Obj.Data,Data);
 				aw_data_set (AW_OBJECT_DATA, (char*)Data,LenDat);
-				delete Data;
+				delete[] Data;
 			}
 			#endif
 			if (CTBuild)	aw_object_load ();
 			else if (Obj.Owner==CtrlAw->GetBot()->Citoyen) aw_object_add ();
-			Cell->DelObjSel(0);
-			BuildEC++;
+			m_Cell->DelObjSel(0);
+			m_BuildEC++;
 		}
-		if (Cell->GetNbSel() >0) ObjectTimer->Start (1000,true);
+		if (m_Cell->GetNbSel() >0) m_ObjectTimer->Start (1000,true);
 		else
 		{
 			Building=false;
@@ -357,9 +385,9 @@ void CBackupCtrl::OnObjTimer (wxTimerEvent& WXUNUSED(event))
 
 void CBackupCtrl::StartDelete ()
 {
-	if (Scanning || (!CtrlAw->GetBot()->IsOnWorld()) || Building) return;
+	if (m_Scanning || (!CtrlAw->GetBot()->IsOnWorld()) || Building) return;
 	wxLogMessage (_("Start to deleting project.."));
-	ObjectTimer->Start (1000,true);
+	m_ObjectTimer->Start (1000,true);
 	Deleting=true;
 	BlockSelect=true;
 }
@@ -368,9 +396,9 @@ void CBackupCtrl::StartDelete ()
 
 void CBackupCtrl::StartBuild ()
 {
-	if (Scanning || (!CtrlAw->GetBot()->IsOnWorld()) || Deleting) return;
+	if (m_Scanning || (!CtrlAw->GetBot()->IsOnWorld()) || Deleting) return;
 	wxLogMessage (_("Start to building project.."));
-	ObjectTimer->Start (1000,true);
+	m_ObjectTimer->Start (1000,true);
 	Building=true;
 	BlockSelect=true;
 }
@@ -379,22 +407,22 @@ void CBackupCtrl::StartBuild ()
 
 bool CBackupCtrl::IsSurvey()
 {
-	return Survey;
+	return m_Survey;
 }
 
 //------------------------------------------------------------------------------
 
 void CBackupCtrl::Reset()
 {
-	Scanning=false;
-	Cell->DelGrid ();
+	m_Scanning=false;
+	m_Cell->DelGrid ();
 	BlockScroll=false;
 	BlockSelect=false;
-	Survey=false;
+	m_Survey=false;
 	Building=false;
 	Deleting =false;
-	BuildEC=0;
-	DelEC=0;
+	m_BuildEC=0;
+	m_DelEC=0;
 	if (Map) Map->Refresh ();
 }
 
@@ -402,19 +430,19 @@ void CBackupCtrl::Reset()
 
 int	CBackupCtrl::GetScanSize()
 {
-	return ScanSize;
+	return m_ScanSize;
 }
 
 //------------------------------------------------------------------------------
 
-void CBackupCtrl::SetScanSize(int Size)
+void CBackupCtrl::SetScanSize(int pSize)
 {
-	if (((Size >5) || (Size < 200)) && (!Scanning))
+	if (((pSize >5) || (pSize < 200)) && (!m_Scanning))
 	{
-		ScanSize = Size;
+		m_ScanSize = pSize;
 		wxString BAPVersion = wxString::Format(_T("AW%i"), AW_BUILD);
-		pConfig->Write(BAPVersion + _T("/ScanSize"), Size);
-		pConfig->Flush();
+		m_Config->Write(BAPVersion + _T("/ScanSize"), pSize);
+		m_Config->Flush();
 	}
 }
 
