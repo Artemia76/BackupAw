@@ -143,7 +143,7 @@ void CBot::Connection(bool pFlag)
 	#if AW_BUILD>77
 		if ((rc=aw_create(Univers, Port, &m_Instance))!=0)
 	#else
-        if ((rc=aw_create(Univers.mb_str(), Port, &Instance))!=0)
+        if ((rc=aw_create(Univers.mb_str(), Port, &m_Instance))!=0)
 	#endif
 #endif // VP_BUILD
 		{
