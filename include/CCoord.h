@@ -42,7 +42,7 @@
 #include "CtrlCell.h"
 #include "MapCanvas.h"
 #include "COutils.h"
-#include "CtrlAw.h"
+#include "Ctrlaw.h"
 
 enum
 {
@@ -70,7 +70,7 @@ class CCoord : public wxPanel , public COutils
 		CCtrlAw*			CtrlAw;
 		bool				EnaRelative;
 
-		void				OnChkRelative (wxCommandEvent& event);
+		void				OnChkCTBuild (wxCommandEvent& event);
 
         wxDECLARE_EVENT_TABLE();
 };

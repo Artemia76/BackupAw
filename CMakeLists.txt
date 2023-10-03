@@ -1,19 +1,28 @@
 ###############################################################################
 # General settings
 ###############################################################################
-cmake_minimum_required(VERSION 2.8.0 FATAL_ERROR)
 
-# Déclaration1 du projet
+# Minimum CMake Version compatibility
+cmake_minimum_required(VERSION 3.18)
 
+# Set the project name
 project(BackupAw)
+
+if (POLICY CMP0127)
+  cmake_policy(SET CMP0127 NEW) # cmake_dependent_option changes
+endif ()
+
+# Set Standard used for this project
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(EXECUTABLE_OUTPUT_PATH bin/${CMAKE_BUILD_TYPE})
 
 #inclusion de wxWidgets
 
 include(FindwxWidgets)
-
 find_package(wxWidgets COMPONENTS core base REQUIRED)
+include(${wxWidgets_USE_FILE})
 	
 # If we build for windows systems, we also include the resource file
 # containing the manifest, icon and other resources
@@ -21,37 +30,13 @@ if(WIN32)
   set(SRCS ${SRCS} Ressources.rc)
 endif(WIN32)
 
-#Déclaration de l'executable
-
-add_executable(
-	backupaw
-	include/AboutBox.h
-	include/AwObject.h
-	include/CBackupCtrl.h
-	include/CBot.h
-	include/CBuild.h
-	include/CCoord.h
-	include/CDelete.h
-	include/CFilter.h
-	include/CGeometry.h
-	include/CModify.h
-	include/COutils.h
-	include/Cpasspriv.h
-	include/Ctrlaw.h
-	include/CtrlCell.h
-	include/Global.h
-	include/MainApp.h
-	include/MainFrame.h
-	include/MapCanvas.h
-	include/OptionBox.h
-	include/ToolBook.h
-
+# Create a source variable
+set(SOURCES
 	src/AboutBox.cpp
-	src/AwObject.h
+	src/AwObject.cpp
 	src/CBackupCtrl.cpp
 	src/CBot.cpp
 	src/CBuild.cpp
-	src/CCoord.cpp
 	src/CDelete.cpp
 	src/CFilter.cpp
 	src/CGeometry.cpp
@@ -60,10 +45,32 @@ add_executable(
 	src/Cpasspriv.cpp
 	src/Ctrlaw.cpp
 	src/CtrlCell.cpp
-	src/Global.cpp
 	src/MainApp.cpp
 	src/MainFrame.cpp
 	src/MapCanvas.cpp
 	src/OptionBox.cpp
 	src/ToolBook.cpp
-	
+)
+
+# Add executable with the above sources
+add_executable(${PROJECT_NAME}
+        ${SOURCES}
+)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+
+#includes directoriesf not exist
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/icones
+)
+
+target_link_libraries(${PROJECT_NAME}
+    LINK_PUBLIC
+        aw_sdk.a
+)
+
+if (UNIX)
+    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
+endif (UNIX)
