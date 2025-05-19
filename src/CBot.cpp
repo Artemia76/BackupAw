@@ -152,7 +152,7 @@ void CBot::Connection(bool pFlag)
 			if (ModeReco) Tentative();
 #ifdef VP_BUILD
             vp_destroy(m_Instance);
-			m_Instance=0;
+			m_Instance=nullptr;
 #endif
 		}
 		else
@@ -212,7 +212,7 @@ void CBot::Login_CB(int pRC)
 		wxLogMessage (_("Unable to join the universe, Reason :") + GetRCString(pRC));
 #ifdef VP_BUILD
 		vp_destroy(m_Instance);
-		m_Instance=0;
+		m_Instance=nullptr;
 #else
 		aw_destroy();
 #endif
@@ -253,6 +253,7 @@ void CBot::Enter_CB(int pRC)
 		aw_destroy();
 #else
         vp_destroy(m_Instance);
+		m_Instance=nullptr;
 #endif // VP_BUILD
 		m_On_World=false;
 		m_On_Universe=false;
