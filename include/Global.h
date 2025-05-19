@@ -92,7 +92,7 @@ static const wxString AppVersion = AppRevision + _T(" For AW 3.6");
 	#endif
 #endif
 #else
-    #include <VP.h>
+    #include <VPSDK/VP.h>
 	static const wxString AppName = _T("BackupVP");
 	static const wxString AppRevision = AppName + _T(" V1.6.2");
     static const wxString AppVersion = AppRevision + _T(" For Virtual Paradise");

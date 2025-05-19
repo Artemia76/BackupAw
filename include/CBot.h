@@ -57,7 +57,7 @@
 #define CBOT_H
 
 #ifdef VP_BUILD
-	#include "VP.h"
+	#include "VPSDK/VP.h"
 #else
 	#include <Aw.h>
 #endif // VP_BUILD

@@ -65,7 +65,7 @@
 #ifndef VP_BUILD
 #include <Aw.h>
 #else
-#include <VP.h>
+#include <VPSDK/VP.h>
 #endif // VP_BUILD
 
 class CObject

@@ -57,7 +57,7 @@
 #include "Ctrlaw.h"
 
 #ifdef VP_BUILD
-	#include "rc.h"
+	#include "VPSDK/rc.h"
 	#define DefaultPort 57000
 #else
 	#if AW_BUILD>41
