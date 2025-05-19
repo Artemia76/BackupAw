@@ -115,8 +115,8 @@ void CMapCanvas::DrawDefault(wxDC& dc)
 {
 	wxString dec;
 	CObject Obj;
-    m_NbCellx = m_Larg /Cell;
-	m_NbCelly = m_Haut /Cell;
+    m_NbCellx = min( m_Larg /Cell, MAX_CELL);
+	m_NbCelly = min( m_Haut /Cell, MAX_CELL);
 	dc.SetPen(wxPen(wxColour (127,127,127),0, wxPENSTYLE_SOLID ));
 	m_MCellx = static_cast<wxCoord>(floor (static_cast<double>(m_NbCellx)/2));
 	m_MCelly = static_cast<wxCoord>(floor (static_cast<double>(m_NbCelly)/2));

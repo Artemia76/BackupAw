@@ -68,6 +68,8 @@
     #include "CBackupVP.h"
 #endif // VP_BUILD
 
+#define MAX_CELL 200
+
 #include "CtrlCell.h"
 #include "CFilter.h"
 #include "COutils.h"
@@ -93,8 +95,8 @@ class CMapCanvas: public wxWindow, public COutils
 		CCtrlCell*	m_CtrlCell;
 		CBackupCtrl* m_BackupCtrl;
 
-		int			m_Tampon [200][200];
-		int			m_Sel [200][200];
+		int			m_Tampon [MAX_CELL][MAX_CELL];
+		int			m_Sel [MAX_CELL][MAX_CELL];
 		wxCoord		m_NbCellx;
     	wxCoord		m_NbCelly;
         wxCoord		m_MCellx;

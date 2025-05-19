@@ -20,10 +20,11 @@ set(EXECUTABLE_OUTPUT_PATH bin/${CMAKE_BUILD_TYPE})
 
 set(UNIVERSE_VERSION VP CACHE STRING "Choose version of targetted Universe")
 
-set_property(CACHE UNIVERSE_VERSION PROPERTY STRINGS VP AW)
-
-if(UNIVERSE_VERSION EQUAL "VP")
+if(UNIVERSE_VERSION STREQUAL "VP")
+	message ("Virtual Paradise Build choosen")
 	add_definitions(-DVP_BUILD)
+else()
+	message ("ActiveWorlds Build choosen")
 endif()
 
 #inclusion de wxWidgets
@@ -42,7 +43,6 @@ endif(WIN32)
 set(SOURCES
 	src/AboutBox.cpp
 	src/AwObject.cpp
-	src/CBackupCtrl.cpp
 	src/CBot.cpp
 	src/CBuild.cpp
 	src/CDelete.cpp
@@ -60,14 +60,18 @@ set(SOURCES
 	src/ToolBook.cpp
 )
 
+if(UNIVERSE_VERSION STREQUAL "AW")
+	set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+	set(SOURCES ${SOURCES} src/CBackupCtrl.cpp)
+else()
+	set(SOURCES ${SOURCES} src/CBackupVP.cpp)
+endif()
+
 # Add executable with the above sources
 add_executable(${PROJECT_NAME}
         ${SOURCES}
 )
 
-if(UNIVERSE EQUAL "AW")
-set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
-endif()
 
 #includes directoriesf not exist
 target_include_directories(${PROJECT_NAME}
@@ -76,16 +80,11 @@ target_include_directories(${PROJECT_NAME}
         ${PROJECT_SOURCE_DIR}/icones
 )
 
-if(UNIVERSE EQUAL "VP")
-target_link_libraries(${PROJECT_NAME}
-    LINK_PUBLIC
-        libvpsdk.so
-)
+
+if(UNIVERSE_VERSION STREQUAL "VP")
+	target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} vpsdk)
 else()
-target_link_libraries(${PROJECT_NAME}
-    LINK_PUBLIC
-        aw_sdk.a
-)
+	target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} aw_sdk.a)
 endif()
 
 if (UNIX)
