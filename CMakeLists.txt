@@ -18,6 +18,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(EXECUTABLE_OUTPUT_PATH bin/${CMAKE_BUILD_TYPE})
 
+set(UNIVERSE_VERSION VP CACHE STRING "Choose version of targetted Universe")
+
+set_property(CACHE UNIVERSE_VERSION PROPERTY STRINGS VP AW)
+
+if(UNIVERSE_VERSION EQUAL "VP")
+	add_definitions(-DVP_BUILD)
+endif()
+
 #inclusion de wxWidgets
 
 include(FindwxWidgets)
@@ -57,7 +65,9 @@ add_executable(${PROJECT_NAME}
         ${SOURCES}
 )
 
+if(UNIVERSE EQUAL "AW")
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+endif()
 
 #includes directoriesf not exist
 target_include_directories(${PROJECT_NAME}
@@ -66,10 +76,17 @@ target_include_directories(${PROJECT_NAME}
         ${PROJECT_SOURCE_DIR}/icones
 )
 
+if(UNIVERSE EQUAL "VP")
+target_link_libraries(${PROJECT_NAME}
+    LINK_PUBLIC
+        libvpsdk.so
+)
+else()
 target_link_libraries(${PROJECT_NAME}
     LINK_PUBLIC
         aw_sdk.a
 )
+endif()
 
 if (UNIX)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
