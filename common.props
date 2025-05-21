@@ -2,12 +2,12 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <AW_PATH>C:\projets\activeworlds\</AW_PATH>
+    <AW_PATH>E:\devel\activeworlds\</AW_PATH>
     <WX_BASE>32</WX_BASE>
-    <UPX_PATH>C:\projets\utils\</UPX_PATH>
-    <VP_PATH>C:\projets\activeworlds\</VP_PATH>
+    <UPX_PATH>E:\devel\utils\</UPX_PATH>
+    <VP_PATH>E:\devel\activeworlds\</VP_PATH>
     <WX_LIB>vc_lib</WX_LIB>
-    <WXWIN>C:\projets\wxWidgets-3.2.2.1</WXWIN>
+    <WXWIN>E:\devel\wxWidgets</WXWIN>
     <WX_LIB_X64>vc_x64_lib</WX_LIB_X64>
   </PropertyGroup>
   <PropertyGroup>

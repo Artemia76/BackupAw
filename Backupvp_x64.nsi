@@ -67,7 +67,7 @@ Section "SectionPrincipale" SEC01
   CreateShortCut "$SMPROGRAMS\BackupVP\Help.lnk" "$INSTDIR\hlp\Backupaw.chm"
   File ".\x64\Release_VP\vpsdk.dll"
   File ".\README.md"
-  File ".\LICENCE"
+  File ".\LICENSE"
   SetOutPath "$INSTDIR\lng\fr"
   File ".\lng\fr\backup.mo"
   SetOutPath "$INSTDIR\lng\en"

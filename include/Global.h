@@ -70,7 +70,7 @@
 #include <Aw.h>
 static const int Major = 1;
 static const int Minor = 6;
-static const int Build = 1;
+static const int Build = 2;
 static const wxString Version = wxString::Format(_T("%i.%i.%i"),Major,Minor,Build);
 static const wxString AppName = _T("BackupAW");
 static const wxString AppRevision = AppName + Version;

@@ -67,7 +67,7 @@ Section "SectionPrincipale" SEC01
   CreateShortCut "$SMPROGRAMS\BackupVP\Help.lnk" "$INSTDIR\hlp\Backupaw.chm"
   File ".\Win32\Release_VP\vpsdk.dll"
   File ".\README.md"
-  File ".\LICENCE"
+  File ".\LICENSE"
   SetOutPath "$INSTDIR\lng\fr"
   File ".\lng\fr\backup.mo"
   SetOutPath "$INSTDIR\lng\en"
@@ -98,12 +98,12 @@ SectionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) a été désinstallé avec succès de votre ordinateur."
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) a Ã©tÃ© dÃ©sinstallÃ© avec succÃ¨s de votre ordinateur."
 FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Êtes-vous certains de vouloir désinstaller totalement $(^Name) et tous ses composants ?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "ÃŠtes-vous certains de vouloir dÃ©sinstaller totalement $(^Name) et tous ses composants ?" IDYES +2
   Abort
 FunctionEnd
 

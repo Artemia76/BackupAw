@@ -496,7 +496,7 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>$(WXWIN)\lib\$(WX_LIB_X64)\mswu;$(WXWIN)\include;$(VP_PATH)$(VP_LIB)_x64\VPSDK;.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXWIN)\build\lib\$(WX_LIB_X64)\mswu;$(WXWIN)\include;$(VP_PATH)$(VP_LIB)_x64;.\icones;.\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;__WXMSW__;wxUSE_GUI=1;_UNICODE;UNICODE;VP_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -507,8 +507,8 @@ xcopy $(SolutionDir)lng $(TargetDir)lng /s /y /i</Command>
       <PreprocessorDefinitions>VP_BUILD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>wxmsw$(WX_BASE)u_adv.lib;wxmsw$(WX_BASE)u_core.lib;wxbase$(WX_BASE)u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;odbc32.lib;vpsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXWIN)\lib\$(WX_LIB_X64);$(VP_PATH)$(VP_LIB)_x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wxmsw$(WX_BASE)u_adv.lib;wxmsw$(WX_BASE)u_core.lib;wxbase$(WX_BASE)u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;wxexpat.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;odbc32.lib;VPSDK.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WXWIN)\build\lib\$(WX_LIB_X64);$(VP_PATH)$(VP_LIB)_x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>
       </SubSystem>
